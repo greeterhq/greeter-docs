@@ -1,32 +1,51 @@
 schema: spec-driven
 
-# Project context (optional)
-# Add only constraints that should guide OpenSpec artifacts and workflows.
-# Include constraints an agent cannot infer by reading the code.
-# Keep general project documentation and discoverable codebase facts out.
-# Example:
-#   context: |
-#     Designs and tasks must cover Windows, macOS, and Linux
-#     Write all artifacts in Spanish
+context: |
+  greeter-docs: the live documentation site for greeterHQ, built as a
+  hexagonal Ruby application and published to GitHub Pages
+  (greeterhq.github.io/greeter-docs).
+  - Domain (lib/greeter_docs/domain/, pure Ruby, no I/O): DocsModel,
+    Requirement, Scenario, RunResult, Channel, TraceRule. TraceRule returns
+    every requirement with no passing scenario on main.
+  - Inbound ports: SpecSource, RunSource, ContractSource, ApiSource,
+    AdrSource, SloSource. Outbound port: Publisher.
+  - Adapters (lib/greeter_docs/adapters/): OpenSpecCliSource (shells out to
+    `openspec list --specs --json` and `openspec show <spec> --json --type spec`
+    in sibling checkouts; OpenSpec pinned at 1.14.1), TraceabilityFileSource
+    (greeterhq.traceability.v1), OpenApiFileSource, MarkdownAdrSource,
+    NullContractSource until Card 3 then PactBrokerContractSource, ErbHtmlPublisher.
+  - bin/build is the composition root: --local reads ../<repo> checkouts and
+    their tmp/ traces; --ci downloads the latest successful main-branch
+    traceability artifacts with `gh run download`.
+  - Pages: per-repo spec pages, requirement -> scenario -> last passing run ->
+    deployed version trace, channel x requirement grid (passed / failed / n/a /
+    missing), OpenAPI via Redoc, ADR index, Mermaid C4 diagrams.
+  - Sources are read-only. This repo never writes to, or opens PRs against,
+    another repo.
+  - Ruby 3.3.5, frozen_string_literal on every file, RuboCop clean. TDD: failing
+    test committed before the implementation.
 
-# Per-artifact rules (optional)
-# Add custom rules for specific artifacts.
-# Example:
-#   rules:
-#     proposal:
-#       - Keep proposals under 500 words
-#       - Always state what is out of scope
-#     tasks:
-#       - Break tasks into chunks of max 2 hours
+rules:
+  proposal:
+    - Include a "Non-goals" section.
+    - Say which source ports and pages the change touches, and which repos'
+      artifacts it newly depends on.
+  specs:
+    - Express build failures as WHEN/THEN scenarios that name what the error
+      message must contain (repo, capability, requirement).
+    - Domain requirements must be testable with in-memory sources only.
+  design:
+    - For a new source, include a fixture captured from the real tool's output
+      (for example, openspec show --json) and the OpenSpec or tool version it came from.
+  tasks:
+    - First task group is always "Red tests" (domain specs first, then adapter
+      specs against fixtures, then a publisher snapshot spec).
+    - Keep each task under two hours.
+    - Last task group is "Verify and docs" (bin/build --local, lychee link check, openspec validate).
 
-# Per-operation guidance (optional)
-# Add advisory guidance for how apply and archive work should be conducted.
-# This is separate from artifact rules above.
-# Example:
-#   operations:
-#     apply:
-#       guidance:
-#         - Keep test summaries concise
-#     archive:
-#       guidance:
-#         - Summarize the archive outcome before finishing
+operations:
+  apply:
+    guidance:
+      - Never edit spec/ or spec/fixtures/ during apply; refresh fixtures only
+        in a separate change.
+      - Keep I/O out of lib/greeter_docs/domain/.
