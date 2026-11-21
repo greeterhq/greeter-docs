@@ -47,4 +47,6 @@ fileignoreconfig:
   checksum: 1388d1781b4d3711c68d555a2ac7a3884fcdfab32f5ba6649fa72d6f10db926c
 - filename: .kiro/prompts/opsx-verify.prompt.md
   checksum: c6bdd8aa10b8aa5ba3dde78a8ec8e3422c834d265433612d3ced275d12aa92db
+- filename: Gemfile.lock
+  checksum: 8af725711082b9a83c17fb560a54d205cd93347f746ea2aefb4226c42af6bd86
 version: ""
