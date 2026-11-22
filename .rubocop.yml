@@ -1,0 +1,76 @@
+plugins:
+  - rubocop-rspec
+
+# Merge our Exclude list with RuboCop's defaults (which exclude vendor/,
+# node_modules/, etc.) instead of replacing them.
+inherit_mode:
+  merge:
+    - Exclude
+
+AllCops:
+  NewCops: enable
+  TargetRubyVersion: 3.3
+  Exclude:
+    - 'vendor/**/*'
+    - 'tmp/**/*'
+    - '_site/**/*'
+    - 'spec/fixtures/**/*'
+
+Style/Documentation:
+  Enabled: false
+
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*'
+
+# Specs are grouped by layer (domain, adapters, bin, workflows), not by
+# mirroring class paths.
+RSpec/SpecFilePathFormat:
+  Enabled: false
+
+# These specs describe a workflow file, the build use case, log output, the
+# suite itself, several classes at once, a cross-cutting limit, or the copied
+# formatter, not one class.
+RSpec/DescribeClass:
+  Exclude:
+    - 'spec/workflows/docs_workflow_spec.rb'
+    - 'spec/build_spec.rb'
+    - 'spec/support/log_safety_spec.rb'
+    - 'spec/coverage_of_self_spec.rb'
+    - 'spec/adapters/file_adr_and_diagram_source_spec.rb'
+    - 'spec/adapters/null_sources_spec.rb'
+    - 'spec/adapters/input_limits_spec.rb'
+    - 'spec/support/repo_trace_formatter_spec.rb'
+
+# Each OpenSpec scenario is verified by exactly one example, so an example
+# asserts the scenario's whole THEN.
+RSpec/MultipleExpectations:
+  Exclude:
+    - 'spec/**/*'
+
+RSpec/ExampleLength:
+  Exclude:
+    - 'spec/**/*'
+
+# docs_workflow_spec.rb needs seven lets for the parsed workflow (path, text,
+# workflow, triggers, build, deploy, steps).
+RSpec/MultipleMemoizedHelpers:
+  Max: 8
+
+# Fixture builders and shared helpers in spec/ build whole domain models and
+# adapter graphs, so they run longer than production methods.
+Metrics/MethodLength:
+  Exclude:
+    - 'spec/**/*'
+
+Metrics/AbcSize:
+  Exclude:
+    - 'spec/**/*'
+
+Metrics/ModuleLength:
+  Exclude:
+    - 'spec/**/*'
+
+Metrics/ParameterLists:
+  Exclude:
+    - 'spec/**/*'

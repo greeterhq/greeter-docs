@@ -187,13 +187,55 @@ is `pages: write, id-token: write` with
    > development pin.
 3. The app token step.
 4. `bin/fetch-sources` (`env: GH_TOKEN`).
-5. `bundle exec rspec` with the trace formatter (D8).
-6. `bin/build-docs`.
-7. `lycheeverse/lychee-action` with `args: --offline --no-progress _site`.
-8. `actions/configure-pages`.
-9. `actions/upload-pages-artifact` (`path: _site`).
+5. **Install lychee.** The link-check examples in the RSpec suite run `lychee`,
+   so it must be on `PATH` before step 7. The step pins lychee `lychee-v0.24.2`
+   (released 2026-05-01) for x86_64 Linux. Its sha256,
+   `1f4e0ef7f6554a6ed33dd7ac144fb2e1bbed98598e7af973042fc5cd43951c9a`, is taken
+   from the release's published
+   `lychee-x86_64-unknown-linux-gnu.tar.gz.sha256`, and on 2026-11-21 it matched
+   the downloaded tarball. Both values are in the step's `env`, and `run:` has
+   no `${{`:
+   ```yaml
+   - name: Install lychee
+     env:
+       LYCHEE_VERSION: lychee-v0.24.2
+       LYCHEE_SHA256: 1f4e0ef7f6554a6ed33dd7ac144fb2e1bbed98598e7af973042fc5cd43951c9a
+     run: |
+       curl -fsSLo "$RUNNER_TEMP/lychee.tar.gz" \
+         "https://github.com/lycheeverse/lychee/releases/download/$LYCHEE_VERSION/lychee-x86_64-unknown-linux-gnu.tar.gz"
+       echo "$LYCHEE_SHA256  $RUNNER_TEMP/lychee.tar.gz" | sha256sum -c -
+       tar -xzf "$RUNNER_TEMP/lychee.tar.gz" -C "$RUNNER_TEMP"
+       echo "$RUNNER_TEMP/lychee-x86_64-unknown-linux-gnu" >> "$GITHUB_PATH"
+   ```
+6. **Lint**: `bundle exec rubocop`.
+7. `bundle exec rspec` with the trace formatter (D8).
+8. `bin/build-docs`.
+9. **Link check**: `lychee --offline --no-progress _site`, using the binary from
+   step 5.
+10. `actions/configure-pages`.
+11. `actions/upload-pages-artifact` (`path: _site`).
 
-Actions are pinned to full commit SHAs with a version comment.
+Actions are pinned to full commit SHAs with a version comment. lychee is
+installed exactly once, by step 5, and no `lycheeverse/` action is used. The
+RSpec link examples and the site check run the same pinned, verified binary.
+
+### D11. Names fixed by the red tests
+The specs written in tasks 1.3–1.9 fix these names:
+- `Domain::Trace`: a repo trace's `repo`, `sha`, `run_id`, `recorded_at` and
+  `results`.
+- `CoverageRule#not_yet_recorded(model)`: the tag-mapped requirements whose
+  prod ledger is not recorded.
+- `CoverageRule#summary(model)`: the counts `covered`, `uncovered` and
+  `not_yet_recorded`.
+- `Build#call`: returns a result with `exit_code` and `lines`.
+- `GreeterDocs::LogSafe`: `.line` and `.value`, per S1 and S7.
+- `GreeterDocs::FetchSources`: built with `runner:`, `root:`, `env:`, `out:`
+  and `err:`.
+- `RawLedgerSource.default_fetcher`: the `Net::HTTP` fetcher. Only
+  `bin/build-docs` fetches with `default_fetcher`. Specs may inspect its
+  configuration (timeouts, redirects) but never fetch with it. Every spec that
+  reads a ledger injects a fake fetcher. Building it opens no connection: it
+  only holds its settings, and connects on `call(url)`.
 
 ### Fixtures (captured from real output)
 The Red tests tasks copy these into `spec/fixtures/`. The tool for all of them

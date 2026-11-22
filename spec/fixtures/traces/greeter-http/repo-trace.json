@@ -1,0 +1,1276 @@
+{
+  "schema": "greeterhq.repo-trace.v1",
+  "repo": "greeter-http",
+  "sha": "5b818a2fa3f69d9a8bcc9c44f634c2ee2984670c",
+  "recorded_at": "2026-11-19T21:51:18Z",
+  "run_id": "44622828436",
+  "results": [
+    {
+      "requirement": "greet-a-guest-and-return-a-running-count",
+      "scenario": "first-greeting-for-a-new-guest",
+      "status": "passed",
+      "source": "cucumber",
+      "location": "features/greeting_counter.feature:12"
+    },
+    {
+      "requirement": "greet-a-guest-and-return-a-running-count",
+      "scenario": "subsequent-greeting-for-an-existing-guest",
+      "status": "passed",
+      "source": "cucumber",
+      "location": "features/greeting_counter.feature:19"
+    },
+    {
+      "requirement": "greet-a-guest-and-return-a-running-count",
+      "scenario": "names-differing-only-by-case-or-whitespace-share-a-count",
+      "status": "passed",
+      "source": "cucumber",
+      "location": "features/greeting_counter.feature:26"
+    },
+    {
+      "requirement": "reject-invalid-guest-names",
+      "scenario": "empty-name-is-rejected",
+      "status": "passed",
+      "source": "cucumber",
+      "location": "features/greeting_counter.feature:35"
+    },
+    {
+      "requirement": "reject-invalid-guest-names",
+      "scenario": "over-long-name-is-rejected",
+      "status": "passed",
+      "source": "cucumber",
+      "location": "features/greeting_counter.feature:41"
+    },
+    {
+      "requirement": "require-a-client-supplied-idempotency-key",
+      "scenario": "missing-idempotency-key-is-rejected",
+      "status": "passed",
+      "source": "cucumber",
+      "location": "features/greeting_counter.feature:49"
+    },
+    {
+      "requirement": "replaying-an-idempotency-key-returns-the-original-result",
+      "scenario": "retry-with-the-same-key-does-not-double-count",
+      "status": "passed",
+      "source": "cucumber",
+      "location": "features/greeting_counter.feature:57"
+    },
+    {
+      "requirement": "replaying-an-idempotency-key-returns-the-original-result",
+      "scenario": "replay-returns-the-original-count-even-after-other-greetings",
+      "status": "passed",
+      "source": "cucumber",
+      "location": "features/greeting_counter.feature:64"
+    },
+    {
+      "requirement": "replaying-an-idempotency-key-returns-the-original-result",
+      "scenario": "replay-is-distinguishable-from-a-first-success-by-status",
+      "status": "passed",
+      "source": "cucumber",
+      "location": "features/greeting_counter.feature:72"
+    },
+    {
+      "requirement": "reject-reuse-of-an-idempotency-key-for-a-different-request",
+      "scenario": "same-key-with-a-different-guest-is-rejected",
+      "status": "passed",
+      "source": "cucumber",
+      "location": "features/greeting_counter.feature:81"
+    },
+    {
+      "requirement": "forget-idempotency-keys-after-a-bounded-window",
+      "scenario": "reused-key-counts-again-after-the-retention-window",
+      "status": "passed",
+      "source": "cucumber",
+      "location": "features/greeting_counter.feature:90"
+    },
+    {
+      "requirement": "forget-idempotency-keys-after-a-bounded-window",
+      "scenario": "deduplication-spans-multiple-retained-keys",
+      "status": "passed",
+      "source": "cucumber",
+      "location": "features/greeting_counter.feature:98"
+    },
+    {
+      "requirement": "report-transient-storage-failures-as-retryable",
+      "scenario": "storage-throttling-yields-a-retryable-response",
+      "status": "passed",
+      "source": "cucumber",
+      "location": "features/greeting_counter.feature:108"
+    },
+    {
+      "requirement": "deployed-stage-exposes-version-headers",
+      "scenario": "smoke-check-on-a-deployed-stage",
+      "status": "skipped",
+      "source": "cucumber",
+      "location": "features/version_headers.feature:7"
+    },
+    {
+      "requirement": "lambda-handler-preserves-version-headers",
+      "scenario": "handler-passes-headers-through",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/adapters/lambda_handler_spec.rb:72"
+    },
+    {
+      "requirement": "successful-greetings-carry-version-headers",
+      "scenario": "created-greeting-carries-both-headers",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/adapters/version_headers_spec.rb:47"
+    },
+    {
+      "requirement": "successful-greetings-carry-version-headers",
+      "scenario": "replayed-greeting-carries-both-headers",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/adapters/version_headers_spec.rb:56"
+    },
+    {
+      "requirement": "rejected-requests-carry-version-headers",
+      "scenario": "malformed-or-missing-key-request-carries-both-headers",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/adapters/version_headers_spec.rb:72"
+    },
+    {
+      "requirement": "rejected-requests-carry-version-headers",
+      "scenario": "key-reuse-carries-both-headers",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/adapters/version_headers_spec.rb:83"
+    },
+    {
+      "requirement": "rejected-requests-carry-version-headers",
+      "scenario": "oversized-body-carries-both-headers",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/adapters/version_headers_spec.rb:94"
+    },
+    {
+      "requirement": "rejected-requests-carry-version-headers",
+      "scenario": "invalid-name-carries-both-headers",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/adapters/version_headers_spec.rb:103"
+    },
+    {
+      "requirement": "storage-failures-carry-version-headers",
+      "scenario": "storage-unavailable-carries-both-headers",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/adapters/version_headers_spec.rb:123"
+    },
+    {
+      "requirement": "unrouted-requests-carry-version-headers",
+      "scenario": "unrouted-path-carries-both-headers",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/adapters/version_headers_spec.rb:135"
+    },
+    {
+      "requirement": "unrouted-requests-carry-version-headers",
+      "scenario": "unsupported-method-on-the-greetings-path-carries-both-headers",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/adapters/version_headers_spec.rb:144"
+    },
+    {
+      "requirement": "unexpected-errors-carry-version-headers",
+      "scenario": "unexpected-exception-carries-both-headers",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/adapters/version_headers_spec.rb:161"
+    },
+    {
+      "requirement": "version-header-values-are-fixed-by-the-build",
+      "scenario": "request-input-cannot-change-the-values",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/adapters/version_headers_spec.rb:173"
+    },
+    {
+      "requirement": "version-header-values-are-fixed-by-the-build",
+      "scenario": "environment-cannot-change-the-values",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/adapters/version_headers_spec.rb:183"
+    },
+    {
+      "requirement": "version-header-values-are-fixed-by-the-build",
+      "scenario": "inner-application-value-is-overwritten",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/adapters/version_headers_spec.rb:198"
+    },
+    {
+      "requirement": "version-headers-disclose-nothing-beyond-the-two-versions",
+      "scenario": "malformed-version-value-is-rejected-at-startup",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/adapters/version_headers_spec.rb:211"
+    },
+    {
+      "requirement": "synthetic-marker-does-not-alter-version-headers-or-responses",
+      "scenario": "synthetic-request-matches-non-synthetic-response",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/adapters/version_headers_spec.rb:227"
+    },
+    {
+      "requirement": "the-acceptance-suite-pin-is-consistent",
+      "scenario": "matching-refs-pass",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/bin/check_acceptance_ref_spec.rb:55"
+    },
+    {
+      "requirement": "the-acceptance-suite-pin-is-consistent",
+      "scenario": "differing-refs-fail",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/bin/check_acceptance_ref_spec.rb:62"
+    },
+    {
+      "requirement": "the-acceptance-suite-pin-is-consistent",
+      "scenario": "refs-that-are-not-versions-fail",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/bin/check_acceptance_ref_spec.rb:69"
+    },
+    {
+      "requirement": "the-acceptance-suite-pin-is-consistent",
+      "scenario": "gate-must-come-from-the-acceptance-repository",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/bin/check_acceptance_ref_spec.rb:81"
+    },
+    {
+      "requirement": "restore-refuses-an-unsafe-or-unknown-target",
+      "scenario": "valid-ledger-prints-the-recorded-version",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/bin/last_good_release_spec.rb:57"
+    },
+    {
+      "requirement": "restore-refuses-an-unsafe-or-unknown-target",
+      "scenario": "unreadable-ledger-fails",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/bin/last_good_release_spec.rb:75"
+    },
+    {
+      "requirement": "restore-refuses-an-unsafe-or-unknown-target",
+      "scenario": "wrong-schema-fails",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/bin/last_good_release_spec.rb:86"
+    },
+    {
+      "requirement": "restore-refuses-an-unsafe-or-unknown-target",
+      "scenario": "missing-http-entry-fails",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/bin/last_good_release_spec.rb:92"
+    },
+    {
+      "requirement": "restore-refuses-an-unsafe-or-unknown-target",
+      "scenario": "bad-recorded-version-fails",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/bin/last_good_release_spec.rb:98"
+    },
+    {
+      "requirement": "restore-refuses-an-unsafe-or-unknown-target",
+      "scenario": "recorded-version-equal-to-the-failed-version-fails",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/bin/last_good_release_spec.rb:109"
+    },
+    {
+      "requirement": "restore-refuses-an-unsafe-or-unknown-target",
+      "scenario": "untrusted-ledger-text-is-neutralised-in-messages",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/bin/last_good_release_spec.rb:115"
+    },
+    {
+      "requirement": "the-rspec-and-cucumber-traces-merge-into-one-trace",
+      "scenario": "merge-combines-both-traces",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/bin/merge_repo_trace_spec.rb:63"
+    },
+    {
+      "requirement": "the-rspec-and-cucumber-traces-merge-into-one-trace",
+      "scenario": "merge-combines-both-traces",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/bin/merge_repo_trace_spec.rb:72"
+    },
+    {
+      "requirement": "the-rspec-and-cucumber-traces-merge-into-one-trace",
+      "scenario": "merge-rejects-mismatched-inputs",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/bin/merge_repo_trace_spec.rb:84"
+    },
+    {
+      "requirement": "the-rspec-and-cucumber-traces-merge-into-one-trace",
+      "scenario": "merge-rejects-mismatched-inputs",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/bin/merge_repo_trace_spec.rb:89"
+    },
+    {
+      "requirement": "the-rspec-and-cucumber-traces-merge-into-one-trace",
+      "scenario": "merge-rejects-mismatched-inputs",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/bin/merge_repo_trace_spec.rb:93"
+    },
+    {
+      "requirement": "the-rspec-and-cucumber-traces-merge-into-one-trace",
+      "scenario": "merge-rejects-mismatched-inputs",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/bin/merge_repo_trace_spec.rb:97"
+    },
+    {
+      "requirement": "the-rspec-and-cucumber-traces-merge-into-one-trace",
+      "scenario": "merge-rejects-mismatched-inputs",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/bin/merge_repo_trace_spec.rb:102"
+    },
+    {
+      "requirement": "the-rspec-and-cucumber-traces-merge-into-one-trace",
+      "scenario": "merge-rejects-inputs-outside-the-v1-shape",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/bin/merge_repo_trace_spec.rb:110"
+    },
+    {
+      "requirement": "the-rspec-and-cucumber-traces-merge-into-one-trace",
+      "scenario": "merge-rejects-inputs-outside-the-v1-shape",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/bin/merge_repo_trace_spec.rb:124"
+    },
+    {
+      "requirement": "the-rspec-and-cucumber-traces-merge-into-one-trace",
+      "scenario": "merge-rejects-inputs-outside-the-v1-shape",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/bin/merge_repo_trace_spec.rb:129"
+    },
+    {
+      "requirement": "the-rspec-and-cucumber-traces-merge-into-one-trace",
+      "scenario": "merge-rejects-inputs-outside-the-v1-shape",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/bin/merge_repo_trace_spec.rb:135"
+    },
+    {
+      "requirement": "the-rspec-and-cucumber-traces-merge-into-one-trace",
+      "scenario": "merge-rejects-inputs-outside-the-v1-shape",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/bin/merge_repo_trace_spec.rb:140"
+    },
+    {
+      "requirement": "the-rspec-and-cucumber-traces-merge-into-one-trace",
+      "scenario": "merge-rejects-inputs-outside-the-v1-shape",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/bin/merge_repo_trace_spec.rb:153"
+    },
+    {
+      "requirement": "the-rspec-and-cucumber-traces-merge-into-one-trace",
+      "scenario": "merge-rejects-inputs-outside-the-v1-shape",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/bin/merge_repo_trace_spec.rb:161"
+    },
+    {
+      "requirement": "the-rspec-and-cucumber-traces-merge-into-one-trace",
+      "scenario": "merge-rejects-inputs-outside-the-v1-shape",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/bin/merge_repo_trace_spec.rb:177"
+    },
+    {
+      "requirement": "the-rspec-and-cucumber-traces-merge-into-one-trace",
+      "scenario": "merge-rejects-a-duplicated-result",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/bin/merge_repo_trace_spec.rb:187"
+    },
+    {
+      "requirement": "the-api-is-described-by-openapi-yaml",
+      "scenario": "the-request-is-described",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/openapi_description_spec.rb:54"
+    },
+    {
+      "requirement": "the-api-is-described-by-openapi-yaml",
+      "scenario": "the-request-is-described",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/openapi_description_spec.rb:59"
+    },
+    {
+      "requirement": "the-api-is-described-by-openapi-yaml",
+      "scenario": "the-request-is-described",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/openapi_description_spec.rb:69"
+    },
+    {
+      "requirement": "the-api-is-described-by-openapi-yaml",
+      "scenario": "the-request-is-described",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/openapi_description_spec.rb:81"
+    },
+    {
+      "requirement": "the-api-is-described-by-openapi-yaml",
+      "scenario": "success-responses-are-described",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/openapi_description_spec.rb:93"
+    },
+    {
+      "requirement": "the-api-is-described-by-openapi-yaml",
+      "scenario": "success-responses-are-described",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/openapi_description_spec.rb:107"
+    },
+    {
+      "requirement": "the-api-is-described-by-openapi-yaml",
+      "scenario": "error-responses-are-described",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/openapi_description_spec.rb:124"
+    },
+    {
+      "requirement": "the-api-is-described-by-openapi-yaml",
+      "scenario": "error-responses-are-described",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/openapi_description_spec.rb:136"
+    },
+    {
+      "requirement": "the-api-is-described-by-openapi-yaml",
+      "scenario": "only-the-returned-statuses-are-described",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/openapi_description_spec.rb:144"
+    },
+    {
+      "requirement": "the-api-is-described-by-openapi-yaml",
+      "scenario": "only-the-returned-statuses-are-described",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/openapi_description_spec.rb:150"
+    },
+    {
+      "requirement": "the-api-is-described-by-openapi-yaml",
+      "scenario": "every-response-carries-both-version-headers",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/openapi_description_spec.rb:163"
+    },
+    {
+      "requirement": "the-description-version-tracks-the-service-version",
+      "scenario": "matching-versions-pass",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/openapi_description_spec.rb:178"
+    },
+    {
+      "requirement": "the-description-version-tracks-the-service-version",
+      "scenario": "differing-versions-fail",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/openapi_description_spec.rb:187"
+    },
+    {
+      "requirement": "version-headers-disclose-nothing-beyond-the-two-versions",
+      "scenario": "no-other-version-disclosing-headers",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/security/http_security_spec.rb:155"
+    },
+    {
+      "requirement": "every-response-of-the-composed-app-matches-openapi-yaml",
+      "scenario": "the-lambda-bundle-stays-free-of-the-test-gem",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/security/http_security_spec.rb:209"
+    },
+    {
+      "requirement": "every-response-of-the-composed-app-matches-openapi-yaml",
+      "scenario": "the-lambda-bundle-stays-free-of-the-test-gem",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/security/http_security_spec.rb:217"
+    },
+    {
+      "requirement": "repo-trace-contains-only-slugs-statuses-locations-and-run-metadata",
+      "scenario": "cucumber-writer-writes-the-v1-document",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/tooling/cucumber_repo_trace_spec.rb:49"
+    },
+    {
+      "requirement": "repo-trace-contains-only-slugs-statuses-locations-and-run-metadata",
+      "scenario": "cucumber-writer-writes-the-v1-document",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/tooling/cucumber_repo_trace_spec.rb:56"
+    },
+    {
+      "requirement": "repo-trace-contains-only-slugs-statuses-locations-and-run-metadata",
+      "scenario": "cucumber-writer-writes-the-v1-document",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/tooling/cucumber_repo_trace_spec.rb:64"
+    },
+    {
+      "requirement": "repo-trace-contains-only-slugs-statuses-locations-and-run-metadata",
+      "scenario": "skipped-and-pending-are-told-apart",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/tooling/cucumber_repo_trace_spec.rb:75"
+    },
+    {
+      "requirement": "repo-trace-contains-only-slugs-statuses-locations-and-run-metadata",
+      "scenario": "writers-refuse-malformed-values",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/tooling/cucumber_repo_trace_spec.rb:84"
+    },
+    {
+      "requirement": "repo-trace-contains-only-slugs-statuses-locations-and-run-metadata",
+      "scenario": "writers-refuse-malformed-values",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/tooling/cucumber_repo_trace_spec.rb:94"
+    },
+    {
+      "requirement": "repo-trace-contains-only-slugs-statuses-locations-and-run-metadata",
+      "scenario": "writers-omit-descriptions",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/tooling/cucumber_repo_trace_spec.rb:108"
+    },
+    {
+      "requirement": "every-response-of-the-composed-app-matches-openapi-yaml",
+      "scenario": "described-responses-pass",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/tooling/openapi_contract_spec.rb:55"
+    },
+    {
+      "requirement": "every-response-of-the-composed-app-matches-openapi-yaml",
+      "scenario": "described-responses-pass",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/tooling/openapi_contract_spec.rb:79"
+    },
+    {
+      "requirement": "every-response-of-the-composed-app-matches-openapi-yaml",
+      "scenario": "described-responses-pass",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/tooling/openapi_contract_spec.rb:86"
+    },
+    {
+      "requirement": "every-response-of-the-composed-app-matches-openapi-yaml",
+      "scenario": "described-responses-pass",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/tooling/openapi_contract_spec.rb:103"
+    },
+    {
+      "requirement": "every-response-of-the-composed-app-matches-openapi-yaml",
+      "scenario": "described-responses-pass",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/tooling/openapi_contract_spec.rb:115"
+    },
+    {
+      "requirement": "every-response-of-the-composed-app-matches-openapi-yaml",
+      "scenario": "an-undocumented-status-fails-and-is-named",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/tooling/openapi_contract_spec.rb:125"
+    },
+    {
+      "requirement": "every-response-of-the-composed-app-matches-openapi-yaml",
+      "scenario": "an-undocumented-status-fails-and-is-named",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/tooling/openapi_contract_spec.rb:130"
+    },
+    {
+      "requirement": "every-response-of-the-composed-app-matches-openapi-yaml",
+      "scenario": "a-field-mismatch-fails-and-is-named",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/tooling/openapi_contract_spec.rb:140"
+    },
+    {
+      "requirement": "every-response-of-the-composed-app-matches-openapi-yaml",
+      "scenario": "a-missing-version-header-fails-and-is-named",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/tooling/openapi_contract_spec.rb:150"
+    },
+    {
+      "requirement": "every-response-of-the-composed-app-matches-openapi-yaml",
+      "scenario": "unrouted-requests-are-not-validated",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/tooling/openapi_contract_spec.rb:163"
+    },
+    {
+      "requirement": "every-response-of-the-composed-app-matches-openapi-yaml",
+      "scenario": "described-responses-pass",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/tooling/openapi_contract_spec.rb:179"
+    },
+    {
+      "requirement": "every-response-of-the-composed-app-matches-openapi-yaml",
+      "scenario": "described-responses-pass",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/tooling/openapi_contract_spec.rb:185"
+    },
+    {
+      "requirement": "every-response-of-the-composed-app-matches-openapi-yaml",
+      "scenario": "described-responses-pass",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/tooling/openapi_contract_spec.rb:191"
+    },
+    {
+      "requirement": "every-response-of-the-composed-app-matches-openapi-yaml",
+      "scenario": "cucumber-validates-through-the-same-support",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/tooling/openapi_contract_spec.rb:203"
+    },
+    {
+      "requirement": "repo-trace-contains-only-slugs-statuses-locations-and-run-metadata",
+      "scenario": "writers-refuse-malformed-values",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/tooling/repo_trace_document_spec.rb:26"
+    },
+    {
+      "requirement": "repo-trace-contains-only-slugs-statuses-locations-and-run-metadata",
+      "scenario": "writers-refuse-malformed-values",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/tooling/repo_trace_document_spec.rb:32"
+    },
+    {
+      "requirement": "repo-trace-contains-only-slugs-statuses-locations-and-run-metadata",
+      "scenario": "writers-refuse-malformed-values",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/tooling/repo_trace_document_spec.rb:37"
+    },
+    {
+      "requirement": "repo-trace-contains-only-slugs-statuses-locations-and-run-metadata",
+      "scenario": "writers-refuse-malformed-values",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/tooling/repo_trace_document_spec.rb:55"
+    },
+    {
+      "requirement": "repo-trace-contains-only-slugs-statuses-locations-and-run-metadata",
+      "scenario": "writers-refuse-malformed-values",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/tooling/repo_trace_document_spec.rb:71"
+    },
+    {
+      "requirement": "repo-trace-contains-only-slugs-statuses-locations-and-run-metadata",
+      "scenario": "writers-refuse-malformed-values",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/tooling/repo_trace_document_spec.rb:80"
+    },
+    {
+      "requirement": "repo-trace-contains-only-slugs-statuses-locations-and-run-metadata",
+      "scenario": "writers-refuse-malformed-values",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/tooling/repo_trace_document_spec.rb:87"
+    },
+    {
+      "requirement": "repo-trace-contains-only-slugs-statuses-locations-and-run-metadata",
+      "scenario": "writers-refuse-malformed-values",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/tooling/repo_trace_document_spec.rb:100"
+    },
+    {
+      "requirement": "repo-trace-contains-only-slugs-statuses-locations-and-run-metadata",
+      "scenario": "formatter-writes-the-v1-document",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/tooling/repo_trace_formatter_spec.rb:46"
+    },
+    {
+      "requirement": "repo-trace-contains-only-slugs-statuses-locations-and-run-metadata",
+      "scenario": "formatter-writes-the-v1-document",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/tooling/repo_trace_formatter_spec.rb:53"
+    },
+    {
+      "requirement": "repo-trace-contains-only-slugs-statuses-locations-and-run-metadata",
+      "scenario": "formatter-writes-the-v1-document",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/tooling/repo_trace_formatter_spec.rb:61"
+    },
+    {
+      "requirement": "repo-trace-contains-only-slugs-statuses-locations-and-run-metadata",
+      "scenario": "formatter-writes-the-v1-document",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/tooling/repo_trace_formatter_spec.rb:66"
+    },
+    {
+      "requirement": "repo-trace-contains-only-slugs-statuses-locations-and-run-metadata",
+      "scenario": "formatter-writes-the-v1-document",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/tooling/repo_trace_formatter_spec.rb:72"
+    },
+    {
+      "requirement": "repo-trace-contains-only-slugs-statuses-locations-and-run-metadata",
+      "scenario": "formatter-writes-the-v1-document",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/tooling/repo_trace_formatter_spec.rb:80"
+    },
+    {
+      "requirement": "repo-trace-contains-only-slugs-statuses-locations-and-run-metadata",
+      "scenario": "skipped-and-pending-are-told-apart",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/tooling/repo_trace_formatter_spec.rb:92"
+    },
+    {
+      "requirement": "repo-trace-contains-only-slugs-statuses-locations-and-run-metadata",
+      "scenario": "writers-refuse-malformed-values",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/tooling/repo_trace_formatter_spec.rb:101"
+    },
+    {
+      "requirement": "repo-trace-contains-only-slugs-statuses-locations-and-run-metadata",
+      "scenario": "writers-refuse-malformed-values",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/tooling/repo_trace_formatter_spec.rb:111"
+    },
+    {
+      "requirement": "repo-trace-contains-only-slugs-statuses-locations-and-run-metadata",
+      "scenario": "writers-omit-descriptions",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/tooling/repo_trace_formatter_spec.rb:126"
+    },
+    {
+      "requirement": "every-requirement-has-a-tagged-test",
+      "scenario": "slug-rule-turns-headings-into-slugs",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/tooling/slug_spec.rb:31"
+    },
+    {
+      "requirement": "every-requirement-has-a-tagged-test",
+      "scenario": "slug-rule-turns-headings-into-slugs",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/tooling/slug_spec.rb:53"
+    },
+    {
+      "requirement": "every-requirement-has-a-tagged-test",
+      "scenario": "slug-rule-turns-headings-into-slugs",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/tooling/slug_spec.rb:58"
+    },
+    {
+      "requirement": "every-requirement-has-a-tagged-test",
+      "scenario": "slug-rule-turns-headings-into-slugs",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/tooling/slug_spec.rb:64"
+    },
+    {
+      "requirement": "every-requirement-has-a-tagged-test",
+      "scenario": "requirement-with-no-tagged-test-fails-and-is-named",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/trace_check_spec.rb:37"
+    },
+    {
+      "requirement": "every-requirement-has-a-tagged-test",
+      "scenario": "requirement-with-no-tagged-test-fails-and-is-named",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/trace_check_spec.rb:41"
+    },
+    {
+      "requirement": "every-requirement-has-a-tagged-test",
+      "scenario": "greeting-counter-scenarios-are-tagged-one-to-one",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/trace_check_spec.rb:60"
+    },
+    {
+      "requirement": "every-requirement-has-a-tagged-test",
+      "scenario": "greeting-counter-scenarios-are-tagged-one-to-one",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/trace_check_spec.rb:69"
+    },
+    {
+      "requirement": "every-requirement-has-a-tagged-test",
+      "scenario": "greeting-counter-scenarios-are-tagged-one-to-one",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/trace_check_spec.rb:75"
+    },
+    {
+      "requirement": "every-requirement-has-a-tagged-test",
+      "scenario": "greeting-counter-scenarios-are-tagged-one-to-one",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/trace_check_spec.rb:86"
+    },
+    {
+      "requirement": "tagged-tests-must-match-a-requirement-and-scenario",
+      "scenario": "unknown-requirement-slug-fails-and-is-named",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/trace_check_spec.rb:105"
+    },
+    {
+      "requirement": "tagged-tests-must-match-a-requirement-and-scenario",
+      "scenario": "unknown-requirement-slug-fails-and-is-named",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/trace_check_spec.rb:112"
+    },
+    {
+      "requirement": "tagged-tests-must-match-a-requirement-and-scenario",
+      "scenario": "scenario-slug-is-matched-only-within-its-requirement",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/trace_check_spec.rb:123"
+    },
+    {
+      "requirement": "tagged-tests-must-match-a-requirement-and-scenario",
+      "scenario": "scenario-slug-is-matched-only-within-its-requirement",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/trace_check_spec.rb:130"
+    },
+    {
+      "requirement": "tagged-tests-must-match-a-requirement-and-scenario",
+      "scenario": "requirements-in-in-flight-changes-are-known",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/trace_check_spec.rb:140"
+    },
+    {
+      "requirement": "tagged-tests-must-match-a-requirement-and-scenario",
+      "scenario": "requirements-in-in-flight-changes-are-known",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/trace_check_spec.rb:145"
+    },
+    {
+      "requirement": "tagged-tests-must-match-a-requirement-and-scenario",
+      "scenario": "fixture-files-are-not-scanned",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/trace_check_spec.rb:155"
+    },
+    {
+      "requirement": "tagged-tests-must-match-a-requirement-and-scenario",
+      "scenario": "fixture-files-are-not-scanned",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/trace_check_spec.rb:161"
+    },
+    {
+      "requirement": "release-tag-is-validated-and-resolved-before-any-deployment",
+      "scenario": "valid-tag-resolves-to-its-commit",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/workflows/cd_workflow_spec.rb:66"
+    },
+    {
+      "requirement": "release-tag-is-validated-and-resolved-before-any-deployment",
+      "scenario": "malformed-tag-stops-the-run",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/workflows/cd_workflow_spec.rb:85"
+    },
+    {
+      "requirement": "release-tag-is-validated-and-resolved-before-any-deployment",
+      "scenario": "hostile-tag-text-is-not-echoed",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/workflows/cd_workflow_spec.rb:101"
+    },
+    {
+      "requirement": "workflow-token-permissions-are-explicit",
+      "scenario": "default-none-every-job-declares",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/workflows/cd_workflow_spec.rb:115"
+    },
+    {
+      "requirement": "dev-deployment-is-gated-by-the-acceptance-suite",
+      "scenario": "gate-runs-after-a-successful-dev-deployment",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/workflows/cd_workflow_spec.rb:126"
+    },
+    {
+      "requirement": "dev-deployment-is-gated-by-the-acceptance-suite",
+      "scenario": "gate-target-is-not-supplied-by-the-pipeline",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/workflows/cd_workflow_spec.rb:143"
+    },
+    {
+      "requirement": "a-failed-gate-stops-promotion-to-prod",
+      "scenario": "gate-failure-blocks-prod",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/workflows/cd_workflow_spec.rb:163"
+    },
+    {
+      "requirement": "a-failed-gate-stops-promotion-to-prod",
+      "scenario": "gate-success-allows-prod-approval",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/workflows/cd_workflow_spec.rb:176"
+    },
+    {
+      "requirement": "a-failed-gate-restores-dev-to-the-last-recorded-release",
+      "scenario": "dev-is-restored-after-a-gate-failure",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/workflows/cd_workflow_spec.rb:190"
+    },
+    {
+      "requirement": "a-failed-gate-restores-dev-to-the-last-recorded-release",
+      "scenario": "restored-run-is-still-marked-failed",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/workflows/cd_workflow_spec.rb:211"
+    },
+    {
+      "requirement": "a-failed-gate-restores-dev-to-the-last-recorded-release",
+      "scenario": "restore-does-not-run-for-other-outcomes",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/workflows/cd_workflow_spec.rb:222"
+    },
+    {
+      "requirement": "a-failed-gate-restores-dev-to-the-last-recorded-release",
+      "scenario": "corrupt-artifact-is-not-deployed",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/workflows/cd_workflow_spec.rb:228"
+    },
+    {
+      "requirement": "deployed-releases-are-announced-to-the-acceptance-ledgers",
+      "scenario": "stage-is-announced-after-the-gate-passes",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/workflows/cd_workflow_spec.rb:250"
+    },
+    {
+      "requirement": "deployed-releases-are-announced-to-the-acceptance-ledgers",
+      "scenario": "prod-is-announced-after-the-prod-smoke-passes",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/workflows/cd_workflow_spec.rb:263"
+    },
+    {
+      "requirement": "deployed-releases-are-announced-to-the-acceptance-ledgers",
+      "scenario": "nothing-is-announced-for-a-failed-stage-or-prod",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/workflows/cd_workflow_spec.rb:276"
+    },
+    {
+      "requirement": "announcements-hold-only-a-single-repository-app-token",
+      "scenario": "no-workflow-token-permissions",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/workflows/cd_workflow_spec.rb:300"
+    },
+    {
+      "requirement": "announcements-hold-only-a-single-repository-app-token",
+      "scenario": "token-is-scoped-to-one-repository",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/workflows/cd_workflow_spec.rb:309"
+    },
+    {
+      "requirement": "announcements-hold-only-a-single-repository-app-token",
+      "scenario": "token-permissions-are-narrowed",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/workflows/cd_workflow_spec.rb:327"
+    },
+    {
+      "requirement": "announcements-hold-only-a-single-repository-app-token",
+      "scenario": "event-values-are-not-interpolated-into-scripts",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/workflows/cd_workflow_spec.rb:337"
+    },
+    {
+      "requirement": "the-acceptance-suite-pin-is-consistent",
+      "scenario": "lint-runs-the-check",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/workflows/cd_workflow_spec.rb:363"
+    },
+    {
+      "requirement": "ci-publishes-the-trace-on-main-and-weekly",
+      "scenario": "functional-job-writes-and-merges-both-traces",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/workflows/ci_workflow_spec.rb:101"
+    },
+    {
+      "requirement": "ci-publishes-the-trace-on-main-and-weekly",
+      "scenario": "functional-job-writes-and-merges-both-traces",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/workflows/ci_workflow_spec.rb:108"
+    },
+    {
+      "requirement": "ci-publishes-the-trace-on-main-and-weekly",
+      "scenario": "functional-job-writes-and-merges-both-traces",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/workflows/ci_workflow_spec.rb:112"
+    },
+    {
+      "requirement": "ci-publishes-the-trace-on-main-and-weekly",
+      "scenario": "functional-job-writes-and-merges-both-traces",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/workflows/ci_workflow_spec.rb:122"
+    },
+    {
+      "requirement": "ci-publishes-the-trace-on-main-and-weekly",
+      "scenario": "trace-is-uploaded-only-on-main-and-weekly",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/workflows/ci_workflow_spec.rb:139"
+    },
+    {
+      "requirement": "ci-publishes-the-trace-on-main-and-weekly",
+      "scenario": "trace-is-uploaded-only-on-main-and-weekly",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/workflows/ci_workflow_spec.rb:143"
+    },
+    {
+      "requirement": "ci-publishes-the-trace-on-main-and-weekly",
+      "scenario": "trace-is-uploaded-only-on-main-and-weekly",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/workflows/ci_workflow_spec.rb:148"
+    },
+    {
+      "requirement": "ci-publishes-the-trace-on-main-and-weekly",
+      "scenario": "notify-docs-dispatches-docs-refresh",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/workflows/ci_workflow_spec.rb:165"
+    },
+    {
+      "requirement": "ci-publishes-the-trace-on-main-and-weekly",
+      "scenario": "notify-docs-dispatches-docs-refresh",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/workflows/ci_workflow_spec.rb:171"
+    },
+    {
+      "requirement": "ci-publishes-the-trace-on-main-and-weekly",
+      "scenario": "notify-docs-dispatches-docs-refresh",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/workflows/ci_workflow_spec.rb:177"
+    },
+    {
+      "requirement": "ci-publishes-the-trace-on-main-and-weekly",
+      "scenario": "workflow-credentials-are-least-privilege",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/workflows/ci_workflow_spec.rb:197"
+    },
+    {
+      "requirement": "ci-publishes-the-trace-on-main-and-weekly",
+      "scenario": "workflow-credentials-are-least-privilege",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/workflows/ci_workflow_spec.rb:201"
+    },
+    {
+      "requirement": "ci-publishes-the-trace-on-main-and-weekly",
+      "scenario": "workflow-credentials-are-least-privilege",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/workflows/ci_workflow_spec.rb:208"
+    },
+    {
+      "requirement": "ci-publishes-the-trace-on-main-and-weekly",
+      "scenario": "workflow-credentials-are-least-privilege",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/workflows/ci_workflow_spec.rb:214"
+    },
+    {
+      "requirement": "ci-publishes-the-trace-on-main-and-weekly",
+      "scenario": "workflow-credentials-are-least-privilege",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/workflows/ci_workflow_spec.rb:223"
+    },
+    {
+      "requirement": "ci-publishes-the-trace-on-main-and-weekly",
+      "scenario": "workflow-credentials-are-least-privilege",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/workflows/ci_workflow_spec.rb:227"
+    },
+    {
+      "requirement": "ci-publishes-the-trace-on-main-and-weekly",
+      "scenario": "runs-on-main-and-weekly-runs-always-finish",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/workflows/ci_workflow_spec.rb:239"
+    },
+    {
+      "requirement": "ci-publishes-the-trace-on-main-and-weekly",
+      "scenario": "scheduled-run-creates-no-release-or-deployment",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/workflows/ci_workflow_spec.rb:248"
+    },
+    {
+      "requirement": "ci-publishes-the-trace-on-main-and-weekly",
+      "scenario": "scheduled-run-creates-no-release-or-deployment",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/workflows/ci_workflow_spec.rb:254"
+    },
+    {
+      "requirement": "ci-publishes-the-trace-on-main-and-weekly",
+      "scenario": "scheduled-run-creates-no-release-or-deployment",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/workflows/ci_workflow_spec.rb:259"
+    },
+    {
+      "requirement": "ci-publishes-the-trace-on-main-and-weekly",
+      "scenario": "scheduled-run-creates-no-release-or-deployment",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/workflows/ci_workflow_spec.rb:264"
+    },
+    {
+      "requirement": "ci-publishes-the-trace-on-main-and-weekly",
+      "scenario": "the-old-traceability-report-is-gone",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/workflows/ci_workflow_spec.rb:275"
+    },
+    {
+      "requirement": "breaking-changes-to-openapi-yaml-fail-pull-requests",
+      "scenario": "the-comparison-is-configured-as-specified",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/workflows/ci_workflow_spec.rb:289"
+    },
+    {
+      "requirement": "breaking-changes-to-openapi-yaml-fail-pull-requests",
+      "scenario": "the-comparison-is-configured-as-specified",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/workflows/ci_workflow_spec.rb:294"
+    },
+    {
+      "requirement": "breaking-changes-to-openapi-yaml-fail-pull-requests",
+      "scenario": "the-comparison-is-configured-as-specified",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/workflows/ci_workflow_spec.rb:299"
+    },
+    {
+      "requirement": "breaking-changes-to-openapi-yaml-fail-pull-requests",
+      "scenario": "the-comparison-is-configured-as-specified",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/workflows/ci_workflow_spec.rb:305"
+    },
+    {
+      "requirement": "breaking-changes-to-openapi-yaml-fail-pull-requests",
+      "scenario": "a-base-without-openapi-yaml-skips-the-comparison",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/workflows/ci_workflow_spec.rb:318"
+    },
+    {
+      "requirement": "breaking-changes-to-openapi-yaml-fail-pull-requests",
+      "scenario": "a-base-without-openapi-yaml-skips-the-comparison",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/workflows/ci_workflow_spec.rb:326"
+    },
+    {
+      "requirement": "releases-carry-the-description",
+      "scenario": "the-tarball-includes-openapi-yaml",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/workflows/ci_workflow_spec.rb:334"
+    },
+    {
+      "requirement": "every-response-of-the-composed-app-matches-openapi-yaml",
+      "scenario": "the-lambda-bundle-stays-free-of-the-test-gem",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/workflows/ci_workflow_spec.rb:348"
+    },
+    {
+      "requirement": "every-response-of-the-composed-app-matches-openapi-yaml",
+      "scenario": "the-lambda-bundle-stays-free-of-the-test-gem",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/workflows/ci_workflow_spec.rb:361"
+    }
+  ]
+}

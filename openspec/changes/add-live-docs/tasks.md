@@ -13,13 +13,13 @@ or lives in `spec/fixtures/`.
 
 ## 1. Red tests
 
-- [ ] 1.1 Add `.rspec` (`--require spec_helper`) and `spec/spec_helper.rb`. Copy greeter-cli's `spec/support/repo_trace_formatter.rb` and `spec/support/repo_trace/document.rb` at 7b43842, with `REPO = 'greeter-docs'` and a header comment naming the source commit. Verify that `bundle exec rspec --format RepoTraceFormatter` with `REPO_TRACE_PATH=tmp/traces/greeter-docs/repo-trace.json` runs with 0 examples and writes a v1 file with no results.
-- [ ] 1.2 Capture the fixtures into `spec/fixtures/`. Run the four `gh run download` commands and `git show 5bbea1ad31a5bb9b1bbe73ec466d16c55b2262aa:ledger.json` exactly as listed in design.md, Fixtures. Copy each sibling checkout's `openspec/specs/**` and `openspec/requirement-tags.yml` at the recorded commits, and greeter-http's `openapi.yaml` and `docs/adr/*.md` at 5b818a2. Verify that the sha256 of each trace and of the ledger matches design.md.
-- [ ] 1.3 Write the domain specs `spec/domain/slug_spec.rb` and `spec/domain/coverage_rule_spec.rb`, in-memory only, with one tagged example per `coverage-gate` domain scenario. Verify that they fail with `NameError` for `GreeterDocs::Domain::Slug` and `CoverageRule`.
-- [ ] 1.4 Write the adapter specs for `GitSpecSource` (fixture clones, a nested capability, fenced code, a greeter-docs workspace root) and `ArtifactTraceSource` (the real traces, plus wrong-schema, wrong-repo and malformed-JSON variants). Verify that they fail with `NameError`.
-- [ ] 1.5 Write the adapter specs for `RawLedgerSource` (an injected fetcher returning 200 with the fixture, 404, 500, and a wrong schema), `FileApiSource` (including the `!ruby/object` case), `FileAdrSource`, `FileDiagramSource`, `NullContractSource` and `NullSloSource`. Verify that they fail with `NameError`.
-- [ ] 1.6 Write `spec/bin/fetch_sources_spec.rb` (stubbed runner: the expected argv, no greeter-docs command, an empty run list, token redaction), `spec/support/repo_trace_formatter_spec.rb` (the v1 document for greeter-docs), and `spec/workflows/docs_workflow_spec.rb` (parses `docs.yml` for each `docs-deployment` workflow scenario). Verify that they fail with `NameError` or `Errno::ENOENT` for the missing files.
-- [ ] 1.7 Write the publisher snapshot spec `spec/adapters/erb_html_publisher_spec.rb`. It publishes the fixture model to a temp dir and asserts:
+- [x] 1.1 Add `.rspec` (`--require spec_helper`) and `spec/spec_helper.rb`. Copy greeter-cli's `spec/support/repo_trace_formatter.rb` and `spec/support/repo_trace/document.rb` at 7b43842, with `REPO = 'greeter-docs'` and a header comment naming the source commit. Verify that `bundle exec rspec --format RepoTraceFormatter` with `REPO_TRACE_PATH=tmp/traces/greeter-docs/repo-trace.json` runs with 0 examples and writes a v1 file with no results.
+- [x] 1.2 Capture the fixtures into `spec/fixtures/`. Run the four `gh run download` commands and `git show 5bbea1ad31a5bb9b1bbe73ec466d16c55b2262aa:ledger.json` exactly as listed in design.md, Fixtures. Copy each sibling checkout's `openspec/specs/**` and `openspec/requirement-tags.yml` at the recorded commits, and greeter-http's `openapi.yaml` and `docs/adr/*.md` at 5b818a2. Verify that the sha256 of each trace and of the ledger matches design.md.
+- [x] 1.3 Write the domain specs `spec/domain/slug_spec.rb` and `spec/domain/coverage_rule_spec.rb`, in-memory only, with one tagged example per `coverage-gate` domain scenario. Verify that they fail with `NameError` for `GreeterDocs::Domain::Slug` and `CoverageRule`.
+- [x] 1.4 Write the adapter specs for `GitSpecSource` (fixture clones, a nested capability, fenced code, a greeter-docs workspace root) and `ArtifactTraceSource` (the real traces, plus wrong-schema, wrong-repo and malformed-JSON variants). Verify that they fail with `NameError`.
+- [x] 1.5 Write the adapter specs for `RawLedgerSource` (an injected fetcher returning 200 with the fixture, 404, 500, and a wrong schema), `FileApiSource` (including the `!ruby/object` case), `FileAdrSource`, `FileDiagramSource`, `NullContractSource` and `NullSloSource`. Verify that they fail with `NameError`.
+- [x] 1.6 Write `spec/bin/fetch_sources_spec.rb` (stubbed runner: the expected argv, no greeter-docs command, an empty run list, token redaction), `spec/support/repo_trace_formatter_spec.rb` (the v1 document for greeter-docs), and `spec/workflows/docs_workflow_spec.rb` (parses `docs.yml` for each `docs-deployment` workflow scenario). Verify that they fail with `NameError` or `Errno::ENOENT` for the missing files.
+- [x] 1.7 Write the publisher snapshot spec `spec/adapters/erb_html_publisher_spec.rb`. It publishes the fixture model to a temp dir and asserts:
   - the greeter-core requirement rows and the run link;
   - the prod grid cells (`n/a`, `passed`, `verified`) and stage "not yet recorded";
   - the API operation's parameters, request body, responses and headers, and the byte-identical `openapi.yaml` copy with its link;
@@ -27,8 +27,8 @@ or lives in `spec/fixtures/`.
   - `<script>alert(1)</script>` escaped on every page.
 
   Verify that it fails with `NameError`.
-- [ ] 1.8 Write `spec/build_spec.rb` for the build use case: violations named with repo, capability, requirement and spec file; all violations listed; no `_site` on failure; a missing ledger passing; a pass with full coverage. Add `spec/coverage_of_self_spec.rb`, which checks that every greeter-docs `#### Scenario:` in this change has exactly one tagged example (from RSpec's example metadata). Verify that both fail. `build_spec` should fail with `NameError`. `coverage_of_self_spec` should fail with an expectation failure listing any scenario that has no example.
-- [ ] 1.9 Write the security specs for design S1–S7, S9 and S10:
+- [x] 1.8 Write `spec/build_spec.rb` for the build use case: violations named with repo, capability, requirement and spec file; all violations listed; no `_site` on failure; a missing ledger passing; a pass with full coverage. Add `spec/coverage_of_self_spec.rb`, which checks that every greeter-docs `#### Scenario:` in this change has exactly one tagged example (from RSpec's example metadata). Verify that both fail. `build_spec` should fail with `NameError`. `coverage_of_self_spec` should fail with an expectation failure listing any scenario that has no example.
+- [x] 1.9 Write the security specs for design S1–S7, S9 and S10:
   - `spec/support/log_safety_spec.rb`: values starting with `::`, values containing newlines or control characters, and a non-slug `repo` value are printed neutralised or as `(invalid value)`.
   - the `fetch_sources_spec` examples for `--event push`/`--event schedule` selection, including the fork-PR scenario.
   - `docs_workflow_spec` examples for the `permission-*` inputs, `BUNDLE_FROZEN`, and a Gemfile with a single source and no `greeter-*` gem.
@@ -70,7 +70,10 @@ or lives in `spec/fixtures/`.
 - [ ] 6.1 Write `.github/workflows/docs.yml` per design D10:
   - triggers including `pull_request`, and `concurrency: pages`;
   - top-level `permissions: {}`;
-  - `ruby-version: "3.3"` with the greeter-acceptance comment, and the RSpec step with the formatter and `REPO_TRACE_PATH`;
+  - `ruby-version: "3.3"` with the greeter-acceptance comment;
+  - the "Install lychee" step (lychee-v0.24.2, sha256 `1f4e0ef7…951c9a`, checked with `sha256sum -c`, added to `GITHUB_PATH`) and the "Lint" step (`bundle exec rubocop`), both before the RSpec step;
+  - the link check as a `run:` step, `lychee --offline --no-progress _site`, using that binary (the only lychee install; no `lycheeverse/` action);
+  - the RSpec step with the formatter and `REPO_TRACE_PATH`;
   - the `build` job, and the `deploy` job with `if: github.event_name != 'pull_request'`;
   - actions pinned by SHA.
 

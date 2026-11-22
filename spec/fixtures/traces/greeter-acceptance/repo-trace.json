@@ -1,0 +1,1066 @@
+{
+  "schema": "greeterhq.repo-trace.v1",
+  "repo": "greeter-acceptance",
+  "sha": "7a3272ceafaccdde9d8b1cddad771797b33658eb",
+  "recorded_at": "2026-11-21T10:24:03Z",
+  "run_id": "44894113504",
+  "results": [
+    {
+      "requirement": "per-job-traces-merge-into-one-trace",
+      "scenario": "merge-combines-all-traces",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/bin/repo_trace_merge_spec.rb:65"
+    },
+    {
+      "requirement": "per-job-traces-merge-into-one-trace",
+      "scenario": "merge-rejects-mismatched-inputs",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/bin/repo_trace_merge_spec.rb:81"
+    },
+    {
+      "requirement": "per-job-traces-merge-into-one-trace",
+      "scenario": "merge-rejects-mismatched-inputs",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/bin/repo_trace_merge_spec.rb:95"
+    },
+    {
+      "requirement": "per-job-traces-merge-into-one-trace",
+      "scenario": "merge-rejects-inputs-outside-the-v1-shape",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/bin/repo_trace_merge_spec.rb:130"
+    },
+    {
+      "requirement": "per-job-traces-merge-into-one-trace",
+      "scenario": "merge-rejects-a-duplicated-result",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/bin/repo_trace_merge_spec.rb:143"
+    },
+    {
+      "requirement": "a-scenario-is-gated-by-its-capability-tags",
+      "scenario": "a-capability-tagged-scenario-on-a-channel-without-the-capability",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/capability_gating_spec.rb:45"
+    },
+    {
+      "requirement": "every-capability-tag-names-a-known-capability",
+      "scenario": "an-unknown-capability-tag-halts-the-run",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/capability_gating_spec.rb:69"
+    },
+    {
+      "requirement": "ci-runs-the-driver-contract-against-real-channels",
+      "scenario": "the-rspec-job-excludes-the-driver-specs",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/ci_workflow_spec.rb:39"
+    },
+    {
+      "requirement": "ci-runs-the-driver-contract-against-real-channels",
+      "scenario": "the-http-leg-targets-stage-from-committed-configuration",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/ci_workflow_spec.rb:54"
+    },
+    {
+      "requirement": "ci-runs-the-driver-contract-against-real-channels",
+      "scenario": "the-http-leg-targets-stage-from-committed-configuration",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/ci_workflow_spec.rb:61"
+    },
+    {
+      "requirement": "ci-runs-the-driver-contract-against-real-channels",
+      "scenario": "the-cli-leg-installs-the-latest-release-with-the-record-sequence",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/ci_workflow_spec.rb:71"
+    },
+    {
+      "requirement": "ci-runs-the-driver-contract-against-real-channels",
+      "scenario": "the-cli-leg-installs-the-latest-release-with-the-record-sequence",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/ci_workflow_spec.rb:95"
+    },
+    {
+      "requirement": "ci-runs-the-driver-contract-against-real-channels",
+      "scenario": "each-leg-runs-its-driver-spec-and-writes-its-own-trace",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/ci_workflow_spec.rb:110"
+    },
+    {
+      "requirement": "ci-publishes-the-merged-trace-on-main-and-weekly",
+      "scenario": "trace-job-merges-and-uploads-on-main-and-schedule",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/ci_workflow_spec.rb:123"
+    },
+    {
+      "requirement": "ci-publishes-the-merged-trace-on-main-and-weekly",
+      "scenario": "trace-job-merges-and-uploads-on-main-and-schedule",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/ci_workflow_spec.rb:135"
+    },
+    {
+      "requirement": "ci-publishes-the-merged-trace-on-main-and-weekly",
+      "scenario": "trace-job-merges-and-uploads-on-main-and-schedule",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/ci_workflow_spec.rb:146"
+    },
+    {
+      "requirement": "ci-publishes-the-merged-trace-on-main-and-weekly",
+      "scenario": "failed-runs-and-pull-requests-publish-nothing",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/ci_workflow_spec.rb:157"
+    },
+    {
+      "requirement": "ci-publishes-the-merged-trace-on-main-and-weekly",
+      "scenario": "notify-docs-dispatches-docs-refresh",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/ci_workflow_spec.rb:168"
+    },
+    {
+      "requirement": "ci-publishes-the-merged-trace-on-main-and-weekly",
+      "scenario": "failed-runs-and-pull-requests-publish-nothing",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/ci_workflow_spec.rb:185"
+    },
+    {
+      "requirement": "ci-publishes-the-merged-trace-on-main-and-weekly",
+      "scenario": "workflow-credentials-are-least-privilege",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/ci_workflow_spec.rb:192"
+    },
+    {
+      "requirement": "ci-publishes-the-merged-trace-on-main-and-weekly",
+      "scenario": "main-and-weekly-runs-do-not-cancel-each-other",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/ci_workflow_spec.rb:204"
+    },
+    {
+      "requirement": "an-artifact-channel-is-gated-under-the-ruby-its-artifact-declares",
+      "scenario": "an-exact-ruby-is-pinned",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/cli_release_spec.rb:52"
+    },
+    {
+      "requirement": "an-artifact-channel-is-gated-under-the-ruby-its-artifact-declares",
+      "scenario": "no-ruby-is-declared",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/cli_release_spec.rb:61"
+    },
+    {
+      "requirement": "an-artifact-channel-is-gated-under-the-ruby-its-artifact-declares",
+      "scenario": "no-ruby-is-declared",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/cli_release_spec.rb:65"
+    },
+    {
+      "requirement": "an-artifact-channel-is-gated-under-the-ruby-its-artifact-declares",
+      "scenario": "no-ruby-is-declared",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/cli_release_spec.rb:69"
+    },
+    {
+      "requirement": "an-untranslatable-ruby-requirement-fails-the-gate-before-install",
+      "scenario": "a-requirement-that-cannot-be-translated",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/cli_release_spec.rb:88"
+    },
+    {
+      "requirement": "an-untranslatable-ruby-requirement-fails-the-gate-before-install",
+      "scenario": "more-than-one-ruby-line",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/cli_release_spec.rb:94"
+    },
+    {
+      "requirement": "only-a-plain-version-reaches-the-ruby-installer",
+      "scenario": "a-gemfile-line-with-control-characters",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/cli_release_spec.rb:112"
+    },
+    {
+      "requirement": "only-a-plain-version-reaches-the-ruby-installer",
+      "scenario": "a-gemfile-line-with-control-characters",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/cli_release_spec.rb:119"
+    },
+    {
+      "requirement": "only-a-plain-version-reaches-the-ruby-installer",
+      "scenario": "a-gemfile-line-with-control-characters",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/cli_release_spec.rb:124"
+    },
+    {
+      "requirement": "an-unreadable-gemfile-fails-the-gate-before-install",
+      "scenario": "the-gemfile-is-a-link-or-a-special-file",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/cli_release_spec.rb:135"
+    },
+    {
+      "requirement": "an-unreadable-gemfile-fails-the-gate-before-install",
+      "scenario": "the-gemfile-is-a-link-or-a-special-file",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/cli_release_spec.rb:142"
+    },
+    {
+      "requirement": "an-unreadable-gemfile-fails-the-gate-before-install",
+      "scenario": "the-gemfile-is-a-link-or-a-special-file",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/cli_release_spec.rb:158"
+    },
+    {
+      "requirement": "an-unreadable-gemfile-fails-the-gate-before-install",
+      "scenario": "the-gemfile-is-a-link-or-a-special-file",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/cli_release_spec.rb:165"
+    },
+    {
+      "requirement": "an-unreadable-gemfile-fails-the-gate-before-install",
+      "scenario": "the-gemfile-is-a-link-or-a-special-file",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/cli_release_spec.rb:172"
+    },
+    {
+      "requirement": "an-artifact-channel-s-candidate-is-installed-exactly-as-locked",
+      "scenario": "a-candidate-without-a-lockfile",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/cli_release_spec.rb:247"
+    },
+    {
+      "requirement": "a-record-run-installs-an-artifact-channel-s-release-exactly-as-locked",
+      "scenario": "a-release-whose-lockfile-is-missing-or-out-of-date",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/cli_release_spec.rb:253"
+    },
+    {
+      "requirement": "a-driver-declares-its-capabilities-honestly",
+      "scenario": "the-capability-query-agrees-with-the-declared-set",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/drivers/cli_driver_spec.rb:13"
+    },
+    {
+      "requirement": "a-driver-reports-an-unobservable-count-neutrally",
+      "scenario": "count-query-on-a-channel-without-counting",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/drivers/cli_driver_spec.rb:13"
+    },
+    {
+      "requirement": "a-driver-reports-the-build-information-of-its-channel",
+      "scenario": "a-channel-that-reports-its-versions",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/drivers/cli_driver_spec.rb:13"
+    },
+    {
+      "requirement": "a-driver-reports-the-build-information-of-its-channel",
+      "scenario": "reporting-leaves-the-channel-unchanged",
+      "status": "skipped",
+      "source": "rspec",
+      "location": "spec/drivers/cli_driver_spec.rb:13"
+    },
+    {
+      "requirement": "a-driver-translates-its-channel-idiom-to-neutral-outcomes",
+      "scenario": "a-successful-greeting-maps-to-the-neutral-greeted-outcome",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/drivers/cli_driver_spec.rb:13"
+    },
+    {
+      "requirement": "a-driver-translates-its-channel-idiom-to-neutral-outcomes",
+      "scenario": "an-invalid-name-maps-to-the-neutral-invalid-name-error",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/drivers/cli_driver_spec.rb:13"
+    },
+    {
+      "requirement": "every-driver-exposes-the-greeterdriver-port-surface",
+      "scenario": "a-driver-answers-the-port-surface",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/drivers/cli_driver_spec.rb:13"
+    },
+    {
+      "requirement": "a-driver-translates-its-channel-idiom-to-neutral-outcomes",
+      "scenario": "a-failing-channel-maps-to-the-neutral-infrastructure-error",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/drivers/cli_driver_spec.rb:22"
+    },
+    {
+      "requirement": "a-driver-declares-its-capabilities-honestly",
+      "scenario": "the-capability-query-agrees-with-the-declared-set",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/drivers/http_driver_spec.rb:12"
+    },
+    {
+      "requirement": "a-driver-reports-an-unobservable-count-neutrally",
+      "scenario": "count-query-on-a-channel-without-counting",
+      "status": "skipped",
+      "source": "rspec",
+      "location": "spec/drivers/http_driver_spec.rb:12"
+    },
+    {
+      "requirement": "a-driver-reports-the-build-information-of-its-channel",
+      "scenario": "a-channel-that-reports-its-versions",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/drivers/http_driver_spec.rb:12"
+    },
+    {
+      "requirement": "a-driver-reports-the-build-information-of-its-channel",
+      "scenario": "reporting-leaves-the-channel-unchanged",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/drivers/http_driver_spec.rb:12"
+    },
+    {
+      "requirement": "a-driver-translates-its-channel-idiom-to-neutral-outcomes",
+      "scenario": "a-successful-greeting-maps-to-the-neutral-greeted-outcome",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/drivers/http_driver_spec.rb:12"
+    },
+    {
+      "requirement": "a-driver-translates-its-channel-idiom-to-neutral-outcomes",
+      "scenario": "an-invalid-name-maps-to-the-neutral-invalid-name-error",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/drivers/http_driver_spec.rb:12"
+    },
+    {
+      "requirement": "every-driver-exposes-the-greeterdriver-port-surface",
+      "scenario": "a-driver-answers-the-port-surface",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/drivers/http_driver_spec.rb:12"
+    },
+    {
+      "requirement": "a-driver-translates-its-channel-idiom-to-neutral-outcomes",
+      "scenario": "a-failing-channel-maps-to-the-neutral-infrastructure-error",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/drivers/http_driver_spec.rb:21"
+    },
+    {
+      "requirement": "targets-are-read-from-committed-configuration",
+      "scenario": "an-environment-resolves-to-its-configured-target",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/environments_spec.rb:11"
+    },
+    {
+      "requirement": "targets-are-read-from-committed-configuration",
+      "scenario": "a-supplied-target-address-is-refused",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/environments_spec.rb:23"
+    },
+    {
+      "requirement": "a-target-host-must-match-its-environment-s-allowed-pattern",
+      "scenario": "a-host-that-does-not-match-the-pattern",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/environments_spec.rb:29"
+    },
+    {
+      "requirement": "unknown-environments-and-channels-are-refused",
+      "scenario": "an-unknown-environment",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/environments_spec.rb:39"
+    },
+    {
+      "requirement": "unknown-environments-and-channels-are-refused",
+      "scenario": "a-channel-with-no-target-in-the-environment",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/environments_spec.rb:45"
+    },
+    {
+      "requirement": "each-environment-publishes-to-its-own-ledger-branch",
+      "scenario": "a-production-result",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/environments_spec.rb:54"
+    },
+    {
+      "requirement": "a-target-host-must-match-its-environment-s-allowed-pattern",
+      "scenario": "a-host-that-matches-the-pattern",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/environments_spec.rb:83"
+    },
+    {
+      "requirement": "a-channel-released-event-is-validated-before-use",
+      "scenario": "a-valid-event",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/event_validation_spec.rb:16"
+    },
+    {
+      "requirement": "a-channel-released-event-is-validated-before-use",
+      "scenario": "a-valid-event",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/event_validation_spec.rb:20"
+    },
+    {
+      "requirement": "a-channel-released-event-is-validated-before-use",
+      "scenario": "a-valid-event",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/event_validation_spec.rb:24"
+    },
+    {
+      "requirement": "a-channel-released-event-is-validated-before-use",
+      "scenario": "a-malformed-event",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/event_validation_spec.rb:31"
+    },
+    {
+      "requirement": "a-channel-released-event-is-validated-before-use",
+      "scenario": "a-malformed-event",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/event_validation_spec.rb:35"
+    },
+    {
+      "requirement": "a-channel-released-event-is-validated-before-use",
+      "scenario": "a-malformed-event",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/event_validation_spec.rb:43"
+    },
+    {
+      "requirement": "a-channel-released-event-is-validated-before-use",
+      "scenario": "a-malformed-event",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/event_validation_spec.rb:52"
+    },
+    {
+      "requirement": "a-channel-released-event-is-validated-before-use",
+      "scenario": "a-malformed-event",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/event_validation_spec.rb:61"
+    },
+    {
+      "requirement": "the-gate-fails-only-on-failed-or-error-results",
+      "scenario": "a-failed-or-errored-scenario",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/gate_verdict_spec.rb:18"
+    },
+    {
+      "requirement": "the-gate-fails-only-on-failed-or-error-results",
+      "scenario": "a-failed-or-errored-scenario",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/gate_verdict_spec.rb:26"
+    },
+    {
+      "requirement": "the-gate-fails-only-on-failed-or-error-results",
+      "scenario": "only-not-applicable-scenarios-were-skipped",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/gate_verdict_spec.rb:36"
+    },
+    {
+      "requirement": "the-gate-verifies-the-version-it-tested",
+      "scenario": "the-observed-version-differs-from-the-candidate",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/gate_verdict_spec.rb:48"
+    },
+    {
+      "requirement": "the-gate-verifies-the-version-it-tested",
+      "scenario": "the-version-cannot-be-observed",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/gate_verdict_spec.rb:67"
+    },
+    {
+      "requirement": "the-gate-verifies-the-version-it-tested",
+      "scenario": "an-unverified-run-is-explicitly-allowed",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/gate_verdict_spec.rb:72"
+    },
+    {
+      "requirement": "the-gate-verifies-the-version-it-tested",
+      "scenario": "the-observed-version-matches-the-candidate",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/gate_verdict_spec.rb:81"
+    },
+    {
+      "requirement": "the-gate-runs-the-caller-s-pinned-suite-version",
+      "scenario": "no-reference-supplied",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/gate_verdict_spec.rb:89"
+    },
+    {
+      "requirement": "publishing-treats-the-channel-s-result-as-untrusted-data",
+      "scenario": "text-containing-markup",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/ledger_renderer_spec.rb:68"
+    },
+    {
+      "requirement": "the-suite-derives-a-cross-channel-ledger",
+      "scenario": "merging-two-channel-runs-into-the-ledger",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/ledger_spec.rb:37"
+    },
+    {
+      "requirement": "a-ledger-cell-is-missing-when-no-row-exists",
+      "scenario": "a-requirement-with-no-row",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/ledger_spec.rb:47"
+    },
+    {
+      "requirement": "the-suite-derives-a-cross-channel-ledger",
+      "scenario": "a-known-channel-with-no-result",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/ledger_spec.rb:55"
+    },
+    {
+      "requirement": "a-ledger-column-is-current-stale-or-missing",
+      "scenario": "a-result-for-the-deployed-version-and-current-suite",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/ledger_spec.rb:64"
+    },
+    {
+      "requirement": "a-ledger-column-is-current-stale-or-missing",
+      "scenario": "a-known-channel-with-no-result",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/ledger_spec.rb:77"
+    },
+    {
+      "requirement": "a-ledger-column-is-current-stale-or-missing",
+      "scenario": "a-result-from-an-older-suite-version",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/ledger_spec.rb:82"
+    },
+    {
+      "requirement": "a-ledger-column-is-current-stale-or-missing",
+      "scenario": "a-newer-version-is-deployed-than-the-result-covers",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/ledger_spec.rb:91"
+    },
+    {
+      "requirement": "ledger-generation-is-deterministic",
+      "scenario": "regenerating-from-the-same-inputs",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/ledger_spec.rb:109"
+    },
+    {
+      "requirement": "ledger-generation-is-deterministic",
+      "scenario": "input-order-does-not-matter",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/ledger_spec.rb:117"
+    },
+    {
+      "requirement": "an-older-channel-version-does-not-overwrite-a-newer-result",
+      "scenario": "an-older-version-arrives-late",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/publisher_guards_spec.rb:11"
+    },
+    {
+      "requirement": "an-older-channel-version-does-not-overwrite-a-newer-result",
+      "scenario": "the-same-or-a-newer-version",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/publisher_guards_spec.rb:26"
+    },
+    {
+      "requirement": "a-forced-publication-is-marked",
+      "scenario": "a-rollback-is-forced",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/publisher_guards_spec.rb:50"
+    },
+    {
+      "requirement": "publishing-treats-the-channel-s-result-as-untrusted-data",
+      "scenario": "unexpected-fields",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/publisher_guards_spec.rb:88"
+    },
+    {
+      "requirement": "publishing-treats-the-channel-s-result-as-untrusted-data",
+      "scenario": "a-result-for-a-different-channel",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/publisher_guards_spec.rb:102"
+    },
+    {
+      "requirement": "publishing-treats-the-channel-s-result-as-untrusted-data",
+      "scenario": "text-containing-markup",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/publisher_guards_spec.rb:113"
+    },
+    {
+      "requirement": "a-ledger-branch-holds-source-records-and-generated-views",
+      "scenario": "the-contents-of-a-ledger-branch",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/publisher_spec.rb:11"
+    },
+    {
+      "requirement": "a-ledger-branch-holds-source-records-and-generated-views",
+      "scenario": "generated-views-match-the-records",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/publisher_spec.rb:45"
+    },
+    {
+      "requirement": "publishing-regenerates-the-generated-views-from-the-records",
+      "scenario": "nothing-would-change",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/publisher_spec.rb:55"
+    },
+    {
+      "requirement": "a-scenario-hit-by-an-infrastructure-error-is-recorded-as-error",
+      "scenario": "an-error-replaces-an-earlier-pass",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/publisher_spec.rb:66"
+    },
+    {
+      "requirement": "the-deployed-record-is-updated-regardless-of-test-outcome",
+      "scenario": "tests-fail",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/publisher_spec.rb:76"
+    },
+    {
+      "requirement": "publishing-regenerates-the-generated-views-from-the-records",
+      "scenario": "the-branch-moved-on-during-publishing",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/publisher_spec.rb:98"
+    },
+    {
+      "requirement": "publishing-regenerates-the-generated-views-from-the-records",
+      "scenario": "two-channels-publish-at-the-same-time",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/publisher_spec.rb:114"
+    },
+    {
+      "requirement": "record-mode-notifies-docs-after-publishing",
+      "scenario": "notify-docs-follows-a-successful-publish-once-per-environment",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/record_workflow_spec.rb:28"
+    },
+    {
+      "requirement": "record-mode-notifies-docs-after-publishing",
+      "scenario": "notify-docs-uses-its-own-token",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/record_workflow_spec.rb:46"
+    },
+    {
+      "requirement": "record-mode-notifies-docs-after-publishing",
+      "scenario": "the-publish-job-is-unchanged",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/record_workflow_spec.rb:61"
+    },
+    {
+      "requirement": "record-mode-notifies-docs-after-publishing",
+      "scenario": "the-environments-output-lists-each-environment-once",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/record_workflow_spec.rb:78"
+    },
+    {
+      "requirement": "repo-trace-contains-only-slugs-statuses-locations-and-run-metadata",
+      "scenario": "formatter-writes-the-v1-document",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/repo_trace_formatter_spec.rb:62"
+    },
+    {
+      "requirement": "repo-trace-contains-only-slugs-statuses-locations-and-run-metadata",
+      "scenario": "formatter-writes-the-v1-document",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/repo_trace_formatter_spec.rb:81"
+    },
+    {
+      "requirement": "repo-trace-contains-only-slugs-statuses-locations-and-run-metadata",
+      "scenario": "formatter-tells-skipped-from-pending",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/repo_trace_formatter_spec.rb:89"
+    },
+    {
+      "requirement": "repo-trace-contains-only-slugs-statuses-locations-and-run-metadata",
+      "scenario": "formatter-refuses-malformed-values",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/repo_trace_formatter_spec.rb:98"
+    },
+    {
+      "requirement": "repo-trace-contains-only-slugs-statuses-locations-and-run-metadata",
+      "scenario": "formatter-refuses-malformed-values",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/repo_trace_formatter_spec.rb:108"
+    },
+    {
+      "requirement": "repo-trace-contains-only-slugs-statuses-locations-and-run-metadata",
+      "scenario": "formatter-omits-descriptions",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/repo_trace_formatter_spec.rb:120"
+    },
+    {
+      "requirement": "repo-trace-contains-only-slugs-statuses-locations-and-run-metadata",
+      "scenario": "formatter-leaves-the-per-channel-run-file-alone",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/repo_trace_formatter_spec.rb:132"
+    },
+    {
+      "requirement": "shared-example-results-are-located-at-their-inclusion",
+      "scenario": "two-inclusions-of-one-shared-example-do-not-collide",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/repo_trace_formatter_spec.rb:145"
+    },
+    {
+      "requirement": "record-mode-runs-on-a-channel-release-a-new-suite-version-or-a-manual-request",
+      "scenario": "a-channel-is-released",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/resolver_spec.rb:20"
+    },
+    {
+      "requirement": "record-mode-runs-on-a-channel-release-a-new-suite-version-or-a-manual-request",
+      "scenario": "a-new-suite-version-is-published",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/resolver_spec.rb:42"
+    },
+    {
+      "requirement": "a-new-suite-version-publishes-a-complete-ledger",
+      "scenario": "the-re-run-completes",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/resolver_spec.rb:51"
+    },
+    {
+      "requirement": "record-mode-runs-on-a-channel-release-a-new-suite-version-or-a-manual-request",
+      "scenario": "a-manual-request",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/resolver_spec.rb:61"
+    },
+    {
+      "requirement": "record-mode-runs-on-a-channel-release-a-new-suite-version-or-a-manual-request",
+      "scenario": "a-manual-request-to-re-run-every-channel",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/resolver_spec.rb:68"
+    },
+    {
+      "requirement": "record-mode-uses-the-latest-published-suite-version",
+      "scenario": "unreleased-changes-exist-on-the-default-branch",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/resolver_spec.rb:78"
+    },
+    {
+      "requirement": "a-scenario-hit-by-an-infrastructure-error-is-recorded-as-error",
+      "scenario": "a-failed-assertion-is-not-an-error",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/run_record_spec.rb:28"
+    },
+    {
+      "requirement": "a-scenario-hit-by-an-infrastructure-error-is-recorded-as-error",
+      "scenario": "a-channel-failure-during-a-scenario",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/run_record_spec.rb:34"
+    },
+    {
+      "requirement": "each-run-writes-neutral-per-channel-traceability-rows",
+      "scenario": "a-run-records-one-status-per-scenario",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/run_record_spec.rb:46"
+    },
+    {
+      "requirement": "each-run-writes-neutral-per-channel-traceability-rows",
+      "scenario": "a-not-applicable-row-names-its-missing-capabilities",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/run_record_spec.rb:56"
+    },
+    {
+      "requirement": "a-run-is-attributed-to-one-verified-channel-version",
+      "scenario": "no-version-is-observed",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/run_record_spec.rb:76"
+    },
+    {
+      "requirement": "a-run-is-attributed-to-one-verified-channel-version",
+      "scenario": "observed-version-matches-the-expectation",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/run_record_spec.rb:87"
+    },
+    {
+      "requirement": "a-run-is-attributed-to-one-verified-channel-version",
+      "scenario": "observed-version-differs-from-the-expectation",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/run_record_spec.rb:107"
+    },
+    {
+      "requirement": "a-run-is-attributed-to-one-verified-channel-version",
+      "scenario": "the-version-changes-during-a-run",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/run_record_spec.rb:115"
+    },
+    {
+      "requirement": "each-run-writes-neutral-per-channel-traceability-rows",
+      "scenario": "a-run-records-its-context",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/run_record_spec.rb:132"
+    },
+    {
+      "requirement": "a-channel-record-carries-its-provenance",
+      "scenario": "a-recorded-result",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/run_record_spec.rb:140"
+    },
+    {
+      "requirement": "a-channel-record-carries-its-provenance",
+      "scenario": "an-artifact-channel-s-release-time",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/run_record_spec.rb:148"
+    },
+    {
+      "requirement": "every-requirement-has-a-verifying-test",
+      "scenario": "slug-rule-turns-headings-into-slugs",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/slug_spec.rb:24"
+    },
+    {
+      "requirement": "every-requirement-has-a-verifying-test",
+      "scenario": "slug-rule-turns-headings-into-slugs",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/slug_spec.rb:274"
+    },
+    {
+      "requirement": "every-requirement-has-a-verifying-test",
+      "scenario": "tooling-requirement-with-no-tagged-example-fails-and-is-named",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/trace_check_spec.rb:21"
+    },
+    {
+      "requirement": "every-requirement-has-a-verifying-test",
+      "scenario": "tooling-requirement-with-no-tagged-example-fails-and-is-named",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/trace_check_spec.rb:31"
+    },
+    {
+      "requirement": "every-requirement-has-a-verifying-test",
+      "scenario": "greeting-requirement-with-no-mapped-cucumber-tag-fails-and-is-named",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/trace_check_spec.rb:41"
+    },
+    {
+      "requirement": "every-requirement-has-a-verifying-test",
+      "scenario": "greeting-requirement-with-no-mapped-cucumber-tag-fails-and-is-named",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/trace_check_spec.rb:52"
+    },
+    {
+      "requirement": "tagged-tests-must-match-a-requirement",
+      "scenario": "unknown-requirement-slug-fails-and-is-named",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/trace_check_spec.rb:63"
+    },
+    {
+      "requirement": "tagged-tests-must-match-a-requirement",
+      "scenario": "scenario-slug-is-matched-only-within-its-requirement",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/trace_check_spec.rb:74"
+    },
+    {
+      "requirement": "tagged-tests-must-match-a-requirement",
+      "scenario": "requirements-in-in-flight-changes-are-known",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/trace_check_spec.rb:89"
+    },
+    {
+      "requirement": "tagged-tests-must-match-a-requirement",
+      "scenario": "requirements-in-in-flight-changes-are-known",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/trace_check_spec.rb:104"
+    },
+    {
+      "requirement": "tagged-tests-must-match-a-requirement",
+      "scenario": "a-cucumber-requirement-tag-outside-the-map-fails-and-is-named",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/trace_check_spec.rb:115"
+    },
+    {
+      "requirement": "the-requirement-tag-map-covers-the-greeting-headings",
+      "scenario": "a-key-that-is-not-a-heading-slug-fails-and-is-named",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/trace_check_spec.rb:127"
+    },
+    {
+      "requirement": "the-requirement-tag-map-covers-the-greeting-headings",
+      "scenario": "every-greeting-heading-maps-to-a-tag-that-exists",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/trace_check_spec.rb:137"
+    },
+    {
+      "requirement": "every-requirement-has-a-verifying-test",
+      "scenario": "tooling-requirement-with-no-tagged-example-fails-and-is-named",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/trace_check_spec.rb:159"
+    },
+    {
+      "requirement": "the-requirement-tag-map-covers-the-greeting-headings",
+      "scenario": "every-greeting-heading-maps-to-a-tag-that-exists",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/trace_check_spec.rb:165"
+    },
+    {
+      "requirement": "no-credential-is-reachable-after-candidate-code-has-run-in-the-gate",
+      "scenario": "steps-after-the-candidate-s-install",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/workflow_token_order_spec.rb:56"
+    },
+    {
+      "requirement": "no-credential-is-reachable-after-candidate-code-has-run-in-a-record-run",
+      "scenario": "looking-up-a-release-s-publish-time",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/workflow_token_order_spec.rb:74"
+    },
+    {
+      "requirement": "no-credential-is-reachable-after-candidate-code-has-run-in-a-record-run",
+      "scenario": "looking-up-a-release-s-publish-time",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/workflow_token_order_spec.rb:83"
+    },
+    {
+      "requirement": "the-gate-is-a-read-only-reusable-workflow",
+      "scenario": "a-release-workflow-calls-the-gate",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/workflows/gate_workflow_spec.rb:22"
+    },
+    {
+      "requirement": "the-gate-is-a-read-only-reusable-workflow",
+      "scenario": "a-gate-run-leaves-the-ledgers-unchanged",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/workflows/gate_workflow_spec.rb:30"
+    },
+    {
+      "requirement": "an-artifact-channel-is-gated-on-its-built-artifact",
+      "scenario": "the-gate-receives-the-built-artifact",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/workflows/gate_workflow_spec.rb:40"
+    },
+    {
+      "requirement": "an-artifact-channel-is-gated-on-its-built-artifact",
+      "scenario": "the-gate-fails",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/workflows/gate_workflow_spec.rb:53"
+    },
+    {
+      "requirement": "a-service-channel-is-gated-at-its-stage-environment",
+      "scenario": "the-gate-targets-the-stage-environment",
+      "status": "passed",
+      "source": "rspec",
+      "location": "spec/workflows/gate_workflow_spec.rb:65"
+    }
+  ]
+}
