@@ -1,0 +1,6 @@
+<h1><%= h(title) %></h1>
+<%- if state == :not_yet_available -%>
+<p><%= h(subject) %>: not yet available.</p>
+<%- else -%>
+<p><%= h(subject) %>: <%= h(state) %></p>
+<%- end -%>

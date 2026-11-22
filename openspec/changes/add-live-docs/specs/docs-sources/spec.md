@@ -46,6 +46,28 @@ the file and the reason. A missing trace file is not an error.
 - **WHEN** a trace file is not valid JSON
 - **THEN** the build exits non-zero with a message naming the file
 
+### Requirement: A prod smoke trace supplements a repo's CI trace
+The build SHALL also read `tmp/traces/<repo>/prod-smoke/repo-trace.json` when it
+exists, validated like the CI trace: schema `greeterhq.repo-trace.v1` and `repo`
+equal to `<repo>`. Its results SHALL count for coverage alongside the CI
+trace's. A missing prod smoke trace is not an error.
+
+#### Scenario: A passed prod smoke result covers a requirement CI only skipped
+- **WHEN** greeter-http's CI trace has `deployed-stage-exposes-version-headers` only `skipped`, its prod smoke trace has it `passed`, and every other requirement is covered
+- **THEN** the coverage rule returns no violation for it and the build exits zero
+
+#### Scenario: Without a prod smoke trace the requirement stays uncovered
+- **WHEN** greeter-http has no `tmp/traces/greeter-http/prod-smoke/repo-trace.json` and its CI trace has `deployed-stage-exposes-version-headers` only `skipped`
+- **THEN** the build exits non-zero and names `greeter-http`, `version-headers`, `deployed-stage-exposes-version-headers` and `openspec/specs/version-headers/spec.md`, as it does with no prod smoke source
+
+#### Scenario: An invalid prod smoke trace fails the build and is named
+- **WHEN** `tmp/traces/greeter-http/prod-smoke/repo-trace.json` has `schema` `greeterhq.traceability.v1`, or `repo` `greeter-cli`
+- **THEN** the build exits non-zero with a message containing `tmp/traces/greeter-http/prod-smoke/repo-trace.json` and the field (`schema` or `repo`)
+
+#### Scenario: A failed or skipped prod smoke result does not cover
+- **WHEN** the prod smoke trace's only results for `deployed-stage-exposes-version-headers` have statuses `failed` or `skipped`, and the CI trace has it only `skipped`
+- **THEN** the coverage rule returns a violation for it
+
 ### Requirement: Ledgers are read for prod and stage
 The build SHALL fetch `ledger.json` for `prod` and `stage` from
 `https://raw.githubusercontent.com/greeterhq/greeter-acceptance/ledger-<env>/ledger.json`.

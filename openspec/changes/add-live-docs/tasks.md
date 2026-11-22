@@ -37,6 +37,15 @@ or lives in `spec/fixtures/`.
 
   Tag the examples that verify a spec scenario. Verify that they fail with `NameError` or expectation failures.
 - [x] 1.10 Remove `tmp/allow-test-edits` and commit the red tests. Verify that `git status` shows no changes under `spec/`.
+- [ ] 1.11 (D12) Blocked until greeter-http's `smoke-prod.yml` has run successfully on `main` and the run ID is given. Capture `spec/fixtures/traces/greeter-http/prod-smoke/repo-trace.json` with `gh run download -R greeterhq/greeter-http <run-id> -n repo-trace-smoke-prod`, and record the run ID, sha, result count, sha256 and download date in design.md, Fixtures. Replace `<smoke-run-id>` in the `docs-site` spec with the real run ID. Verify that the file has schema `greeterhq.repo-trace.v1`, repo `greeter-http`, and a `passed` result for `deployed-stage-exposes-version-headers` / `smoke-check-on-a-deployed-stage`.
+- [ ] 1.12 (D12) With the test guard open, write the red tests for the prod smoke scenarios, one tagged example each:
+  - `coverage_rule_spec`: a passed `deployed_traces` result covers a requirement; a failed or skipped one does not.
+  - `artifact_trace_source_spec`: `subdir: 'prod-smoke'` reads the 1.11 fixture; wrong-schema and wrong-repo variants are named with the `prod-smoke/` path.
+  - `fetch_sources_spec`: the `smoke-prod.yml` list, artifact lookup and download commands; a missing or expired artifact; no successful run. The two existing examples that assume every `gh run list` is a `ci.yml` lookup must change: "fetch issues the expected commands" (exact call list) and the fork-PR example (every list has `--event`). That is an edit to existing specs, so raise it for approval first.
+  - `build_spec`: the fixture workspace plus the prod smoke fixture exits zero; without it, the existing uncovered example still names the requirement.
+  - `erb_html_publisher_spec`: a prod-smoke-only pass shows `passed`, the prod smoke label, and the `smoke-prod.yml` run link.
+
+  Verify that the new examples fail with `NameError`, `ArgumentError` (unknown keyword) or expectation failures, and that `coverage_of_self_spec` counts each new scenario exactly once. Then close the guard and commit the red tests.
 
 ## 2. Domain
 
@@ -50,6 +59,7 @@ or lives in `spec/fixtures/`.
 - [x] 3.2 Implement `ArtifactTraceSource` and the `SourceError` messages. Verify that its adapter spec is green.
 - [x] 3.3 Implement `RawLedgerSource` with the injected fetcher and the default `Net::HTTP` fetcher (10 s timeout, no redirects). Verify that its adapter spec is green.
 - [x] 3.4 Implement `FileApiSource`, `FileAdrSource`, `FileDiagramSource`, `NullContractSource` and `NullSloSource`. Verify that their adapter specs are green.
+- [ ] 3.5 (D12) Add `DocsModel#deployed_traces` (default `{}`), count its passed results in `CoverageRule#verdict`, and add `subdir:` to `ArtifactTraceSource` (`tmp/traces/<repo>/prod-smoke/repo-trace.json`, same validation and messages). Verify that the 1.12 domain and adapter examples are green, and that `lib/greeter_docs/domain` still does no I/O.
 
 ## 4. Publisher and pages
 
@@ -57,13 +67,16 @@ or lives in `spec/fixtures/`.
 - [x] 4.2 Add `api.erb` (operations, parameters, request body, responses and headers, with local `$ref`s resolved) and the `openapi.yaml` copy. Verify that the publisher spec's API examples are green.
 - [x] 4.3 Add the escaping Markdown renderer and the ADR index and page templates. Verify that the publisher spec's ADR examples are green.
 - [x] 4.4 Add the architecture template (Mermaid 11.17.2 ESM, `securityLevel: "strict"`) and the contracts and SLO placeholders. Verify that the whole publisher spec, including the escaping example, is green.
-- [ ] 4.5 Write `docs/adr/0001-record-architecture-decisions.md`, `0002-openspec-not-kiro-specs.md` and `0003-shared-acceptance-suite-and-channel-ledger.md`, and `docs/diagrams/c4-context.mmd` (`C4Context`) and `c4-container.mmd` (`C4Container`) naming every system listed in the `docs-site` spec. Verify that the diagram example in the publisher spec is green and that each diagram renders at mermaid.live without errors.
+- [x] 4.5 Write `docs/adr/0001-record-architecture-decisions.md`, `0002-openspec-not-kiro-specs.md` and `0003-shared-acceptance-suite-and-channel-ledger.md`, and `docs/diagrams/c4-context.mmd` (`C4Context`) and `c4-container.mmd` (`C4Container`) naming every system listed in the `docs-site` spec. Verify that the diagram example in the publisher spec is green and that each diagram renders at mermaid.live without errors.
+- [ ] 4.6 (D12) On the repo page, show a scenario whose only `passed` result is in the prod smoke trace as `passed`, labelled as verified by the prod smoke run, with a link to that run (digits-only rule). Verify that the 1.12 publisher example and the whole publisher spec are green.
 
 ## 5. Composition and tooling
 
 - [x] 5.1 Implement `GreeterDocs::Build` and `bin/build-docs`: collect the source errors and coverage violations, print one line each, exit 1, and write no `_site` on failure. Verify that `spec/build_spec.rb` is green.
 - [x] 5.2 Implement `bin/fetch-sources` with an injectable `Open3` argv runner, per-repo cleanup of `tmp/repos/<repo>` and `tmp/traces/<repo>`, and token redaction. Verify that its spec is green, except the event-selection and fork-PR examples, which go green in 7.2.
 - [x] 5.3 Run the full suite with the formatter. Verify that `spec/coverage_of_self_spec.rb` is green and that `tmp/traces/greeter-docs/repo-trace.json` has one passed result per greeter-docs scenario.
+- [ ] 5.4 (D12) Add `FetchSources::DEPLOYED_TRACES` and, after the four CI fetches, the `smoke-prod.yml` lookup: `gh run list` with no `--event`, the `gh api .../actions/runs/<id>/artifacts` check for a non-expired `repo-trace-smoke-prod`, and the download into `tmp/traces/greeter-http/prod-smoke/`. A missing run or artifact prints a line and is not an error. Verify that the 1.12 fetch examples are green.
+- [ ] 5.5 (D12) Give `Build` the optional `deployed_trace_source:` port and wire `ArtifactTraceSource.new(workspace_root: root, subdir: 'prod-smoke')` into `bin/build-docs`. Verify that the 1.12 build examples and all of `spec/build_spec.rb` are green.
 
 ## 6. Workflow
 
@@ -98,7 +111,7 @@ or lives in `spec/fixtures/`.
   - The API page shows the greeter-http commit and `info.version`, labelled "main".
 
   Verify that the publisher's URL and API-version examples are green.
-- [ ] 7.6 (S6) Add a `<meta http-equiv="Content-Security-Policy">` to the layout: `default-src 'none'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'none'; base-uri 'none'; form-action 'none'`. Move the Mermaid initialisation to `_site/assets/architecture.js`, so that no page has an inline script. Verify that the CSP examples are green and that `architecture.html` still renders both diagrams in a browser with no CSP console errors.
+- [x] 7.6 (S6) Add a `<meta http-equiv="Content-Security-Policy">` to the layout: `default-src 'none'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'none'; base-uri 'none'; form-action 'none'`. Move the Mermaid initialisation to `_site/assets/architecture.js`, so that no page has an inline script. Verify that the CSP examples are green and that `architecture.html` still renders both diagrams in a browser with no CSP console errors.
 
 ## 8. Verify and docs
 
@@ -106,3 +119,4 @@ or lives in `spec/fixtures/`.
 - [x] 8.2 Run `lychee --offline --no-progress _site` and confirm that it exits 0. Add a link to a missing page, confirm that lychee fails naming the page and the link, then revert.
 - [x] 8.3 Run `bundle exec rspec`, `bundle exec rubocop` and `openspec validate add-live-docs --strict`, and confirm that all are clean.
 - [x] 8.4 (S8) After a real `bin/fetch-sources` with `GH_TOKEN`, confirm that `grep -r "$GH_TOKEN" tmp/repos/*/.git/config` finds nothing, and that `_site/` contains no file from `tmp/` (`find _site -path '*tmp*'` is empty).
+- [ ] 8.5 (D12) After greeter-http's `smoke-prod.yml` has run successfully, run `bin/fetch-sources` with a local `GH_TOKEN`, then `bundle exec rspec` with the formatter, then `bin/build-docs` and `lychee --offline --no-progress _site`. Confirm that the fetch reports the prod smoke run it used, the build exits 0 with no violation, `repos/greeter-http.html` links that run for `smoke-check-on-a-deployed-stage`, and lychee exits 0. Then rerun `openspec validate add-live-docs --strict`.

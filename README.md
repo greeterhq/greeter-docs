@@ -15,6 +15,13 @@ scenario.
 - `bin/fetch-sources` shallow-clones the four producer repos at `main` into
   `tmp/repos/<repo>` and downloads each one's latest successful `main` `ci.yml`
   `repo-trace` artifact (push or schedule runs only) into `tmp/traces/<repo>`.
+- It also downloads greeter-http's prod smoke trace, the `repo-trace-smoke-prod`
+  artifact of the latest successful `main` run of greeter-http's
+  `smoke-prod.yml`, into `tmp/traces/greeter-http/prod-smoke/`. Requirements
+  verified only against a deployed stage, such as
+  `deployed-stage-exposes-version-headers`, are always skipped in `ci.yml` and
+  pass only there. Until that workflow has run successfully, the build fails
+  and names those requirements.
 - The RSpec suite, run with `RepoTraceFormatter`, writes greeter-docs' own trace
   to `tmp/traces/greeter-docs/repo-trace.json`.
 - `bin/build-docs` reads those files, the `ledger-prod` and `ledger-stage`
@@ -34,9 +41,12 @@ the producer repos and their Actions artifacts.
 bundle install
 bin/fetch-sources
 REPO_TRACE_PATH=tmp/traces/greeter-docs/repo-trace.json bundle exec rspec --format progress --format RepoTraceFormatter
-bin/build-docs
-lychee --offline --no-progress _site
+bin/build-docs && lychee --offline --no-progress _site
 ```
+
+`bin/build-docs` writes nothing when a source is invalid or a requirement is
+uncovered. It prints one line per problem and exits 1, so there is no `_site/`
+for lychee to check.
 
 Open `_site/index.html` in a browser. `bundle exec rubocop` lints the code.
 

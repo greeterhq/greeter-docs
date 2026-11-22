@@ -19,6 +19,9 @@ already exist (see proposal.md, Why):
   `spec/support/repo_trace/document.rb` (commit 7b43842) write
   `greeterhq.repo-trace.v1` to the path in `REPO_TRACE_PATH`. greeter-http
   already copies them with `REPO` changed.
+- greeter-http's `@smoke` Cucumber scenarios run only against a deployed stage.
+  `ci.yml` records them as `skipped`. greeter-http's `smoke-prod.yml` (D12)
+  runs them against prod and publishes their trace.
 
 Specs: `specs/coverage-gate`, `specs/docs-sources`, `specs/docs-site`,
 `specs/docs-deployment`.
@@ -77,7 +80,8 @@ Every file starts with `# frozen_string_literal: true`.
 ### D3. Coverage semantics (domain)
 `CoverageRule#violations(model)` returns `Violation(repo, capability,
 requirement_slug, spec_path)` sorted by repo, capability and requirement:
-- Not tag-mapped: covered if `model.results(repo)` has any result with that
+- Not tag-mapped: covered if the repo's CI trace (`model.traces[repo]`) or its
+  prod smoke trace (`model.deployed_traces[repo]`, D12) has any result with that
   requirement slug and `status == "passed"`. Matching is by requirement slug
   within the repo, because traces carry no capability.
 - Tag-mapped (`repo.requirement_tags[slug]` present): covered if the prod
@@ -168,8 +172,10 @@ arrays, never a shell string). For each of the four repos it runs
 `gh repo clone greeterhq/<repo> tmp/repos/<repo> -- --depth 1 --branch main`.
 `gh repo clone` uses `GH_TOKEN`, so the private repos clone without putting the
 token in a URL. It then runs the `gh run list` and `gh run download` commands
-given in `specs/docs-deployment`. It first removes `tmp/repos/<repo>` and
-`tmp/traces/<repo>` for those four repos, so stale files never leak into a
+given in `specs/docs-deployment`. After the four repos, it fetches each prod
+smoke trace listed in `DEPLOYED_TRACES` (D12). It first removes
+`tmp/repos/<repo>` and `tmp/traces/<repo>` for those four repos, which also
+removes any old `prod-smoke/` directory, so stale files never leak into a
 build. Error messages print the argv and stderr with any `GH_TOKEN` value
 replaced by `***`.
 
@@ -240,6 +246,62 @@ The specs written in tasks 1.3–1.9 fix these names:
   reads a ledger injects a fake fetcher. Building it opens no connection: it
   only holds its settings, and connects on `call(url)`.
 
+The prod smoke tasks (D12) add these, fixed when their red tests are written:
+- `DocsModel#deployed_traces`: repo name to prod smoke `Domain::Trace`,
+  defaulting to `{}` so existing callers that omit it keep working.
+- `ArtifactTraceSource.new(workspace_root:, subdir: nil)`: with
+  `subdir: 'prod-smoke'` it reads `tmp/traces/<repo>/prod-smoke/repo-trace.json`
+  with the same validation and messages.
+- `Build.new(..., deployed_trace_source: nil)`: optional. Without it the model's
+  `deployed_traces` is empty.
+- `FetchSources::DEPLOYED_TRACES` (D12).
+
+### D12. Prod smoke traces
+Some requirements can only be verified against a deployed stage. greeter-http's
+`deployed-stage-exposes-version-headers` has one scenario, tagged `@smoke`.
+`ci.yml` runs Cucumber without `GREETER_BASE_URL`, so it is always `skipped`
+there. It runs for real only in `cd.yml`'s smoke steps, which write no trace.
+Without a second source, the coverage gate fails on `main` forever.
+
+greeter-http adds `.github/workflows/smoke-prod.yml` as the only producer of a
+prod smoke trace. It runs on a daily schedule, on `workflow_dispatch`, and on
+`workflow_run` of "CD" completed with conclusion `success`. It runs
+`cucumber --tags @smoke` from `main` against prod and, on success only, uploads
+artifact `repo-trace-smoke-prod` (retention 90 days). `cd.yml` is unchanged.
+The trace's `sha` is that run's `GITHUB_SHA`, the `main` commit whose smoke
+scenarios ran.
+
+greeter-docs reads it as a second trace per repo. It is not merged into the CI
+trace: the two come from different runs, and the smoke result's location also
+appears, as `skipped`, in the CI trace.
+- **Mapping:** one constant, `FetchSources::DEPLOYED_TRACES =
+  { 'greeter-http' => { workflow: 'smoke-prod.yml', artifact:
+  'repo-trace-smoke-prod', dir: 'prod-smoke' } }`. Adding a repo is one entry
+  there plus its producer workflow.
+- **Selection:** the latest successful `smoke-prod.yml` run on `main`, of any
+  event. No `--event` filter is needed, because `smoke-prod.yml` has no
+  `pull_request` trigger (compare S2). The artifact list for that run
+  (`gh api repos/greeterhq/greeter-http/actions/runs/<id>/artifacts`) must
+  contain a non-expired `repo-trace-smoke-prod`, or nothing is downloaded.
+- **Reading:** `ArtifactTraceSource` with `subdir: 'prod-smoke'`, validated
+  like the CI trace (`specs/docs-sources`).
+- **Coverage:** passed results from either trace count (D3). Failed, skipped and
+  pending results from either do not.
+- **Repo page:** a scenario whose only `passed` result is in the prod smoke trace
+  shows `passed`, labelled as verified by the prod smoke run, and links to that
+  run (`specs/docs-site`).
+
+Rejected alternatives:
+- **Upload the trace from `cd.yml` only.** The evidence would expire 90 days
+  after the last release (the maximum retention for these repos), turning the
+  docs red with nothing changed. It would also describe release day only.
+- **Verify through the acceptance ledger with a tag map.** greeter-docs would
+  need no code change, and ledgers do not expire. But checking
+  `X-Greeter-Version` in greeter-acceptance breaks its `driver-contract`
+  requirement that drivers never expose HTTP headers to step definitions. It
+  would also move verification of an http-only requirement out of
+  greeter-http.
+
 ### Fixtures (captured from real output)
 The Red tests tasks copy these into `spec/fixtures/`. The tool for all of them
 is gh 2.104.0, and they were downloaded on 2026-11-21T11:05:27Z.
@@ -253,6 +315,7 @@ is gh 2.104.0, and they were downloaded on 2026-11-21T11:05:27Z.
 | `ledgers/prod.json` | `git show origin/ledger-prod:ledger.json` in `../greeter-acceptance` | commit 5bbea1ad31a5bb9b1bbe73ec466d16c55b2262aa (2026-11-21T08:53:06Z), sha256 4a2192e0… |
 | `repos/<repo>/openspec/**` | sibling checkouts on `main` | core 2ef6510, cli 88a7d56, http 5b818a2, acceptance 7a3272c |
 | `repos/greeter-http/openapi.yaml`, `docs/adr/*.md` | `git show 5b818a2:<path>` in `../greeter-http` | commit 5b818a2fa3f69d9a8bcc9c44f634c2ee2984670c |
+| `traces/greeter-http/prod-smoke/repo-trace.json` | `gh run download -R greeterhq/greeter-http <run-id> -n repo-trace-smoke-prod`, from greeter-http's first real successful `smoke-prod.yml` run on `main` | run `<run-id>` (to be filled in), sha, result count, sha256 and download date to be recorded at capture (task 1.11) |
 
 Excerpt of the greeter-http trace (run 44622828436):
 ```json
@@ -285,11 +348,23 @@ separate captures.
 
 ## Risks / Trade-offs
 
-- [Against the real traces above, greeter-http's
-  `deployed-stage-exposes-version-headers` has only a `skipped` result, so the
-  first deploy fails] → This is the gate working as intended. greeter-http must
-  record a passing result for it. The other three producers checked clean in a
-  dry run on 2026-11-21.
+- [greeter-http's `deployed-stage-exposes-version-headers` is verified only by
+  an `@smoke` scenario that `ci.yml` always skips, so with CI traces alone the
+  gate fails on `main` forever] → D12: the prod smoke trace from greeter-http's
+  `smoke-prod.yml` covers it. Until that workflow has run successfully once,
+  `bin/build-docs` still fails and names the requirement. So greeter-http's
+  workflow merges and runs first, and this change merges after. The other three
+  producers checked clean in a dry run on 2026-11-21.
+- [The prod smoke artifact expires after 90 days, and GitHub disables scheduled
+  workflows in a public repo after 60 days with no repository activity] → The
+  daily schedule and the run after every successful CD keep it fresh while
+  greeter-http is active. If it lapses, the artifact check finds nothing, the
+  requirement is named as uncovered, and a `workflow_dispatch` run of
+  `smoke-prod.yml` restores it. That is the gate reporting real staleness.
+- [The smoke trace's `sha` is the `main` commit whose smoke scenarios ran,
+  which can be newer than the version deployed to prod] → It records which
+  test code ran, not which release it ran against. The deployed version is on
+  the traceability page from the ledger.
 - [Pull requests share concurrency group `pages`. GitHub keeps only one pending
   run per group, so a newer pending PR run replaces a pending `main` or
   `docs-refresh` run] → The skipped refresh is picked up by the next push,
@@ -339,7 +414,7 @@ producer CI runs.
 | # | Area | Finding | Severity | Resolution |
 |---|---|---|---|---|
 | S1 | Log injection | `bin/build-docs` and `bin/fetch-sources` print sourced values (a trace's `repo`, file paths, gh stderr) to the Actions log. A line starting with `::` is run as a workflow command (`::add-mask::`, `::stop-commands::`, `::error file=...::`), and embedded newlines forge extra lines. | Medium | Task 7.1 |
-| S2 | API10 unsafe consumption | `gh run list --branch main` matches by head branch name. A fork PR from a branch named `main` that passes CI becomes the "latest successful main run". The producers upload no `repo-trace` on `pull_request`, so the download fails and the docs build breaks: anyone can deny service. | Medium | Spec changed (`--event push` and `--event schedule`, take the newer); task 7.2 |
+| S2 | API10 unsafe consumption | `gh run list --branch main` matches by head branch name. A fork PR from a branch named `main` that passes CI becomes the "latest successful main run". The producers upload no `repo-trace` on `pull_request`, so the download fails and the docs build breaks: anyone can deny service. | Medium | Spec changed (`--event push` and `--event schedule`, take the newer); task 7.2. The `smoke-prod.yml` lookup (D12) uses no `--event` filter, because that workflow has no `pull_request` trigger. If it ever gains one, the filter must be added there too. |
 | S3 | IAM scope | `create-github-app-token` mints a token with every permission the App installation has unless `permission-*` inputs are set. The Migration Plan granted only Contents: read, so artifact download would also have failed without Actions: read. | Medium | Spec changed (`permission-contents: read`, `permission-actions: read`); Migration Plan updated; task 7.3 |
 | S4 | API4 resource consumption | Inputs are unbounded: trace, ledger and `openapi.yaml` sizes; YAML alias expansion in `requirement-tags.yml` and `openapi.yaml`; a `$ref` cycle recursing forever; a slow raw-ledger response trickling bytes. | Medium | Task 7.4 |
 | S5 | Input reflection | HTML escaping covers text and quoted attributes, but URL attributes need more. An ADR link target such as `JaVaScript:`, `" javascript:"` or `java&#x09;script:` passes a naive prefix check. Ledger `run_id`, channel names and ledger keys reach `href` and `id` without the digits or slug check that trace `run_id` gets. | Low | Task 7.5 |

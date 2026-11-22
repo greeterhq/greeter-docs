@@ -102,3 +102,22 @@ greeter-docs or write outside those directories.
 #### Scenario: The token is not echoed
 - **WHEN** `bin/fetch-sources` runs with `GH_TOKEN` set and a command fails
 - **THEN** neither its output nor its error message contains the token value
+
+### Requirement: Prod smoke traces come from the latest successful smoke-prod run
+After the four CI traces, `bin/fetch-sources` SHALL find greeter-http's latest
+successful `smoke-prod.yml` run on `main`, of any event. If that run has a
+non-expired `repo-trace-smoke-prod` artifact, it SHALL download it into
+`tmp/traces/greeter-http/prod-smoke/`. Otherwise it SHALL download nothing,
+say so, and carry on.
+
+#### Scenario: The prod smoke trace is fetched from smoke-prod.yml
+- **WHEN** `bin/fetch-sources` runs with a stubbed runner where greeter-http's latest successful `smoke-prod.yml` run has a non-expired `repo-trace-smoke-prod` artifact
+- **THEN** after the four repos' CI commands it runs `gh run list -R greeterhq/greeter-http --workflow smoke-prod.yml --branch main --status success --limit 1 --json databaseId,createdAt` with no `--event`, `gh api repos/greeterhq/greeter-http/actions/runs/<id>/artifacts`, and `gh run download <id> -R greeterhq/greeter-http -n repo-trace-smoke-prod -D tmp/traces/greeter-http/prod-smoke`
+
+#### Scenario: A smoke-prod run without a live artifact downloads nothing
+- **WHEN** the latest successful `smoke-prod.yml` run lists no `repo-trace-smoke-prod` artifact, or lists it with `expired` true
+- **THEN** no `gh run download` runs for it, the output says there is no prod smoke trace, and the fetch exits zero
+
+#### Scenario: No successful smoke-prod run downloads nothing
+- **WHEN** the stubbed `gh run list` for `smoke-prod.yml` returns `[]`
+- **THEN** no artifact lookup or download runs for it and the fetch exits zero

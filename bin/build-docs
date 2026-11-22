@@ -1,0 +1,38 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# Composition root: wires the adapters, builds the site into _site/, and exits
+# non-zero, printing one line per source error or uncovered requirement.
+# Run bin/fetch-sources and the RSpec suite (with the trace formatter) first.
+require 'open3'
+
+root = File.expand_path('..', __dir__)
+$LOAD_PATH.unshift(File.join(root, 'lib'))
+require 'greeter_docs'
+
+adapters = GreeterDocs::Adapters
+repos_dir = File.join(root, 'tmp', 'repos')
+http_dir = File.join(repos_dir, 'greeter-http')
+commit, = Open3.capture2('git', '-C', http_dir, 'rev-parse', 'HEAD', err: File::NULL) if Dir.exist?(http_dir)
+commit = commit.to_s.strip
+commit = nil unless commit.match?(/\A[0-9a-f]{40}\z/)
+
+outcome = GreeterDocs::Build.new(
+  spec_source: adapters::GitSpecSource.new(clones_root: repos_dir, workspace_root: root,
+                                           producers: GreeterDocs::FetchSources::PRODUCERS),
+  trace_source: adapters::ArtifactTraceSource.new(workspace_root: root),
+  ledger_source: adapters::RawLedgerSource.new(fetcher: adapters::RawLedgerSource.default_fetcher),
+  api_source: adapters::FileApiSource.new(path: File.join(http_dir, 'openapi.yaml'), commit: commit),
+  adr_source: adapters::FileAdrSource.new(roots: { 'greeter-docs' => File.join(root, 'docs', 'adr'),
+                                                   'greeter-http' => File.join(http_dir, 'docs', 'adr') }),
+  diagram_source: adapters::FileDiagramSource.new(dir: File.join(root, 'docs', 'diagrams')),
+  contract_source: adapters::NullContractSource.new,
+  slo_source: adapters::NullSloSource.new,
+  publisher: adapters::ErbHtmlPublisher.new(templates_dir: File.join(root, 'templates'),
+                                            output_dir: File.join(root, '_site')),
+  clock: -> { Time.now }
+).call
+
+outcome.lines.each { |line| warn line }
+warn 'build-docs: site written to _site/' if outcome.exit_code.zero?
+exit outcome.exit_code

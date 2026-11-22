@@ -32,6 +32,17 @@ null or not all digits, the page SHALL show no run link.
 - **WHEN** a repo's trace has `run_id` `null`
 - **THEN** its page shows the results and contains no link to `/actions/runs/`
 
+### Requirement: A scenario verified only by the prod smoke trace links to its run
+When a scenario's only `passed` result comes from the repo's prod smoke trace,
+the repo page SHALL show it as `passed`, labelled as verified by the prod smoke
+run, with a link to that `smoke-prod.yml` run at
+`https://github.com/greeterhq/<repo>/actions/runs/<run_id>`. The digits-only
+rule for run IDs applies.
+
+#### Scenario: A prod-smoke-only pass links to the smoke-prod run
+- **WHEN** greeter-http's CI trace (run 44622828436) has `smoke-check-on-a-deployed-stage` only `skipped` and its prod smoke trace (run `<smoke-run-id>`) has it `passed`
+- **THEN** `repos/greeter-http.html` shows that scenario with `data-status="passed"`, labels it as verified by the prod smoke run, and links to `https://github.com/greeterhq/greeter-http/actions/runs/<smoke-run-id>`
+
 ### Requirement: The traceability grid shows requirement by channel
 `traceability.html` SHALL show, for each ledger environment, a grid with one
 row per ledger requirement key, labelled with the tag-mapped requirement, and

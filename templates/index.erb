@@ -1,0 +1,15 @@
+<h1>greeterHQ live documentation</h1>
+<p>Requirements on <code>main</code> in each repo, the scenarios that verify them, and what each deployed channel achieved against the shared acceptance suite.</p>
+<h2>Coverage</h2>
+<dl>
+<dt>Covered</dt><dd data-summary="covered"><%= summary[:covered] %></dd>
+<dt>Uncovered</dt><dd data-summary="uncovered"><%= summary[:uncovered] %></dd>
+<dt>Not yet recorded</dt><dd data-summary="not-yet-recorded"><%= summary[:not_yet_recorded] %></dd>
+</dl>
+<h2>Repos</h2>
+<ul>
+<%- repos.each do |repo| -%>
+<li><a href="repos/<%= h(repo.name) %>.html"><%= h(repo.name) %></a> (<%= repo.requirements.size %> requirements)</li>
+<%- end -%>
+</ul>
+<p>Last updated <%= h(built_at) %></p>

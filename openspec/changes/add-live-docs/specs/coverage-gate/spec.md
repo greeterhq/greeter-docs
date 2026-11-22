@@ -19,8 +19,8 @@ and trim `-` from both ends. The rule SHALL NOT split camel case.
 
 ### Requirement: A requirement passes when a trace result for it passed
 For a requirement with no entry in its repo's requirement-tag map, the coverage
-rule SHALL treat it as covered only when that repo's trace has at least one
-result with that requirement slug and status `passed`. Results with status
+rule SHALL treat it as covered only when that repo's CI trace or prod smoke
+trace has at least one result with that requirement slug and status `passed`. Results with status
 `failed`, `skipped` or `pending` SHALL NOT count. The rule SHALL be evaluated on
 an in-memory docs model with no I/O.
 

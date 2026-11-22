@@ -1,0 +1,13 @@
+<h1>Architecture decision records</h1>
+<%- if adrs.empty? -%>
+<p>No ADRs yet.</p>
+<%- else -%>
+<table>
+<thead><tr><th>Repo</th><th>Decision</th></tr></thead>
+<tbody>
+<%- adrs.each do |adr| -%>
+<tr><td><%= h(adr.repo) %></td><td><a href="<%= h(adr.repo) %>/<%= h(adr.slug) %>.html"><%= h(adr.title) %></a></td></tr>
+<%- end -%>
+</tbody>
+</table>
+<%- end -%>

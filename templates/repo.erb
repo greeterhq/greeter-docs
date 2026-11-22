@@ -1,0 +1,31 @@
+<h1><%= h(repo.name) %></h1>
+<%- if trace -%>
+<p>Latest trace: commit <code><%= h(trace.sha) %></code>, recorded <%= h(trace.recorded_at) %>.
+<%- if run_url -%>
+<a href="<%= h(run_url) %>">CI run <%= h(trace.run_id) %></a>
+<%- end -%>
+</p>
+<%- else -%>
+<p>No trace was found for this repo.</p>
+<%- end -%>
+<%- capabilities.each do |capability, requirements| -%>
+<h2><%= h(capability) %></h2>
+<table>
+<thead><tr><th>Requirement</th><th>Coverage</th><th>Scenarios (latest result)</th></tr></thead>
+<tbody>
+<%- requirements.each do |req| -%>
+<%- key = repo.requirement_tags[req.slug] -%>
+<tr data-requirement="<%= h(req.slug) %>">
+<td><%= h(req.title) %><br><small><code><%= h(req.spec_path) %></code></small></td>
+<td data-verdict="<%= h(verdicts[req.slug].to_s.tr('_', '-')) %>"><%= h(verdicts[req.slug].to_s.tr('_', ' ')) %><%- if key -%><br><small>prod ledger key <code><%= h(key) %></code></small><%- end -%></td>
+<td><ul>
+<%- req.scenarios.each do |scenario| -%>
+<%- status = statuses[[req.slug, scenario.slug]] || 'none' -%>
+<li data-requirement="<%= h(req.slug) %>" data-scenario="<%= h(scenario.slug) %>" data-status="<%= h(status) %>"><%= h(scenario.title) %>: <%= h(status == 'none' ? 'no result' : status) %></li>
+<%- end -%>
+</ul></td>
+</tr>
+<%- end -%>
+</tbody>
+</table>
+<%- end -%>

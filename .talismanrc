@@ -1,4 +1,6 @@
 fileignoreconfig:
+- filename: .github/workflows/docs.yml
+  checksum: 465038eff8ea1efefdb521ef3432a5740d298817f0ec8abd584dd0e1483b0f3d
 - filename: .kiro/prompts/opsx-continue.prompt.md
   checksum: 03d78f426339816665b61795b4f784195f0d51b80c5a2f5d81a9aa614515ff5f
 - filename: .kiro/prompts/opsx-apply.prompt.md
@@ -51,20 +53,40 @@ fileignoreconfig:
   checksum: df20f2183e8a82f2ad982547b3c779f74c44e51ad0a8d2a08ae725d75f791dee
 - filename: Gemfile.lock
   checksum: 8af725711082b9a83c17fb560a54d205cd93347f746ea2aefb4226c42af6bd86
+- filename: README.md
+  checksum: 1f143170fb7df9f4b6c8d2fcf11f76e621397af56d15a3966146a444dbc9c4ac
+- filename: docs/adr/0003-shared-acceptance-suite-and-channel-ledger.md
+  checksum: 88c960f3a04390b8b48b4ecaf265ed702eda8ded3b4a845582ea95a49697e6b6
+- filename: lib/greeter_docs/adapters/erb_html_publisher.rb
+  checksum: f17c0ad56a4f86082697b823cb2f348f592f9206d99bb7f4100d4ee5db8fa572
+- filename: lib/greeter_docs/adapters/file_api_source.rb
+  checksum: e24ac332e574e6cf999b2c92d9e47db19c9f39d5619e3254564dd9eb4f9155aa
+- filename: lib/greeter_docs/adapters/git_spec_source.rb
+  checksum: bc78ec171ad7f47d30c5c1300625afb6a6ce2e1f0491bf09ce7e19b9ae8c6ee1
+- filename: lib/greeter_docs/adapters/markdown.rb
+  checksum: 521b873a7147fe7a722c8494857d466a8af62d87681bff51770eb2aa5f8fc5a9
+- filename: lib/greeter_docs/adapters/site_assets.rb
+  checksum: a3eca6738322ff9448c231f218f3b07c0e2d179a6aed0ae081ff943b843d244f
+- filename: lib/greeter_docs/adapters/raw_ledger_source.rb
+  checksum: d0a4aeed19f17c168e0d6c094b6ce2bf301102c14beafd3c4016975e462b80a4
+- filename: lib/greeter_docs/domain/ledger_view.rb
+  checksum: a165788ece9a83f5920cbd4dfbd0688654d8bf8fed0c94c046920b8791325360
+- filename: lib/greeter_docs/domain/coverage_rule.rb
+  checksum: e29b578547ba5e6a8a62c11986ee3d076bb617f409355e7d89e99e683b4abb39
 - filename: openspec/changes/add-live-docs/tasks.md
-  checksum: 8ae40fe5370babd6dcbb4e36a6ebd0ea8ce02805086f0832116bf43799e81be0
+  checksum: b6db50be5056eaea4b89c4f0d6028e0f5b5a59bdbb56decae89f9782cf39a052
 - filename: openspec/changes/add-live-docs/design.md
-  checksum: f40638e404298cbbfe684b936dbaf48a8922a218b823f8d7d2d544b426241009
+  checksum: fed08fa16675ee7f0bf67c70de83ffdfe2410b916fee50b80edaa9ab5a5e9a15
 - filename: openspec/config.yaml
   checksum: bdc92a7b6b5394bcb5d8f7a37c7ff60fc44bbc90e264c99cc185bf436ace169d
 - filename: openspec/changes/add-live-docs/specs/docs-sources/spec.md
-  checksum: 553b0e133fd4754f81f08b3fb4f25b14607f650e511eddf180af3356907a6f54
+  checksum: 0c9a5896f3718fe2760d39d3b7f5fc4352888d486ad10016fba2ec6e7ae99cfe
 - filename: openspec/changes/add-live-docs/specs/docs-deployment/spec.md
   checksum: a91491fca1e7a85ec083d9960efcd27b3d055f7319bbe8e807ad5fe453e384fe
 - filename: openspec/changes/add-live-docs/proposal.md
   checksum: 5b4af42e6bf3d15bdc64750711a15cdd12f168ff8a51321352c718bb99ba5be1
 - filename: openspec/changes/add-live-docs/specs/docs-site/spec.md
-  checksum: 619ac6c67c2d047c453f85acb9ec43532461f0e97293fbe8648d8c898062f9b2
+  checksum: f2c5b2b1f5539d880558a6dff5010bc850dc9cb1296f1c9e16d8f209378aef20
 - filename: openspec/changes/add-live-docs/specs/coverage-gate/spec.md
   checksum: 79ce769e2cac7d6efcc546018e20d30f14a4c616f47ca1145d4bcbe440120729
 - filename: spec/adapters/artifact_trace_source_spec.rb
@@ -129,4 +151,8 @@ fileignoreconfig:
   checksum: 89c0473538001977faf272b59133fa7223f5d4bbf6664946409e9a7df83f2c96
 - filename: spec/workflows/docs_workflow_spec.rb
   checksum: bdeab2711969189a59d8a7b0e33b993fa4469f718607f7a8fd72b2490943dfcf
+- filename: templates/repo.erb
+  checksum: bf78eb652e78fd22a85aae3c7ec26185c680decb63332f3a3c7e4b66b9d82ca3
+- filename: templates/traceability.erb
+  checksum: 297ea76463d2b4aaa73c27eaa60e6057bb8178b6be0c88b81476d49fb76bcc5e  
 version: ""

@@ -1,0 +1,33 @@
+<h1>Traceability</h1>
+<p>Each acceptance requirement against each channel, from the ledger branches of greeter-acceptance. Only the prod ledger counts for coverage; stage is shown for information.</p>
+<%- ledgers.each do |ledger| -%>
+<section id="<%= h(slug_or_nil(ledger.environment)) %>">
+<h2><%= h(ledger.environment) %></h2>
+<%- if ledger.recorded? -%>
+<p>Suite <%= h(ledger.suite_version) %></p>
+<%- channels = ledger.channels.keys.sort -%>
+<table>
+<thead><tr><th>Requirement</th>
+<%- channels.each do |name| -%>
+<%- channel = ledger.channels[name] -%>
+<%- url = publisher.ledger_run_url(channel.run_id) -%>
+<th<%= attr('data-channel', name) %>><%= h(name) %><br><%= h(channel.verification) %><br><%= h(channel.version) %><%- if url -%><br><a href="<%= h(url) %>">run</a><%- end -%></th>
+<%- end -%>
+</tr></thead>
+<tbody>
+<%- ledger.requirements.keys.sort.each do |key| -%>
+<tr<%= attr('data-key', key) %>>
+<th scope="row"><%= h(key) %><%- labels.fetch(key, []).each do |slug| -%><br><small><%= h(slug) %></small><%- end -%></th>
+<%- channels.each do |name| -%>
+<%- status = ledger.requirements[key][name] -%>
+<td<%= attr('data-key', key) %><%= attr('data-channel', name) %>><%= h(status.nil? || status == 'not_applicable' ? 'n/a' : status) %></td>
+<%- end -%>
+</tr>
+<%- end -%>
+</tbody>
+</table>
+<%- else -%>
+<p>not yet recorded</p>
+<%- end -%>
+</section>
+<%- end -%>

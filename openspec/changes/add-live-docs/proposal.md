@@ -22,6 +22,10 @@ consumer that is still missing.
     ledger files, local docs, and an ERB HTML publisher (`adapters/`).
 - `bin/fetch-sources`: shallow-clones the four producer repos at `main` and
   downloads each one's latest successful `main` `ci.yml` `repo-trace` artifact.
+  For greeter-http it also downloads the prod smoke trace
+  (`repo-trace-smoke-prod`) from the latest successful `main` run of
+  `smoke-prod.yml`, because the requirements verified only against a deployed
+  stage are always skipped in CI.
 - `bin/build-docs`: composition root. It builds the site into `_site/` and
   exits non-zero, listing each violation, when coverage fails or a source is
   invalid.
@@ -59,7 +63,10 @@ consumer that is still missing.
   latest successful `main` run of `ci.yml`.
 - greeter-acceptance: `openspec/requirement-tags.yml`, and `ledger.json` on the
   `ledger-prod` and `ledger-stage` branches.
-- greeter-http: `openapi.yaml` and `docs/adr/*.md`.
+- greeter-http: `openapi.yaml` and `docs/adr/*.md`, and the
+  `repo-trace-smoke-prod` artifact of the latest successful `main` run of
+  `.github/workflows/smoke-prod.yml`. greeter-http adds that workflow
+  separately; this change only reads its artifact.
 
 ## Non-goals
 
@@ -108,5 +115,9 @@ None. `openspec/specs/` is empty.
 - External: a GitHub App with read access to the four repos
   (`vars.DOCS_READER_APP_CLIENT_ID`, `secrets.DOCS_READER_APP_PRIVATE_KEY`).
   GitHub Pages must be enabled with source "GitHub Actions". `lychee` runs in CI.
-- The first deploy fails until greeter-http's `deployed-stage-exposes-version-headers`
-  requirement has a passing result in its trace (see design.md, Risks).
+- greeter-http's `deployed-stage-exposes-version-headers` is verified only by
+  its `@smoke` scenario, which `ci.yml` always skips. Until greeter-http's
+  `smoke-prod.yml` has produced a passing `repo-trace-smoke-prod` artifact,
+  `bin/build-docs` fails and names that requirement (see design.md, D12 and
+  Risks). greeter-http's workflow must land, and run once, before this change
+  merges.

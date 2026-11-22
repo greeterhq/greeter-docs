@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# Shallow-clones the producer repos at main and downloads each one's latest
+# successful main-branch ci.yml `repo-trace` artifact into tmp/. Needs GH_TOKEN
+# with Contents: read and Actions: read on the four producer repos.
+root = File.expand_path('..', __dir__)
+$LOAD_PATH.unshift(File.join(root, 'lib'))
+require 'greeter_docs'
+
+exit GreeterDocs::FetchSources.new(root: root).call

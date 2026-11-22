@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="<%= csp %>">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title><%= h(title) %> · greeterHQ live docs</title>
+<link rel="stylesheet" href="<%= root %>assets/site.css">
+<%- scripts.each do |src| -%>
+<script type="module" src="<%= root %><%= h(src) %>"></script>
+<%- end -%>
+</head>
+<body>
+<nav>
+<%- nav.each do |(href, label)| -%>
+<a href="<%= root %><%= href %>"><%= h(label) %></a>
+<%- end -%>
+</nav>
+<main>
+<%= content %>
+</main>
+<footer><p>Last updated <%= h(built_at) %> (UTC)</p></footer>
+</body>
+</html>
