@@ -31,6 +31,13 @@ module SpecHelpers
     end
   end
 
+  # The single item of a list; fails loudly unless there is exactly one.
+  def only_item(list)
+    raise ArgumentError, "expected exactly one item, got #{list.size}" unless list.size == 1
+
+    list.first
+  end
+
   def fixture(*parts)
     File.join(FIXTURES, *parts)
   end

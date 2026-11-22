@@ -95,7 +95,7 @@ RSpec.describe 'source input limits' do
             responses: {}
     YAML
 
-    operation = api_from(yaml).operations.sole
+    operation = only_item(api_from(yaml).operations)
 
     expect(operation.parameters).to eq([{ '$ref' => 'https://attacker.example/param.yaml' }])
     expect(Net::HTTP).not_to have_received(:start)

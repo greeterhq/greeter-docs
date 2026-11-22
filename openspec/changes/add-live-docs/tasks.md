@@ -36,12 +36,12 @@ or lives in `spec/fixtures/`.
   - publisher examples: `javascript:` variants dropped from ADR links; a non-digit ledger `run_id` gives no link; a non-slug channel or key never reaches an `id`/`href` unescaped; a CSP meta tag on every page and no inline `<script>`; the API page shows the greeter-http commit and `info.version`.
 
   Tag the examples that verify a spec scenario. Verify that they fail with `NameError` or expectation failures.
-- [ ] 1.10 Remove `tmp/allow-test-edits` and commit the red tests. Verify that `git status` shows no changes under `spec/`.
+- [x] 1.10 Remove `tmp/allow-test-edits` and commit the red tests. Verify that `git status` shows no changes under `spec/`.
 
 ## 2. Domain
 
-- [ ] 2.1 Implement `Domain::Slug` and the value objects (`Repo`, `Requirement`, `Scenario`, `Result`, `LedgerView`, `ApiDescription`, `Adr`, `Diagram`, `DocsModel`, `Violation`). Verify that `spec/domain/slug_spec.rb` is green and that `grep -rE "File|IO|Net|Open3|Dir" lib/greeter_docs/domain` finds nothing.
-- [ ] 2.2 Implement `CoverageRule#violations(model)` and the pending (not yet recorded) set, per design D3. Verify that `spec/domain/coverage_rule_spec.rb` is green.
+- [x] 2.1 Implement `Domain::Slug` and the value objects (`Repo`, `Requirement`, `Scenario`, `Result`, `LedgerView`, `ApiDescription`, `Adr`, `Diagram`, `DocsModel`, `Violation`). Verify that `spec/domain/slug_spec.rb` is green and that `grep -rE "File|IO|Net|Open3|Dir" lib/greeter_docs/domain` finds nothing.
+- [x] 2.2 Implement `CoverageRule#violations(model)` and the pending (not yet recorded) set, per design D3. Verify that `spec/domain/coverage_rule_spec.rb` is green.
 - [ ] 2.3 Add the port modules in `lib/greeter_docs/ports/`, each documenting its method contract. Verify that the domain specs still pass and that RuboCop is clean.
 
 ## 3. Source adapters

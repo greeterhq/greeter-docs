@@ -74,7 +74,7 @@ RSpec.describe 'GreeterDocs::Adapters::ErbHtmlPublisher' do
     src = scripts.first[/src="([^"]+)"/, 1]
     return src if src.start_with?('https://')
 
-    File.read(File.join(site, src)).scan(%r{https://cdn\.jsdelivr\.net/npm/[^"')\s]+}).uniq.sole
+    only_item(File.read(File.join(site, src)).scan(%r{https://cdn\.jsdelivr\.net/npm/[^"')\s]+}).uniq)
   end
 
   context 'with the index', requirement: 'the-index-summarises-repos-and-coverage',
@@ -243,7 +243,7 @@ RSpec.describe 'GreeterDocs::Adapters::ErbHtmlPublisher' do
       core = repo('greeter-core', [requirement('evil', title: "Evil #{script}")])
       api = domain::ApiDescription.new(
         title: 'greeter-http', version: '1.0.0', description: script, commit: 'c' * 40, raw: "openapi: 3.1.0\n",
-        operations: [domain::ApiDescription::Operation.new(method: 'post', path: '/greetings', summary: script,
+        operations: [domain::ApiDescription::Operation.new(http_method: 'post', path: '/greetings', summary: script,
                                                            parameters: [], request_body: nil, responses: {})]
       )
       adr = domain::Adr.new(repo: 'greeter-docs', file_name: '0001-x.md', title: 'X', body: "# X\n\n#{script}\n")

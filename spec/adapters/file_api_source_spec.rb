@@ -11,10 +11,10 @@ RSpec.describe 'GreeterDocs::Adapters::FileApiSource' do
     context 'with the real description', scenario: 'the-real-api-description-is-read' do
       it 'returns title, version and the POST /greetings operation with resolved parameters and responses' do
         api = api_from(fixture_path)
-        operation = api.operations.sole
+        operation = only_item(api.operations)
 
         expect([api.title, api.version]).to eq(%w[greeter-http 0.5.22])
-        expect([operation.method, operation.path, operation.summary])
+        expect([operation.http_method, operation.path, operation.summary])
           .to eq(['post', '/greetings', 'Greet a guest and return the running count'])
         expect(operation.parameters.map { |p| p['name'] }).to eq(%w[Idempotency-Key X-Greeter-Synthetic])
         expect(operation.request_body.dig('content', 'application/json', 'schema', 'required')).to eq(['name'])

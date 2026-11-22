@@ -46,7 +46,7 @@ RSpec.describe 'GreeterDocs::Domain::CoverageRule' do
                    result('deployed-stage-exposes-version-headers', 'smoke', 'failed', location: 'spec/y_spec.rb:2')]
         docs_model = model(repos: [http], traces: [trace('greeter-http', results)])
 
-        violation = rule.violations(docs_model).sole
+        violation = only_item(rule.violations(docs_model))
         expect([violation.repo, violation.capability, violation.requirement, violation.spec_path])
           .to eq(['greeter-http', 'version-headers', 'deployed-stage-exposes-version-headers',
                   'openspec/specs/version-headers/spec.md'])
