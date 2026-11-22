@@ -107,15 +107,19 @@ RSpec.describe 'GreeterDocs::Adapters::ErbHtmlPublisher' do
         docs_model = fixture_model
         core = docs_model.repos.find { |r| r.name == 'greeter-core' }
         traced = docs_model.traces.fetch('greeter-core').results.map { |r| [r.requirement, r.scenario] }.uniq
+        main_slugs = core.requirements.map(&:slug)
+        off_main = traced.map(&:first).uniq - main_slugs
 
         publish(docs_model)
         html = page('repos/greeter-core.html')
 
         expect(html.scan(/<tr[^>]*data-requirement="([^"]+)"/).flatten).to match_array(core.requirements.map(&:slug))
         expect(core.requirements.size).to eq(10)
-        traced.each do |(req, scen)|
+        traced.select { |(req, _scen)| main_slugs.include?(req) }.each do |(req, scen)|
           expect(html).to match(/data-requirement="#{req}"[^>]*data-scenario="#{scen}"[^>]*data-status="passed"/)
         end
+        expect(off_main).not_to be_empty
+        off_main.each { |slug| expect(html).not_to include(%(data-requirement="#{slug}")) }
         expect(html).to include('href="https://github.com/greeterhq/greeter-core/actions/runs/44297674561"')
       end
     end

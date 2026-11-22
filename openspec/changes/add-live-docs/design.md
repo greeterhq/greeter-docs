@@ -212,8 +212,11 @@ is `pages: write, id-token: write` with
 8. `bin/build-docs`.
 9. **Link check**: `lychee --offline --no-progress _site`, using the binary from
    step 5.
-10. `actions/configure-pages`.
-11. `actions/upload-pages-artifact` (`path: _site`).
+10. `actions/upload-pages-artifact` (`path: _site`).
+
+`actions/configure-pages` is not used. It reads the Pages settings through the
+API, which the `contents: read` build job cannot do, and the site uses none of
+its outputs: every link is relative, so the base path needs no configuration.
 
 Actions are pinned to full commit SHAs with a version comment. lychee is
 installed exactly once, by step 5, and no `lycheeverse/` action is used. The

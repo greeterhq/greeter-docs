@@ -42,32 +42,32 @@ or lives in `spec/fixtures/`.
 
 - [x] 2.1 Implement `Domain::Slug` and the value objects (`Repo`, `Requirement`, `Scenario`, `Result`, `LedgerView`, `ApiDescription`, `Adr`, `Diagram`, `DocsModel`, `Violation`). Verify that `spec/domain/slug_spec.rb` is green and that `grep -rE "File|IO|Net|Open3|Dir" lib/greeter_docs/domain` finds nothing.
 - [x] 2.2 Implement `CoverageRule#violations(model)` and the pending (not yet recorded) set, per design D3. Verify that `spec/domain/coverage_rule_spec.rb` is green.
-- [ ] 2.3 Add the port modules in `lib/greeter_docs/ports/`, each documenting its method contract. Verify that the domain specs still pass and that RuboCop is clean.
+- [x] 2.3 Add the port modules in `lib/greeter_docs/ports/`, each documenting its method contract. Verify that the domain specs still pass and that RuboCop is clean.
 
 ## 3. Source adapters
 
-- [ ] 3.1 Implement `GitSpecSource`: the heading parser that skips fenced code, nested capability paths, the tag map read with `YAML.safe_load`, and greeter-docs read from the workspace root. Verify that its adapter spec is green.
-- [ ] 3.2 Implement `ArtifactTraceSource` and the `SourceError` messages. Verify that its adapter spec is green.
-- [ ] 3.3 Implement `RawLedgerSource` with the injected fetcher and the default `Net::HTTP` fetcher (10 s timeout, no redirects). Verify that its adapter spec is green.
-- [ ] 3.4 Implement `FileApiSource`, `FileAdrSource`, `FileDiagramSource`, `NullContractSource` and `NullSloSource`. Verify that their adapter specs are green.
+- [x] 3.1 Implement `GitSpecSource`: the heading parser that skips fenced code, nested capability paths, the tag map read with `YAML.safe_load`, and greeter-docs read from the workspace root. Verify that its adapter spec is green.
+- [x] 3.2 Implement `ArtifactTraceSource` and the `SourceError` messages. Verify that its adapter spec is green.
+- [x] 3.3 Implement `RawLedgerSource` with the injected fetcher and the default `Net::HTTP` fetcher (10 s timeout, no redirects). Verify that its adapter spec is green.
+- [x] 3.4 Implement `FileApiSource`, `FileAdrSource`, `FileDiagramSource`, `NullContractSource` and `NullSloSource`. Verify that their adapter specs are green.
 
 ## 4. Publisher and pages
 
-- [ ] 4.1 Implement `ErbHtmlPublisher` with the `h()` helper and the layout, index, repo and traceability templates. Verify that the publisher spec's index, repo-page and grid examples are green.
-- [ ] 4.2 Add `api.erb` (operations, parameters, request body, responses and headers, with local `$ref`s resolved) and the `openapi.yaml` copy. Verify that the publisher spec's API examples are green.
-- [ ] 4.3 Add the escaping Markdown renderer and the ADR index and page templates. Verify that the publisher spec's ADR examples are green.
-- [ ] 4.4 Add the architecture template (Mermaid 11.17.2 ESM, `securityLevel: "strict"`) and the contracts and SLO placeholders. Verify that the whole publisher spec, including the escaping example, is green.
+- [x] 4.1 Implement `ErbHtmlPublisher` with the `h()` helper and the layout, index, repo and traceability templates. Verify that the publisher spec's index, repo-page and grid examples are green.
+- [x] 4.2 Add `api.erb` (operations, parameters, request body, responses and headers, with local `$ref`s resolved) and the `openapi.yaml` copy. Verify that the publisher spec's API examples are green.
+- [x] 4.3 Add the escaping Markdown renderer and the ADR index and page templates. Verify that the publisher spec's ADR examples are green.
+- [x] 4.4 Add the architecture template (Mermaid 11.17.2 ESM, `securityLevel: "strict"`) and the contracts and SLO placeholders. Verify that the whole publisher spec, including the escaping example, is green.
 - [ ] 4.5 Write `docs/adr/0001-record-architecture-decisions.md`, `0002-openspec-not-kiro-specs.md` and `0003-shared-acceptance-suite-and-channel-ledger.md`, and `docs/diagrams/c4-context.mmd` (`C4Context`) and `c4-container.mmd` (`C4Container`) naming every system listed in the `docs-site` spec. Verify that the diagram example in the publisher spec is green and that each diagram renders at mermaid.live without errors.
 
 ## 5. Composition and tooling
 
-- [ ] 5.1 Implement `GreeterDocs::Build` and `bin/build-docs`: collect the source errors and coverage violations, print one line each, exit 1, and write no `_site` on failure. Verify that `spec/build_spec.rb` is green.
-- [ ] 5.2 Implement `bin/fetch-sources` with an injectable `Open3` argv runner, per-repo cleanup of `tmp/repos/<repo>` and `tmp/traces/<repo>`, and token redaction. Verify that its spec is green, except the event-selection and fork-PR examples, which go green in 7.2.
-- [ ] 5.3 Run the full suite with the formatter. Verify that `spec/coverage_of_self_spec.rb` is green and that `tmp/traces/greeter-docs/repo-trace.json` has one passed result per greeter-docs scenario.
+- [x] 5.1 Implement `GreeterDocs::Build` and `bin/build-docs`: collect the source errors and coverage violations, print one line each, exit 1, and write no `_site` on failure. Verify that `spec/build_spec.rb` is green.
+- [x] 5.2 Implement `bin/fetch-sources` with an injectable `Open3` argv runner, per-repo cleanup of `tmp/repos/<repo>` and `tmp/traces/<repo>`, and token redaction. Verify that its spec is green, except the event-selection and fork-PR examples, which go green in 7.2.
+- [x] 5.3 Run the full suite with the formatter. Verify that `spec/coverage_of_self_spec.rb` is green and that `tmp/traces/greeter-docs/repo-trace.json` has one passed result per greeter-docs scenario.
 
 ## 6. Workflow
 
-- [ ] 6.1 Write `.github/workflows/docs.yml` per design D10:
+- [x] 6.1 Write `.github/workflows/docs.yml` per design D10:
   - triggers including `pull_request`, and `concurrency: pages`;
   - top-level `permissions: {}`;
   - `ruby-version: "3.3"` with the greeter-acceptance comment;
@@ -78,21 +78,21 @@ or lives in `spec/fixtures/`.
   - actions pinned by SHA.
 
   Verify that `spec/workflows/docs_workflow_spec.rb` is green, except the `permission-*`, `BUNDLE_FROZEN` and Gemfile-source examples, which go green in 7.3. Verify that `actionlint` reports nothing.
-- [ ] 6.2 Document the GitHub App, variable, secret and Pages settings from the design's Migration Plan, and the local commands, in `README.md`. Verify that each documented command runs as written.
+- [x] 6.2 Document the GitHub App, variable, secret and Pages settings from the design's Migration Plan, and the local commands, in `README.md`. Verify that each documented command runs as written.
 
 ## 7. Security hardening
 
-- [ ] 7.1 (S1, S7) Add `GreeterDocs::LogSafe`, used by every line `bin/build-docs` and `bin/fetch-sources` print. It replaces control characters and newlines with `\uFFFD`, prefixes any line starting with `::` so it is never a workflow command, truncates values to 200 characters, and echoes a sourced value only when it matches the slug or path pattern (otherwise `(invalid value)`). Verify that `spec/support/log_safety_spec.rb` is green.
-- [ ] 7.2 (S2) Change `bin/fetch-sources` to query `gh run list` with `--event push` and with `--event schedule` (`--json databaseId,createdAt`) and download the newer run. Verify that the fetch spec's event-selection and fork-PR examples are green.
-- [ ] 7.3 (S3, S9) Add `permission-contents: read` and `permission-actions: read` to the token step, and `BUNDLE_FROZEN: "true"` to the job `env`, in `docs.yml`. Update the README setup to say Actions: read. Verify that the workflow spec's token, frozen-bundle and Gemfile-source examples are green.
-- [ ] 7.4 (S4, API7) Add input limits:
+- [x] 7.1 (S1, S7) Add `GreeterDocs::LogSafe`, used by every line `bin/build-docs` and `bin/fetch-sources` print. It replaces control characters and newlines with `\uFFFD`, prefixes any line starting with `::` so it is never a workflow command, truncates values to 200 characters, and echoes a sourced value only when it matches the slug or path pattern (otherwise `(invalid value)`). Verify that `spec/support/log_safety_spec.rb` is green.
+- [x] 7.2 (S2) Change `bin/fetch-sources` to query `gh run list` with `--event push` and with `--event schedule` (`--json databaseId,createdAt`) and download the newer run. Verify that the fetch spec's event-selection and fork-PR examples are green.
+- [x] 7.3 (S3, S9) Add `permission-contents: read` and `permission-actions: read` to the token step, and `BUNDLE_FROZEN: "true"` to the job `env`, in `docs.yml`. Update the README setup to say Actions: read. Verify that the workflow spec's token, frozen-bundle and Gemfile-source examples are green.
+- [x] 7.4 (S4, API7) Add input limits:
   - a 5 MiB cap per trace, ledger and `openapi.yaml` (the ledger fetcher stops reading past the cap);
   - `YAML.safe_load(..., aliases: false, permitted_classes: [])` for the tag map and `openapi.yaml`;
   - a `$ref` resolver with a visited set and a depth limit of 32, and no fetch of a non-local `$ref`;
   - a `Net::HTTP` `read_timeout` and `open_timeout` of 10 s.
 
   Each limit raises a `SourceError` naming the file or environment. Verify that the limits examples are green.
-- [ ] 7.5 (S5, S10) Add the URL rules:
+- [x] 7.5 (S5, S10) Add the URL rules:
   - ADR link targets are parsed with `URI` after HTML-entity decoding and whitespace stripping, and kept only for `http`, `https` or a scheme-less relative path; anything else renders as text.
   - Every `href` or `id` built from a ledger `run_id`, channel or key passes the digits or slug pattern, or is omitted.
   - The API page shows the greeter-http commit and `info.version`, labelled "main".
@@ -102,7 +102,7 @@ or lives in `spec/fixtures/`.
 
 ## 8. Verify and docs
 
-- [ ] 8.1 Run `bin/fetch-sources` with a local `GH_TOKEN`, then `bundle exec rspec` with the formatter, then `bin/build-docs`. Confirm that the build fails naming greeter-http `version-headers` `deployed-stage-exposes-version-headers` `openspec/specs/version-headers/spec.md`, as expected per design Risks, and names nothing else. Then run `bin/build-docs` against fixture sources with full coverage, and confirm that it exits 0 and writes `_site/`.
-- [ ] 8.2 Run `lychee --offline --no-progress _site` and confirm that it exits 0. Add a link to a missing page, confirm that lychee fails naming the page and the link, then revert.
-- [ ] 8.3 Run `bundle exec rspec`, `bundle exec rubocop` and `openspec validate add-live-docs --strict`, and confirm that all are clean.
-- [ ] 8.4 (S8) After a real `bin/fetch-sources` with `GH_TOKEN`, confirm that `grep -r "$GH_TOKEN" tmp/repos/*/.git/config` finds nothing, and that `_site/` contains no file from `tmp/` (`find _site -path '*tmp*'` is empty).
+- [x] 8.1 Run `bin/fetch-sources` with a local `GH_TOKEN`, then `bundle exec rspec` with the formatter, then `bin/build-docs`. Confirm that the build fails naming greeter-http `version-headers` `deployed-stage-exposes-version-headers` `openspec/specs/version-headers/spec.md`, as expected per design Risks, and names nothing else. Then run `bin/build-docs` against fixture sources with full coverage, and confirm that it exits 0 and writes `_site/`.
+- [x] 8.2 Run `lychee --offline --no-progress _site` and confirm that it exits 0. Add a link to a missing page, confirm that lychee fails naming the page and the link, then revert.
+- [x] 8.3 Run `bundle exec rspec`, `bundle exec rubocop` and `openspec validate add-live-docs --strict`, and confirm that all are clean.
+- [x] 8.4 (S8) After a real `bin/fetch-sources` with `GH_TOKEN`, confirm that `grep -r "$GH_TOKEN" tmp/repos/*/.git/config` finds nothing, and that `_site/` contains no file from `tmp/` (`find _site -path '*tmp*'` is empty).

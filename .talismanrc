@@ -52,7 +52,7 @@ fileignoreconfig:
 - filename: Gemfile.lock
   checksum: 8af725711082b9a83c17fb560a54d205cd93347f746ea2aefb4226c42af6bd86
 - filename: openspec/changes/add-live-docs/tasks.md
-  checksum: 896ae1c312adff7da89a4cd91002a0faa27e3575bc36e5b1fa45b17fcf593732
+  checksum: 8ae40fe5370babd6dcbb4e36a6ebd0ea8ce02805086f0832116bf43799e81be0
 - filename: openspec/changes/add-live-docs/design.md
   checksum: f40638e404298cbbfe684b936dbaf48a8922a218b823f8d7d2d544b426241009
 - filename: openspec/config.yaml
