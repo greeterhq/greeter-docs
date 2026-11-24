@@ -1,0 +1,16 @@
+{
+  "schema": "greeterhq.repo-trace.v1",
+  "repo": "greeter-http",
+  "sha": "e03ac08010f8fe0798daa93ac0c7d5a804c53dbf",
+  "recorded_at": "2026-11-23T00:21:11Z",
+  "run_id": "45088245869",
+  "results": [
+    {
+      "requirement": "deployed-stage-exposes-version-headers",
+      "scenario": "smoke-check-on-a-deployed-stage",
+      "status": "passed",
+      "source": "cucumber",
+      "location": "features/version_headers.feature:7"
+    }
+  ]
+}

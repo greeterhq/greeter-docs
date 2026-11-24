@@ -99,6 +99,8 @@ fileignoreconfig:
   checksum: 4b08dbad96fb84978197c32c593b55f7c3e5b48f673a3c0240cb0cb7ed14fdf3
 - filename: spec/domain/slug_spec.rb
   checksum: c0765bb69578f7315a073864dc80d4f006e80547f954b5922a29f1d55645d56a
+- filename: spec/fixtures/traces/greeter-http/prod-smoke/repo-trace.json
+  checksum: 4c1ffbf96ad1cbe7f96805bc689180d43688955ad0abc4f4acea69879ae8111a
 - filename: spec/fixtures/trace_suite/sample_suite.rb
   checksum: 8271af631203a40fdaa817d3a5f3a7b0b0d4cf32cf0f40a6605cad445ef1a436
 - filename: spec/support/repo_trace_formatter_spec.rb
