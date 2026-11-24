@@ -1,0 +1,60 @@
+<%- if api -%>
+<h1><%= h(api.title) %> API</h1>
+<p>Version <%= h(api.version) %>, from greeter-http <code>main</code><%- if api.commit -%> at commit <code><%= h(api.commit) %></code><%- end -%>. The deployed version may differ; see the traceability page. Download <a href="openapi.yaml">openapi.yaml</a>.</p>
+<%= paragraphs(api.description) %>
+<%- api.operations.each do |op| -%>
+<section class="operation">
+<h2><%= h(op.http_method.upcase) %> <code><%= h(op.path) %></code></h2>
+<p><%= h(op.summary) %></p>
+<h3>Parameters</h3>
+<%- if op.parameters.empty? -%>
+<p>None.</p>
+<%- else -%>
+<table>
+<thead><tr><th>Name</th><th>In</th><th>Required</th><th>Description</th></tr></thead>
+<tbody>
+<%- op.parameters.each do |param| -%>
+<%- param = {} unless param.is_a?(Hash) -%>
+<tr><td><code><%= h(param['name'] || param['$ref']) %></code></td><td><%= h(param['in']) %></td><td><%= h(param['required'] ? 'yes' : 'no') %></td><td><%= h(param['description']) %></td></tr>
+<%- end -%>
+</tbody>
+</table>
+<%- end -%>
+<%- if op.request_body.is_a?(Hash) -%>
+<section data-request-body>
+<h3>Request body<%= h(op.request_body['required'] ? ' (required)' : '') %></h3>
+<%- (op.request_body['content'] || {}).each do |type, media| -%>
+<h4><code><%= h(type) %></code></h4>
+<pre><%= h(pretty(media.is_a?(Hash) ? media['schema'] : media)) %></pre>
+<%- end -%>
+</section>
+<%- end -%>
+<h3>Responses</h3>
+<table>
+<thead><tr><th>Status</th><th>Description</th><th>Headers</th><th>Body</th></tr></thead>
+<tbody>
+<%- op.responses.each do |code, response| -%>
+<%- response = {} unless response.is_a?(Hash) -%>
+<tr data-response="<%= h(code) %>">
+<td><%= h(code) %></td>
+<td><%= h(response['description']) %></td>
+<td><ul>
+<%- (response['headers'] || {}).each do |name, header| -%>
+<li><code><%= h(name) %></code><%- if header.is_a?(Hash) && header['description'] -%>: <%= h(header['description']) %><%- end -%></li>
+<%- end -%>
+</ul></td>
+<td>
+<%- (response['content'] || {}).each do |type, media| -%>
+<details><summary><code><%= h(type) %></code></summary><pre><%= h(pretty(media.is_a?(Hash) ? media['schema'] : media)) %></pre></details>
+<%- end -%>
+</td>
+</tr>
+<%- end -%>
+</tbody>
+</table>
+</section>
+<%- end -%>
+<%- else -%>
+<h1>API</h1>
+<p>not yet available</p>
+<%- end -%>

@@ -1,0 +1,9 @@
+<h1>Architecture</h1>
+<%- if diagrams.empty? -%>
+<p>No diagrams yet.</p>
+<%- end -%>
+<%- diagrams.each do |diagram| -%>
+<h2><%= h(diagram.name) %></h2>
+<pre class="mermaid">
+<%= h(diagram.source) %></pre>
+<%- end -%>

@@ -1,0 +1,34 @@
+C4Container
+  title greeterHQ: containers and the live docs data flow
+
+  System_Boundary(producers, "Producer repos") {
+    Container(core, "greeter-core", "Ruby gem", "Greeting domain; CI uploads repo-trace")
+    Container(cli, "greeter-cli", "Ruby CLI", "Channel; CI uploads repo-trace")
+    Container(http, "greeter-http", "Rack app on Lambda", "Channel and openapi.yaml; CI uploads repo-trace")
+    Container(acceptance, "greeter-acceptance", "RSpec and Cucumber", "Shared suite; CI uploads repo-trace, record mode writes ledgers")
+  }
+
+  System_Boundary(ledgers, "greeter-acceptance ledger branches") {
+    ContainerDb(prod, "ledger-prod", "Git branch", "ledger.json, greeterhq.ledger.v2")
+    ContainerDb(stage, "ledger-stage", "Git branch", "ledger.json, greeterhq.ledger.v2")
+  }
+
+  System_Boundary(docsrepo, "greeter-docs") {
+    Container(fetch, "bin/fetch-sources", "Ruby", "Shallow clones and latest main repo-trace artifacts")
+    Container(build, "bin/build-docs", "Ruby, hexagonal", "Coverage rule and ERB publisher")
+    Container(workflow, "docs.yml", "GitHub Actions", "Build, test, link check, deploy")
+  }
+
+  System_Ext(pages, "GitHub Pages", "greeterhq.github.io/greeter-docs")
+
+  Rel(acceptance, prod, "Publishes prod results")
+  Rel(acceptance, stage, "Publishes stage results")
+  Rel(fetch, core, "Clones and downloads repo-trace")
+  Rel(fetch, cli, "Clones and downloads repo-trace")
+  Rel(fetch, http, "Clones and downloads repo-trace")
+  Rel(fetch, acceptance, "Clones and downloads repo-trace")
+  Rel(build, prod, "Reads ledger.json")
+  Rel(build, stage, "Reads ledger.json")
+  Rel(workflow, fetch, "Runs")
+  Rel(workflow, build, "Runs")
+  Rel(workflow, pages, "Deploys _site to")

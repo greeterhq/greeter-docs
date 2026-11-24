@@ -1,0 +1,25 @@
+C4Context
+  title greeterHQ: system context
+
+  Person(guest, "Guest", "Is greeted through a channel")
+  Person(maintainer, "Maintainer", "Changes the repos and reads the live docs")
+
+  System(cli, "greeter-cli", "Command-line channel")
+  System(http, "greeter-http", "HTTP channel on AWS Lambda")
+  System(core, "greeter-core", "Greeting domain, used by both channels")
+  System(acceptance, "greeter-acceptance", "Shared acceptance suite and ledger publisher")
+  System(docs, "greeter-docs", "Builds the live documentation site")
+
+  System_Ext(github, "GitHub", "Repos, Actions artifacts, ledger-prod and ledger-stage branches")
+  System_Ext(pages, "GitHub Pages", "Hosts greeterhq.github.io/greeter-docs")
+
+  Rel(guest, cli, "Greets through")
+  Rel(guest, http, "Greets through")
+  Rel(cli, core, "Uses")
+  Rel(http, core, "Uses")
+  Rel(acceptance, cli, "Tests the deployed version of")
+  Rel(acceptance, http, "Tests the deployed version of")
+  Rel(acceptance, github, "Publishes ledger.json to ledger-prod and ledger-stage")
+  Rel(docs, github, "Reads specs, repo-trace artifacts and ledgers from")
+  Rel(docs, pages, "Deploys the site to")
+  Rel(maintainer, pages, "Reads")

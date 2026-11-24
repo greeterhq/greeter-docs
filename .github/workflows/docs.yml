@@ -1,0 +1,104 @@
+name: docs
+
+# Rebuilds the whole site from main on every run. Nothing in a docs-refresh
+# dispatch is read, so a dispatch cannot choose what is fetched or built.
+on:
+  push:
+    branches: [main]
+  pull_request:
+  repository_dispatch:
+    types: [docs-refresh]
+  schedule:
+    - cron: '23 5 * * *'
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+env:
+  BUNDLE_FROZEN: "true"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Check out
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      # Ruby: CI tracks the latest 3.3.x patch. Newer runner images only build
+      # the latest patch of each series, so an exact patch pin would break
+      # whenever a new patch ships. The repo's .ruby-version (3.3.13) remains
+      # the local development pin.
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@be3c7df29b3349ec6bcfc6b4792f1cf9f5237d18 # v1.343.0
+        with:
+          ruby-version: "3.3"
+          bundler-cache: true
+
+      - name: Mint a read-only token for the producer repos
+        id: app-token
+        uses: actions/create-github-app-token@f418cff399f7aef4c2f0ad47e25ca7a6abbdd6fc # v3.4.0
+        with:
+          client-id: ${{ vars.DOCS_READER_APP_CLIENT_ID }}
+          private-key: ${{ secrets.DOCS_READER_APP_PRIVATE_KEY }}
+          owner: greeterhq
+          repositories: greeter-core,greeter-cli,greeter-http,greeter-acceptance
+          permission-contents: read
+          permission-actions: read
+
+      - name: Fetch sources
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: bin/fetch-sources
+
+      - name: Install lychee
+        env:
+          LYCHEE_VERSION: lychee-v0.24.2
+          LYCHEE_SHA256: 1f4e0ef7f6554a6ed33dd7ac144fb2e1bbed98598e7af973042fc5cd43951c9a
+        run: |
+          curl -fsSLo "$RUNNER_TEMP/lychee.tar.gz" \
+            "https://github.com/lycheeverse/lychee/releases/download/$LYCHEE_VERSION/lychee-x86_64-unknown-linux-gnu.tar.gz"
+          echo "$LYCHEE_SHA256  $RUNNER_TEMP/lychee.tar.gz" | sha256sum -c -
+          tar -xzf "$RUNNER_TEMP/lychee.tar.gz" -C "$RUNNER_TEMP"
+          echo "$RUNNER_TEMP/lychee-x86_64-unknown-linux-gnu" >> "$GITHUB_PATH"
+
+      - name: Lint
+        run: bundle exec rubocop
+
+      - name: Test
+        env:
+          REPO_TRACE_PATH: tmp/traces/greeter-docs/repo-trace.json
+        run: bundle exec rspec --format progress --format RepoTraceFormatter
+
+      - name: Build site
+        run: bin/build-docs
+
+      - name: Check internal links
+        run: lychee --offline --no-progress _site
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1
