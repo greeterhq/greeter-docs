@@ -69,6 +69,44 @@ RSpec.describe 'GreeterDocs::Adapters::ArtifactTraceSource' do
     end
   end
 
+  context 'with a prod smoke trace', requirement: 'a-prod-smoke-trace-supplements-a-repo-s-ci-trace' do
+    let(:smoke_source) { GreeterDocs::Adapters::ArtifactTraceSource.new(workspace_root: root, subdir: 'prod-smoke') }
+    let(:smoke_path) { File.join(root, 'tmp', 'traces', 'greeter-http', 'prod-smoke', 'repo-trace.json') }
+
+    before do
+      FileUtils.mkdir_p(File.dirname(smoke_path))
+      FileUtils.cp(fixture('traces', 'greeter-http', 'prod-smoke', 'repo-trace.json'), smoke_path)
+    end
+
+    it 'reads the real prod smoke trace from prod-smoke/' do
+      trace = smoke_source.trace('greeter-http')
+
+      expect([trace.repo, trace.sha, trace.run_id])
+        .to eq(%w[greeter-http e03ac08010f8fe0798daa93ac0c7d5a804c53dbf 45088245869])
+      expect(trace.results.map { |r| [r.requirement, r.scenario, r.status] })
+        .to eq([%w[deployed-stage-exposes-version-headers smoke-check-on-a-deployed-stage passed]])
+    end
+
+    it 'returns nil when the repo has no prod smoke trace' do
+      expect(smoke_source.trace('greeter-core')).to be_nil
+    end
+
+    context 'when the prod smoke trace is invalid',
+            scenario: 'an-invalid-prod-smoke-trace-fails-the-build-and-is-named' do
+      it 'names the prod-smoke path and the schema or repo field' do
+        label = 'tmp/traces/greeter-http/prod-smoke/repo-trace.json'
+        { 'schema' => 'greeterhq.traceability.v1', 'repo' => 'greeter-cli' }.each do |field, value|
+          write_json(smoke_path, fixture_json('traces', 'greeter-http', 'prod-smoke', 'repo-trace.json')
+                                   .merge(field => value))
+
+          expect { smoke_source.trace('greeter-http') }.to raise_error(GreeterDocs::SourceError) { |error|
+            expect(error.message).to include(label, field)
+          }
+        end
+      end
+    end
+  end
+
   describe 'other inputs' do
     it 'returns nil for a repo with no trace file' do
       FileUtils.rm_rf(File.join(root, 'tmp', 'traces', 'greeter-cli'))

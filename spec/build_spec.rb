@@ -15,10 +15,18 @@ RSpec.describe 'GreeterDocs::Build' do
 
   attr_reader :root, :site
 
-  def build(ledgers: { 'prod' => [200, prod_ledger_body], 'stage' => [404, ''] })
+  # deployed: true also wires the prod smoke trace source (design D12).
+  def build(ledgers: { 'prod' => [200, prod_ledger_body], 'stage' => [404, ''] }, deployed: false)
     adapters = GreeterDocs::Adapters
     repos_dir = File.join(root, 'tmp', 'repos')
+    smoke = if deployed
+              { deployed_trace_source: adapters::ArtifactTraceSource.new(workspace_root: root,
+                                                                         subdir: 'prod-smoke') }
+            else
+              {}
+            end
     GreeterDocs::Build.new(
+      **smoke,
       spec_source: adapters::GitSpecSource.new(clones_root: repos_dir, workspace_root: root,
                                                producers: SpecHelpers::PRODUCERS),
       trace_source: adapters::ArtifactTraceSource.new(workspace_root: root),
@@ -40,6 +48,37 @@ RSpec.describe 'GreeterDocs::Build' do
 
   def cover_http_requirement
     add_passed_result(root, 'greeter-http', 'deployed-stage-exposes-version-headers', 'smoke-check-on-a-deployed-stage')
+  end
+
+  def add_prod_smoke_trace
+    path = File.join(root, 'tmp', 'traces', 'greeter-http', 'prod-smoke', 'repo-trace.json')
+    FileUtils.mkdir_p(File.dirname(path))
+    FileUtils.cp(fixture('traces', 'greeter-http', 'prod-smoke', 'repo-trace.json'), path)
+  end
+
+  context 'with the prod smoke source', requirement: 'a-prod-smoke-trace-supplements-a-repo-s-ci-trace' do
+    context 'when the prod smoke trace passed what CI only skipped',
+            scenario: 'a-passed-prod-smoke-result-covers-a-requirement-ci-only-skipped' do
+      it 'reports no violation and exits zero' do
+        add_prod_smoke_trace
+
+        outcome = build(deployed: true)
+
+        expect(outcome.exit_code).to eq(0), outcome.lines.join("\n")
+        expect(File).to exist(File.join(site, 'index.html'))
+      end
+    end
+
+    context 'when there is no prod smoke trace',
+            scenario: 'without-a-prod-smoke-trace-the-requirement-stays-uncovered' do
+      it 'exits non-zero and names the requirement exactly as without the source' do
+        outcome = build(deployed: true)
+
+        expect(outcome.exit_code).not_to eq(0)
+        expect(outcome.lines).to eq([http_violation])
+        expect(File).not_to exist(site)
+      end
+    end
   end
 
   context 'when requirements on main are uncovered',

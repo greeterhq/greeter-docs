@@ -158,9 +158,13 @@ module SpecHelpers
     domain::LedgerView.not_recorded(environment)
   end
 
-  def model(repos:, traces: [], ledgers: [], api: nil, adrs: [], diagrams: [])
+  # deployed_traces is passed only when given, so models without prod smoke
+  # traces are built exactly as before.
+  def model(repos:, traces: [], ledgers: [], api: nil, adrs: [], diagrams: [], deployed_traces: [])
+    deployed = deployed_traces.empty? ? {} : { deployed_traces: deployed_traces.to_h { |t| [t.repo, t] } }
     domain::DocsModel.new(
       repos: repos,
+      **deployed,
       traces: traces.to_h { |t| [t.repo, t] },
       ledgers: ledgers.to_h { |l| [l.environment, l] },
       api: api, adrs: adrs, diagrams: diagrams,

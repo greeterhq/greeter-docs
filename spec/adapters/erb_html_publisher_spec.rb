@@ -124,6 +124,28 @@ RSpec.describe 'GreeterDocs::Adapters::ErbHtmlPublisher' do
       end
     end
 
+    context 'with a scenario passed only in the prod smoke trace',
+            requirement: 'a-scenario-verified-only-by-the-prod-smoke-trace-links-to-its-run',
+            scenario: 'a-prod-smoke-only-pass-links-to-the-smoke-prod-run' do
+      it 'shows it passed, labels it as verified by the prod smoke run and links that smoke-prod.yml run' do
+        document = fixture_json('traces', 'greeter-http', 'prod-smoke', 'repo-trace.json')
+        smoke = domain::Trace.new(
+          repo: document['repo'], sha: document['sha'], run_id: document['run_id'],
+          recorded_at: document['recorded_at'],
+          results: document['results'].map { |r| domain::Result.new(**r.transform_keys(&:to_sym)) }
+        )
+        docs_model = domain::DocsModel.new(**fixture_model.to_h, deployed_traces: { 'greeter-http' => smoke })
+
+        publish(docs_model)
+        html = page('repos/greeter-http.html')
+        item = html[%r{<li[^>]*data-scenario="smoke-check-on-a-deployed-stage"[^>]*>.*?</li>}m]
+
+        expect(item).to include('data-requirement="deployed-stage-exposes-version-headers"', 'data-status="passed"',
+                                'verified by the prod smoke run',
+                                'href="https://github.com/greeterhq/greeter-http/actions/runs/45088245869"')
+      end
+    end
+
     context 'with a null run ID', scenario: 'a-null-run-id-gives-no-run-link' do
       it 'shows the results without a run link' do
         core = repo('greeter-core', [requirement('local-run')])

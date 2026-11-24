@@ -110,6 +110,41 @@ RSpec.describe 'GreeterDocs::Domain::CoverageRule' do
     end
   end
 
+  context 'with a prod smoke trace', requirement: 'a-prod-smoke-trace-supplements-a-repo-s-ci-trace' do
+    let(:http) do
+      headers = requirement('deployed-stage-exposes-version-headers',
+                            capability: 'version-headers', scenarios: ['smoke-check-on-a-deployed-stage'])
+      repo('greeter-http', [headers])
+    end
+    let(:ci) do
+      trace('greeter-http', [result('deployed-stage-exposes-version-headers', 'smoke-check-on-a-deployed-stage',
+                                    'skipped')])
+    end
+
+    def smoke(status)
+      trace('greeter-http', [result('deployed-stage-exposes-version-headers', 'smoke-check-on-a-deployed-stage',
+                                    status)], run_id: '45088245869')
+    end
+
+    it 'counts a passed result in the prod smoke trace when CI only skipped it' do
+      docs_model = model(repos: [http], traces: [ci], deployed_traces: [smoke('passed')])
+
+      expect(violated_slugs(docs_model)).to be_empty
+      expect(rule.summary(docs_model)).to eq(covered: 1, uncovered: 0, not_yet_recorded: 0)
+    end
+
+    context 'when the prod smoke results are failed or skipped',
+            scenario: 'a-failed-or-skipped-prod-smoke-result-does-not-cover' do
+      it 'returns a violation for the requirement' do
+        %w[failed skipped].each do |status|
+          docs_model = model(repos: [http], traces: [ci], deployed_traces: [smoke(status)])
+
+          expect(violated_slugs(docs_model)).to eq(['deployed-stage-exposes-version-headers']), status
+        end
+      end
+    end
+  end
+
   describe 'ordering and summary' do
     it 'sorts violations by repo, capability and requirement and formats one line each' do
       repos = [repo('greeter-http', [requirement('zeta', capability: 'b'), requirement('alpha', capability: 'a')]),

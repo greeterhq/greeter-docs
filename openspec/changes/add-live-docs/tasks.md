@@ -37,11 +37,22 @@ or lives in `spec/fixtures/`.
 
   Tag the examples that verify a spec scenario. Verify that they fail with `NameError` or expectation failures.
 - [x] 1.10 Remove `tmp/allow-test-edits` and commit the red tests. Verify that `git status` shows no changes under `spec/`.
-- [ ] 1.11 (D12) Blocked until greeter-http's `smoke-prod.yml` has run successfully on `main` and the run ID is given. Capture `spec/fixtures/traces/greeter-http/prod-smoke/repo-trace.json` with `gh run download -R greeterhq/greeter-http <run-id> -n repo-trace-smoke-prod`, and record the run ID, sha, result count, sha256 and download date in design.md, Fixtures. Replace `<smoke-run-id>` in the `docs-site` spec with the real run ID. Verify that the file has schema `greeterhq.repo-trace.v1`, repo `greeter-http`, and a `passed` result for `deployed-stage-exposes-version-headers` / `smoke-check-on-a-deployed-stage`.
+- [x] 1.11 (D12) Blocked until greeter-http's `smoke-prod.yml` has run successfully on `main` and the run ID is given. Capture `spec/fixtures/traces/greeter-http/prod-smoke/repo-trace.json` with `gh run download -R greeterhq/greeter-http <run-id> -n repo-trace-smoke-prod`, and record the run ID, sha, result count, sha256 and download date in design.md, Fixtures. Replace `<smoke-run-id>` in the `docs-site` spec with the real run ID. Verify that the file has schema `greeterhq.repo-trace.v1`, repo `greeter-http`, and a `passed` result for `deployed-stage-exposes-version-headers` / `smoke-check-on-a-deployed-stage`.
 - [ ] 1.12 (D12) With the test guard open, write the red tests for the prod smoke scenarios, one tagged example each:
   - `coverage_rule_spec`: a passed `deployed_traces` result covers a requirement; a failed or skipped one does not.
   - `artifact_trace_source_spec`: `subdir: 'prod-smoke'` reads the 1.11 fixture; wrong-schema and wrong-repo variants are named with the `prod-smoke/` path.
-  - `fetch_sources_spec`: the `smoke-prod.yml` list, artifact lookup and download commands; a missing or expired artifact; no successful run. The two existing examples that assume every `gh run list` is a `ci.yml` lookup must change: "fetch issues the expected commands" (exact call list) and the fork-PR example (every list has `--event`). That is an edit to existing specs, so raise it for approval first.
+  - `fetch_sources_spec`:
+    - the REST runs lookup, the artifact lookup and the download, in that order, after the four CI fetches, with the file left as `prod-smoke/repo-trace.json`;
+    - a missing or expired artifact;
+    - an empty `workflow_runs`;
+    - a run at another `path`;
+    - a run from another branch or a `pull_request` event;
+    - an artifact with no file, with two files, or with one file of another name;
+    - a downloaded trace whose `sha` differs from the run's `head_sha` (S11).
+
+    Each failure case must exit non-zero, name the run ID and leave no `prod-smoke/` directory. Pre-approved edits to existing examples:
+    - "fetch issues the expected commands" stays an exact ordered list, with the three smoke calls appended.
+    - The fork-PR example checks `--event` on the `ci.yml` lookups only, and asserts the smoke lookup asks for `branch=main` and `status=success`.
   - `build_spec`: the fixture workspace plus the prod smoke fixture exits zero; without it, the existing uncovered example still names the requirement.
   - `erb_html_publisher_spec`: a prod-smoke-only pass shows `passed`, the prod smoke label, and the `smoke-prod.yml` run link.
 
@@ -75,7 +86,20 @@ or lives in `spec/fixtures/`.
 - [x] 5.1 Implement `GreeterDocs::Build` and `bin/build-docs`: collect the source errors and coverage violations, print one line each, exit 1, and write no `_site` on failure. Verify that `spec/build_spec.rb` is green.
 - [x] 5.2 Implement `bin/fetch-sources` with an injectable `Open3` argv runner, per-repo cleanup of `tmp/repos/<repo>` and `tmp/traces/<repo>`, and token redaction. Verify that its spec is green, except the event-selection and fork-PR examples, which go green in 7.2.
 - [x] 5.3 Run the full suite with the formatter. Verify that `spec/coverage_of_self_spec.rb` is green and that `tmp/traces/greeter-docs/repo-trace.json` has one passed result per greeter-docs scenario.
-- [ ] 5.4 (D12) Add `FetchSources::DEPLOYED_TRACES` and, after the four CI fetches, the `smoke-prod.yml` lookup: `gh run list` with no `--event`, the `gh api .../actions/runs/<id>/artifacts` check for a non-expired `repo-trace-smoke-prod`, and the download into `tmp/traces/greeter-http/prod-smoke/`. A missing run or artifact prints a line and is not an error. Verify that the 1.12 fetch examples are green.
+- [ ] 5.4 (D12, S11) Add `FetchSources::DEPLOYED_TRACES` and, after the four CI fetches, the `smoke-prod.yml` lookup:
+  - `gh api 'repos/greeterhq/greeter-http/actions/workflows/smoke-prod.yml/runs?branch=main&status=success&per_page=1'`, reading `workflow_runs[0]`;
+  - the run used only if `path` is `.github/workflows/smoke-prod.yml`, `head_branch` is `main` and `event` is not `pull_request`;
+  - the `gh api .../actions/runs/<id>/artifacts` check for `repo-trace-smoke-prod` with `expired` false;
+  - the download into `tmp/traces/greeter-http/prod-smoke/`;
+  - the shape check (exactly one file, `repo-trace-smoke-prod.json`);
+  - the check that its `sha` equals the run's `head_sha`;
+  - then the rename to `repo-trace.json`.
+
+  On a shape failure, a `sha` mismatch or an unreadable file, remove the directory, exit non-zero and name the run ID. An empty `workflow_runs`, an unusable run or a missing or expired artifact prints a line and is not an error. Verify that the 1.12 fetch examples are green, then run the two mutation proofs:
+  - drop `branch=main` from the smoke lookup and show that the fork-PR example fails;
+  - move the smoke lookup before the CI fetches and show that the expected-commands example fails.
+
+  Revert both.
 - [ ] 5.5 (D12) Give `Build` the optional `deployed_trace_source:` port and wire `ArtifactTraceSource.new(workspace_root: root, subdir: 'prod-smoke')` into `bin/build-docs`. Verify that the 1.12 build examples and all of `spec/build_spec.rb` are green.
 
 ## 6. Workflow

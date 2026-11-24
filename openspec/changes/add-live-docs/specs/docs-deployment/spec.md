@@ -104,20 +104,63 @@ greeter-docs or write outside those directories.
 - **THEN** neither its output nor its error message contains the token value
 
 ### Requirement: Prod smoke traces come from the latest successful smoke-prod run
-After the four CI traces, `bin/fetch-sources` SHALL find greeter-http's latest
-successful `smoke-prod.yml` run on `main`, of any event. If that run has a
-non-expired `repo-trace-smoke-prod` artifact, it SHALL download it into
-`tmp/traces/greeter-http/prod-smoke/`. Otherwise it SHALL download nothing,
-say so, and carry on.
+After the four CI traces, `bin/fetch-sources` SHALL read `workflow_runs[0]` from
+`gh api 'repos/greeterhq/greeter-http/actions/workflows/smoke-prod.yml/runs?branch=main&status=success&per_page=1'`.
+It SHALL use the run only if `path` is `.github/workflows/smoke-prod.yml`,
+`head_branch` is `main` and `event` is not `pull_request`. An empty
+`workflow_runs`, or any other run, means no successful run.
 
 #### Scenario: The prod smoke trace is fetched from smoke-prod.yml
-- **WHEN** `bin/fetch-sources` runs with a stubbed runner where greeter-http's latest successful `smoke-prod.yml` run has a non-expired `repo-trace-smoke-prod` artifact
-- **THEN** after the four repos' CI commands it runs `gh run list -R greeterhq/greeter-http --workflow smoke-prod.yml --branch main --status success --limit 1 --json databaseId,createdAt` with no `--event`, `gh api repos/greeterhq/greeter-http/actions/runs/<id>/artifacts`, and `gh run download <id> -R greeterhq/greeter-http -n repo-trace-smoke-prod -D tmp/traces/greeter-http/prod-smoke`
+- **WHEN** `bin/fetch-sources` runs with a stubbed runner where greeter-http's latest successful `smoke-prod.yml` run has path `.github/workflows/smoke-prod.yml`, head branch `main`, event `schedule`, a non-expired `repo-trace-smoke-prod` artifact holding only `repo-trace-smoke-prod.json`, and that file's `sha` equals the run's `head_sha`
+- **THEN** after the four repos' CI commands it runs `gh api 'repos/greeterhq/greeter-http/actions/workflows/smoke-prod.yml/runs?branch=main&status=success&per_page=1'`, `gh api repos/greeterhq/greeter-http/actions/runs/<id>/artifacts` and `gh run download <id> -R greeterhq/greeter-http -n repo-trace-smoke-prod -D tmp/traces/greeter-http/prod-smoke`, in that order, and leaves the file as `tmp/traces/greeter-http/prod-smoke/repo-trace.json`
 
-#### Scenario: A smoke-prod run without a live artifact downloads nothing
-- **WHEN** the latest successful `smoke-prod.yml` run lists no `repo-trace-smoke-prod` artifact, or lists it with `expired` true
-- **THEN** no `gh run download` runs for it, the output says there is no prod smoke trace, and the fetch exits zero
+#### Scenario: A run of a workflow at another path is not used
+- **WHEN** the returned run has path `.github/workflows/other/smoke-prod.yml`
+- **THEN** no artifact lookup or download runs for it, the output says there is no prod smoke trace, and the fetch exits zero
+
+#### Scenario: A run from another branch or a pull request is not used
+- **WHEN** the returned run has head branch `feature/x`, or has head branch `main` and event `pull_request`
+- **THEN** no artifact lookup or download runs for it, the output says there is no prod smoke trace, and the fetch exits zero
 
 #### Scenario: No successful smoke-prod run downloads nothing
-- **WHEN** the stubbed `gh run list` for `smoke-prod.yml` returns `[]`
-- **THEN** no artifact lookup or download runs for it and the fetch exits zero
+- **WHEN** the runs lookup returns an empty `workflow_runs`
+- **THEN** no artifact lookup or download runs for it, the output says there is no prod smoke trace, and the fetch exits zero
+
+### Requirement: The prod smoke artifact is downloaded only when live
+For a usable run, `bin/fetch-sources` SHALL download the run's
+`repo-trace-smoke-prod` artifact into `tmp/traces/greeter-http/prod-smoke/` only
+when the run's artifact list has it with `expired` false. Otherwise it SHALL
+download nothing, say so, and exit zero.
+
+#### Scenario: A smoke-prod run without a live artifact downloads nothing
+- **WHEN** the run's artifact list has no `repo-trace-smoke-prod`, or has it with `expired` true
+- **THEN** no `gh run download` runs for it, the output says there is no prod smoke trace, and the fetch exits zero
+
+### Requirement: The prod smoke artifact must hold only the smoke trace file
+The downloaded artifact SHALL hold exactly one file, named
+`repo-trace-smoke-prod.json`. Anything else SHALL remove
+`tmp/traces/greeter-http/prod-smoke/`, exit non-zero and name the run ID. After
+the shape check and the `sha` check pass, the file SHALL be renamed to
+`repo-trace.json` in the same directory.
+
+#### Scenario: An artifact with no file fails the fetch
+- **WHEN** the download leaves `tmp/traces/greeter-http/prod-smoke/` empty
+- **THEN** the fetch exits non-zero, its error output names the run ID, and `tmp/traces/greeter-http/prod-smoke/` does not exist afterwards
+
+#### Scenario: An artifact with two files fails the fetch
+- **WHEN** the download leaves `repo-trace-smoke-prod.json` and `extra.json` in `tmp/traces/greeter-http/prod-smoke/`
+- **THEN** the fetch exits non-zero, its error output names the run ID, and `tmp/traces/greeter-http/prod-smoke/` does not exist afterwards
+
+#### Scenario: An artifact file with another name fails the fetch
+- **WHEN** the download leaves only `trace.json` in `tmp/traces/greeter-http/prod-smoke/`
+- **THEN** the fetch exits non-zero, its error output names the run ID, and `tmp/traces/greeter-http/prod-smoke/` does not exist afterwards
+
+### Requirement: A downloaded prod smoke trace must name its run's commit
+After the shape check, `bin/fetch-sources` SHALL compare the trace's `sha` with
+the run's `head_sha`. If they differ, or the trace cannot be read, it SHALL
+remove `tmp/traces/greeter-http/prod-smoke/`, exit non-zero, and print a message
+naming the run ID. The trace's own value is not echoed.
+
+#### Scenario: A sha mismatch fails the fetch and leaves no trace
+- **WHEN** the downloaded `repo-trace-smoke-prod.json` has `sha` `aaaa…` (40 hex) and the run's `head_sha` is `bbbb…`
+- **THEN** the fetch exits non-zero, its error output names the run ID, and `tmp/traces/greeter-http/prod-smoke/` does not exist afterwards

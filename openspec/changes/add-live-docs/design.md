@@ -278,11 +278,42 @@ appears, as `skipped`, in the CI trace.
   { 'greeter-http' => { workflow: 'smoke-prod.yml', artifact:
   'repo-trace-smoke-prod', dir: 'prod-smoke' } }`. Adding a repo is one entry
   there plus its producer workflow.
-- **Selection:** the latest successful `smoke-prod.yml` run on `main`, of any
-  event. No `--event` filter is needed, because `smoke-prod.yml` has no
-  `pull_request` trigger (compare S2). The artifact list for that run
-  (`gh api repos/greeterhq/greeter-http/actions/runs/<id>/artifacts`) must
-  contain a non-expired `repo-trace-smoke-prod`, or nothing is downloaded.
+- **Selection:** the fetch calls
+  `gh api 'repos/greeterhq/greeter-http/actions/workflows/smoke-prod.yml/runs?branch=main&status=success&per_page=1'`
+  and reads `workflow_runs[0]`: `id`, `created_at`, `head_branch`, `head_sha`,
+  `event` and `path`. It uses the REST API because `gh run list --json` has no
+  `path` field (gh 2.105.0 rejects it). An empty `workflow_runs` means no
+  successful run. The fetch re-checks the returned run itself rather than
+  trusting the query's filters, and uses it only if:
+  - `path` is `.github/workflows/smoke-prod.yml`;
+  - `head_branch` is `main`;
+  - `event` is not `pull_request`.
+
+  Any other run also counts as "no successful run": exit 0, no download. The
+  artifact list for the run
+  (`gh api repos/greeterhq/greeter-http/actions/runs/<id>/artifacts`) must then
+  contain `repo-trace-smoke-prod` with `expired` false, or nothing is
+  downloaded.
+- **Shape check:** `gh run download` writes the artifact's files into
+  `tmp/traces/greeter-http/prod-smoke/`. The artifact must hold exactly one file,
+  `repo-trace-smoke-prod.json` (the name greeter-http's `smoke-prod.yml`
+  uploads, as in run 45088245869). No file, two files, or one file with another
+  name fails the fetch.
+- **Provenance check:** the file's `sha` must equal the run's `head_sha`.
+- **Failure handling:** on any shape or provenance failure, or a file that
+  cannot be read, the fetch removes `tmp/traces/greeter-http/prod-smoke/`,
+  exits non-zero and names the run ID, without echoing the trace's value.
+- **Rename:** only when both checks pass, the fetch renames the file to
+  `repo-trace.json` in the same directory. `ArtifactTraceSource` then reads both
+  traces with one layout, `tmp/traces/<repo>/[prod-smoke/]repo-trace.json`, and
+  the fixture is stored under that name.
+- **Why both checks (from greeter-http's security review, S11):** this trace is
+  the only evidence for requirements that CI always skips, so a forged `passed`
+  result there would hide a real gap. Anyone who can push a branch can add or
+  edit a workflow on that branch and make it upload a `repo-trace-smoke-prod`
+  artifact containing `passed` results. The run checks keep the evidence to the
+  reviewed workflow file on `main`. The `sha` check ties the uploaded file to
+  the commit that run actually executed.
 - **Reading:** `ArtifactTraceSource` with `subdir: 'prod-smoke'`, validated
   like the CI trace (`specs/docs-sources`).
 - **Coverage:** passed results from either trace count (D3). Failed, skipped and
@@ -315,7 +346,7 @@ is gh 2.104.0, and they were downloaded on 2026-11-21T11:05:27Z.
 | `ledgers/prod.json` | `git show origin/ledger-prod:ledger.json` in `../greeter-acceptance` | commit 5bbea1ad31a5bb9b1bbe73ec466d16c55b2262aa (2026-11-21T08:53:06Z), sha256 4a2192e0… |
 | `repos/<repo>/openspec/**` | sibling checkouts on `main` | core 2ef6510, cli 88a7d56, http 5b818a2, acceptance 7a3272c |
 | `repos/greeter-http/openapi.yaml`, `docs/adr/*.md` | `git show 5b818a2:<path>` in `../greeter-http` | commit 5b818a2fa3f69d9a8bcc9c44f634c2ee2984670c |
-| `traces/greeter-http/prod-smoke/repo-trace.json` | `gh run download -R greeterhq/greeter-http <run-id> -n repo-trace-smoke-prod`, from greeter-http's first real successful `smoke-prod.yml` run on `main` | run `<run-id>` (to be filled in), sha, result count, sha256 and download date to be recorded at capture (task 1.11) |
+| `traces/greeter-http/prod-smoke/repo-trace.json` | `gh run download 45088245869 -R greeterhq/greeter-http -n repo-trace-smoke-prod` (gh 2.105.0, 2026-11-24T05:28:01Z). The artifact's only file, `repo-trace-smoke-prod.json`, is stored byte-identical under this name | greeter-http's first successful `smoke-prod.yml` run: run 45088245869, `main`, event `workflow_dispatch`, path `.github/workflows/smoke-prod.yml`, head sha e03ac08010f8fe0798daa93ac0c7d5a804c53dbf (equal to the trace's `sha`), 1 result (`passed`, cucumber, `features/version_headers.feature:7`), sha256 6b61b8d9… |
 
 Excerpt of the greeter-http trace (run 44622828436):
 ```json
@@ -415,6 +446,7 @@ producer CI runs.
 |---|---|---|---|---|
 | S1 | Log injection | `bin/build-docs` and `bin/fetch-sources` print sourced values (a trace's `repo`, file paths, gh stderr) to the Actions log. A line starting with `::` is run as a workflow command (`::add-mask::`, `::stop-commands::`, `::error file=...::`), and embedded newlines forge extra lines. | Medium | Task 7.1 |
 | S2 | API10 unsafe consumption | `gh run list --branch main` matches by head branch name. A fork PR from a branch named `main` that passes CI becomes the "latest successful main run". The producers upload no `repo-trace` on `pull_request`, so the download fails and the docs build breaks: anyone can deny service. | Medium | Spec changed (`--event push` and `--event schedule`, take the newer); task 7.2. The `smoke-prod.yml` lookup (D12) uses no `--event` filter, because that workflow has no `pull_request` trigger. If it ever gains one, the filter must be added there too. |
+| S11 | Forged evidence (from greeter-http's security review) | The prod smoke trace (D12) is the only evidence for requirements that CI skips. A workflow run from another branch, or a workflow file at another path, can upload an artifact named `repo-trace-smoke-prod` containing `passed` results. If greeter-docs trusted it, an untested requirement would show as covered. | Medium | Specs `docs-deployment`: read the run from the REST runs endpoint and use it only when `path` is `.github/workflows/smoke-prod.yml`, `head_branch` is `main` and `event` is not `pull_request`; require the artifact to hold exactly `repo-trace-smoke-prod.json` and its `sha` to equal the run's `head_sha`, otherwise delete the download and fail naming the run ID. Tasks 1.12 and 5.4 |
 | S3 | IAM scope | `create-github-app-token` mints a token with every permission the App installation has unless `permission-*` inputs are set. The Migration Plan granted only Contents: read, so artifact download would also have failed without Actions: read. | Medium | Spec changed (`permission-contents: read`, `permission-actions: read`); Migration Plan updated; task 7.3 |
 | S4 | API4 resource consumption | Inputs are unbounded: trace, ledger and `openapi.yaml` sizes; YAML alias expansion in `requirement-tags.yml` and `openapi.yaml`; a `$ref` cycle recursing forever; a slow raw-ledger response trickling bytes. | Medium | Task 7.4 |
 | S5 | Input reflection | HTML escaping covers text and quoted attributes, but URL attributes need more. An ADR link target such as `JaVaScript:`, `" javascript:"` or `java&#x09;script:` passes a naive prefix check. Ledger `run_id`, channel names and ledger keys reach `href` and `id` without the digits or slug check that trace `run_id` gets. | Low | Task 7.5 |
