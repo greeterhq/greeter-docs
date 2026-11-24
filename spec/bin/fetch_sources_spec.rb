@@ -188,7 +188,7 @@ RSpec.describe 'GreeterDocs::FetchSources' do
 
         last_ci_download = runner.calls.rindex { |argv| argv.include?('repo-trace') }
         expect(runner.calls.drop(last_ci_download + 1)).to eq(smoke_calls(runner))
-        expect(smoke_calls(runner).map { |argv| argv.first(3) })
+        expect(smoke_calls(runner).map { |argv| argv.first(4) })
           .to eq([['gh', 'api', smoke_runs_path],
                   ['gh', 'api', 'repos/greeterhq/greeter-http/actions/runs/3000/artifacts'],
                   %w[gh run download 3000]])
