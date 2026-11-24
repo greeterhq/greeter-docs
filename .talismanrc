@@ -73,22 +73,16 @@ fileignoreconfig:
   checksum: a165788ece9a83f5920cbd4dfbd0688654d8bf8fed0c94c046920b8791325360
 - filename: lib/greeter_docs/domain/coverage_rule.rb
   checksum: 57292018fa377f16d54e957d562d591b6141c0d835e2fcfead6147f68629de8e
-- filename: openspec/changes/add-live-docs/tasks.md
-  checksum: c82f366df80fb0faa1a6a403974fc20bf80ba47e7e9e094321344a7344c8f9ef
-- filename: openspec/changes/add-live-docs/design.md
-  checksum: 48dc1375b07a439da47c95a9bebdc12bb5bd924827a0cfbd297800d4dffa8f19
 - filename: openspec/config.yaml
   checksum: bdc92a7b6b5394bcb5d8f7a37c7ff60fc44bbc90e264c99cc185bf436ace169d
-- filename: openspec/changes/add-live-docs/specs/docs-sources/spec.md
-  checksum: 0c9a5896f3718fe2760d39d3b7f5fc4352888d486ad10016fba2ec6e7ae99cfe
-- filename: openspec/changes/add-live-docs/specs/docs-deployment/spec.md
-  checksum: 72a85af7aed17262fd2e5a0dd3afbc7b2dbb2c02ff5226c8dbf5274378dc20b3
-- filename: openspec/changes/add-live-docs/proposal.md
-  checksum: 5b4af42e6bf3d15bdc64750711a15cdd12f168ff8a51321352c718bb99ba5be1
-- filename: openspec/changes/add-live-docs/specs/docs-site/spec.md
-  checksum: 95a0954dcbd7a415b0744d96a51aed8242199489542e8f205cc2c757a79cad5e
-- filename: openspec/changes/add-live-docs/specs/coverage-gate/spec.md
-  checksum: 79ce769e2cac7d6efcc546018e20d30f14a4c616f47ca1145d4bcbe440120729
+- filename: openspec/specs/coverage-gate/spec.md
+  checksum: 253651c09c784148d506bc1d5e3910a2fad08b3ff4b80684f61ba9af893a6245
+- filename: openspec/specs/docs-site/spec.md
+  checksum: b35a5c8399a540e09bf08d19b69ff789dbed873f904ac7b704e8c701ef90a1fc
+- filename: openspec/specs/docs-sources/spec.md
+  checksum: b35a99085c13a6d0098534c78f1e0ea371eb844a9dc18a6b51ca2eb6da4159c7
+- filename: openspec/specs/docs-deployment/spec.md
+  checksum: 4d8f173f4f77fe4f34917dab4fea79fc9688d95115ee93cac65d15e760d53954
 - filename: spec/adapters/artifact_trace_source_spec.rb
   checksum: 227a635c8f72c2a700d7185f71e1bb86c053699c570e55c6906f5466b4e7bb79
 - filename: spec/adapters/erb_html_publisher_spec.rb
