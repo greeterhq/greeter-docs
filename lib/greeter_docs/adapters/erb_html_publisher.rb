@@ -53,7 +53,13 @@ module GreeterDocs
         { repo: repo, trace: trace, run_url: run_url(repo.name, trace&.run_id),
           capabilities: repo.requirements.group_by(&:capability),
           verdicts: repo.requirements.to_h { |req| [req.slug, @rule.verdict(@model, repo, req)] },
-          statuses: scenario_statuses(trace) }
+          statuses: scenario_statuses(trace), **smoke_locals(repo.name) }
+      end
+
+      # The prod smoke trace's scenario statuses and run link (design D12).
+      def smoke_locals(repo_name)
+        smoke = @model.deployed_traces[repo_name]
+        { smoke_statuses: scenario_statuses(smoke), smoke_run_url: run_url(repo_name, smoke&.run_id) }
       end
 
       def publish_traceability

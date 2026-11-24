@@ -11,12 +11,15 @@ module GreeterDocs
 
       SCHEMA = 'greeterhq.repo-trace.v1'
 
-      def initialize(workspace_root:)
+      # subdir: 'prod-smoke' reads the prod smoke trace (design D12) with the
+      # same validation and messages.
+      def initialize(workspace_root:, subdir: nil)
         @workspace_root = workspace_root
+        @subdir = subdir
       end
 
       def trace(repo)
-        label = File.join('tmp', 'traces', repo, 'repo-trace.json')
+        label = File.join(*['tmp', 'traces', repo, @subdir, 'repo-trace.json'].compact)
         path = File.join(@workspace_root, label)
         return nil unless File.exist?(path)
 

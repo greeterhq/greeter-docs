@@ -21,6 +21,7 @@ outcome = GreeterDocs::Build.new(
   spec_source: adapters::GitSpecSource.new(clones_root: repos_dir, workspace_root: root,
                                            producers: GreeterDocs::FetchSources::PRODUCERS),
   trace_source: adapters::ArtifactTraceSource.new(workspace_root: root),
+  deployed_trace_source: adapters::ArtifactTraceSource.new(workspace_root: root, subdir: 'prod-smoke'),
   ledger_source: adapters::RawLedgerSource.new(fetcher: adapters::RawLedgerSource.default_fetcher),
   api_source: adapters::FileApiSource.new(path: File.join(http_dir, 'openapi.yaml'), commit: commit),
   adr_source: adapters::FileAdrSource.new(roots: { 'greeter-docs' => File.join(root, 'docs', 'adr'),

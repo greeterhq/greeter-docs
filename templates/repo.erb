@@ -21,7 +21,13 @@
 <td><ul>
 <%- req.scenarios.each do |scenario| -%>
 <%- status = statuses[[req.slug, scenario.slug]] || 'none' -%>
-<li data-requirement="<%= h(req.slug) %>" data-scenario="<%= h(scenario.slug) %>" data-status="<%= h(status) %>"><%= h(scenario.title) %>: <%= h(status == 'none' ? 'no result' : status) %></li>
+<%- smoke_only = status != 'passed' && smoke_statuses[[req.slug, scenario.slug]] == 'passed' -%>
+<%- status = 'passed' if smoke_only -%>
+<li data-requirement="<%= h(req.slug) %>" data-scenario="<%= h(scenario.slug) %>" data-status="<%= h(status) %>"><%= h(scenario.title) %>: <%= h(status == 'none' ? 'no result' : status) %>
+<%- if smoke_only -%>
+(verified by the prod smoke run<%- if smoke_run_url -%>: <a href="<%= h(smoke_run_url) %>">run <%= h(smoke_run_url.split('/').last) %></a><%- end -%>)
+<%- end -%>
+</li>
 <%- end -%>
 </ul></td>
 </tr>

@@ -38,7 +38,7 @@ or lives in `spec/fixtures/`.
   Tag the examples that verify a spec scenario. Verify that they fail with `NameError` or expectation failures.
 - [x] 1.10 Remove `tmp/allow-test-edits` and commit the red tests. Verify that `git status` shows no changes under `spec/`.
 - [x] 1.11 (D12) Blocked until greeter-http's `smoke-prod.yml` has run successfully on `main` and the run ID is given. Capture `spec/fixtures/traces/greeter-http/prod-smoke/repo-trace.json` with `gh run download -R greeterhq/greeter-http <run-id> -n repo-trace-smoke-prod`, and record the run ID, sha, result count, sha256 and download date in design.md, Fixtures. Replace `<smoke-run-id>` in the `docs-site` spec with the real run ID. Verify that the file has schema `greeterhq.repo-trace.v1`, repo `greeter-http`, and a `passed` result for `deployed-stage-exposes-version-headers` / `smoke-check-on-a-deployed-stage`.
-- [ ] 1.12 (D12) With the test guard open, write the red tests for the prod smoke scenarios, one tagged example each:
+- [x] 1.12 (D12) With the test guard open, write the red tests for the prod smoke scenarios, one tagged example each:
   - `coverage_rule_spec`: a passed `deployed_traces` result covers a requirement; a failed or skipped one does not.
   - `artifact_trace_source_spec`: `subdir: 'prod-smoke'` reads the 1.11 fixture; wrong-schema and wrong-repo variants are named with the `prod-smoke/` path.
   - `fetch_sources_spec`:
@@ -70,7 +70,7 @@ or lives in `spec/fixtures/`.
 - [x] 3.2 Implement `ArtifactTraceSource` and the `SourceError` messages. Verify that its adapter spec is green.
 - [x] 3.3 Implement `RawLedgerSource` with the injected fetcher and the default `Net::HTTP` fetcher (10 s timeout, no redirects). Verify that its adapter spec is green.
 - [x] 3.4 Implement `FileApiSource`, `FileAdrSource`, `FileDiagramSource`, `NullContractSource` and `NullSloSource`. Verify that their adapter specs are green.
-- [ ] 3.5 (D12) Add `DocsModel#deployed_traces` (default `{}`), count its passed results in `CoverageRule#verdict`, and add `subdir:` to `ArtifactTraceSource` (`tmp/traces/<repo>/prod-smoke/repo-trace.json`, same validation and messages). Verify that the 1.12 domain and adapter examples are green, and that `lib/greeter_docs/domain` still does no I/O.
+- [x] 3.5 (D12) Add `DocsModel#deployed_traces` (default `{}`), count its passed results in `CoverageRule#verdict`, and add `subdir:` to `ArtifactTraceSource` (`tmp/traces/<repo>/prod-smoke/repo-trace.json`, same validation and messages). Verify that the 1.12 domain and adapter examples are green, and that `lib/greeter_docs/domain` still does no I/O.
 
 ## 4. Publisher and pages
 
@@ -79,14 +79,14 @@ or lives in `spec/fixtures/`.
 - [x] 4.3 Add the escaping Markdown renderer and the ADR index and page templates. Verify that the publisher spec's ADR examples are green.
 - [x] 4.4 Add the architecture template (Mermaid 11.17.2 ESM, `securityLevel: "strict"`) and the contracts and SLO placeholders. Verify that the whole publisher spec, including the escaping example, is green.
 - [x] 4.5 Write `docs/adr/0001-record-architecture-decisions.md`, `0002-openspec-not-kiro-specs.md` and `0003-shared-acceptance-suite-and-channel-ledger.md`, and `docs/diagrams/c4-context.mmd` (`C4Context`) and `c4-container.mmd` (`C4Container`) naming every system listed in the `docs-site` spec. Verify that the diagram example in the publisher spec is green and that each diagram renders at mermaid.live without errors.
-- [ ] 4.6 (D12) On the repo page, show a scenario whose only `passed` result is in the prod smoke trace as `passed`, labelled as verified by the prod smoke run, with a link to that run (digits-only rule). Verify that the 1.12 publisher example and the whole publisher spec are green.
+- [x] 4.6 (D12) On the repo page, show a scenario whose only `passed` result is in the prod smoke trace as `passed`, labelled as verified by the prod smoke run, with a link to that run (digits-only rule). Verify that the 1.12 publisher example and the whole publisher spec are green.
 
 ## 5. Composition and tooling
 
 - [x] 5.1 Implement `GreeterDocs::Build` and `bin/build-docs`: collect the source errors and coverage violations, print one line each, exit 1, and write no `_site` on failure. Verify that `spec/build_spec.rb` is green.
 - [x] 5.2 Implement `bin/fetch-sources` with an injectable `Open3` argv runner, per-repo cleanup of `tmp/repos/<repo>` and `tmp/traces/<repo>`, and token redaction. Verify that its spec is green, except the event-selection and fork-PR examples, which go green in 7.2.
 - [x] 5.3 Run the full suite with the formatter. Verify that `spec/coverage_of_self_spec.rb` is green and that `tmp/traces/greeter-docs/repo-trace.json` has one passed result per greeter-docs scenario.
-- [ ] 5.4 (D12, S11) Add `FetchSources::DEPLOYED_TRACES` and, after the four CI fetches, the `smoke-prod.yml` lookup:
+- [x] 5.4 (D12, S11) Add `FetchSources::DEPLOYED_TRACES` and, after the four CI fetches, the `smoke-prod.yml` lookup:
   - `gh api 'repos/greeterhq/greeter-http/actions/workflows/smoke-prod.yml/runs?branch=main&status=success&per_page=1'`, reading `workflow_runs[0]`;
   - the run used only if `path` is `.github/workflows/smoke-prod.yml`, `head_branch` is `main` and `event` is not `pull_request`;
   - the `gh api .../actions/runs/<id>/artifacts` check for `repo-trace-smoke-prod` with `expired` false;
@@ -100,7 +100,7 @@ or lives in `spec/fixtures/`.
   - move the smoke lookup before the CI fetches and show that the expected-commands example fails.
 
   Revert both.
-- [ ] 5.5 (D12) Give `Build` the optional `deployed_trace_source:` port and wire `ArtifactTraceSource.new(workspace_root: root, subdir: 'prod-smoke')` into `bin/build-docs`. Verify that the 1.12 build examples and all of `spec/build_spec.rb` are green.
+- [x] 5.5 (D12) Give `Build` the optional `deployed_trace_source:` port and wire `ArtifactTraceSource.new(workspace_root: root, subdir: 'prod-smoke')` into `bin/build-docs`. Verify that the 1.12 build examples and all of `spec/build_spec.rb` are green.
 
 ## 6. Workflow
 

@@ -32,6 +32,13 @@ module GreeterDocs
     ApiDescription = Data.define(:title, :version, :description, :commit, :raw, :operations)
     ApiDescription::Operation = Data.define(:http_method, :path, :summary, :parameters, :request_body, :responses)
 
-    DocsModel = Data.define(:repos, :traces, :ledgers, :api, :adrs, :diagrams, :contracts, :slos, :built_at)
+    # traces and deployed_traces map a repo name to its Trace. deployed_traces
+    # holds prod smoke traces (design D12) and defaults to none.
+    DocsModel = Data.define(:repos, :traces, :deployed_traces, :ledgers, :api, :adrs, :diagrams, :contracts, :slos,
+                            :built_at) do
+      def initialize(deployed_traces: {}, **members)
+        super
+      end
+    end
   end
 end

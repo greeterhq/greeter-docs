@@ -12,8 +12,8 @@ module GreeterDocs
 
     # Decides which requirements on main lack a passing scenario.
     #
-    # - A requirement not in its repo's tag map is covered when the repo trace
-    #   has a result for its slug with status "passed".
+    # - A requirement not in its repo's tag map is covered when the repo's CI
+    #   trace or prod smoke trace has a result for its slug with status "passed".
     # - A tag-mapped requirement ignores the trace. It is covered when the prod
     #   ledger has a channel "passed" for its key, and is not yet recorded (not a
     #   violation) while the prod ledger is missing. Stage never counts.
@@ -37,8 +37,7 @@ module GreeterDocs
         key = repo.requirement_tags[requirement.slug]
         return ledger_verdict(model.ledgers['prod'], key) if key
 
-        passed = trace_passes(model.traces[repo.name])
-        passed.include?(requirement.slug) ? :covered : :uncovered
+        passed_slugs(model, repo.name).include?(requirement.slug) ? :covered : :uncovered
       end
 
       private
@@ -57,6 +56,11 @@ module GreeterDocs
         return :not_yet_recorded unless prod&.recorded?
 
         prod.passed?(key) ? :covered : :uncovered
+      end
+
+      # Requirement slugs with a passed result in the repo's CI or prod smoke trace.
+      def passed_slugs(model, repo_name)
+        trace_passes(model.traces[repo_name]) + trace_passes(model.deployed_traces[repo_name])
       end
 
       def trace_passes(trace)

@@ -9,12 +9,16 @@ module GreeterDocs
 
     PORTS = %i[spec_source trace_source ledger_source api_source adr_source diagram_source contract_source
                slo_source publisher].freeze
+    # Optional: the prod smoke trace source (design D12). Without it the model
+    # has no deployed traces.
+    OPTIONAL_PORTS = %i[deployed_trace_source].freeze
     ENVIRONMENTS = %w[prod stage].freeze
 
-    # Takes each port listed in PORTS, plus clock: (a callable returning a Time).
+    # Takes each port listed in PORTS, any in OPTIONAL_PORTS, plus clock: (a
+    # callable returning a Time).
     def initialize(clock:, **ports)
       missing = PORTS - ports.keys
-      extra = ports.keys - PORTS
+      extra = ports.keys - PORTS - OPTIONAL_PORTS
       raise ArgumentError, "missing #{missing.join(', ')}" if missing.any?
       raise ArgumentError, "unknown #{extra.join(', ')}" if extra.any?
 
@@ -38,8 +42,9 @@ module GreeterDocs
 
     def gather(errors)
       repos = attempt(errors, []) { port(:spec_source).repos }
-      Domain::DocsModel.new(repos: repos, traces: traces(repos, errors), ledgers: ledgers(errors),
-                            **documents(errors), built_at: @clock.call)
+      Domain::DocsModel.new(repos: repos, traces: traces(repos, errors, :trace_source),
+                            deployed_traces: traces(repos, errors, :deployed_trace_source),
+                            ledgers: ledgers(errors), **documents(errors), built_at: @clock.call)
     end
 
     def documents(errors)
@@ -49,9 +54,12 @@ module GreeterDocs
         contracts: port(:contract_source).contracts, slos: port(:slo_source).slos }
     end
 
-    def traces(repos, errors)
-      repos.filter_map { |repo| attempt(errors) { port(:trace_source).trace(repo.name) } }
-           .to_h { |trace| [trace.repo, trace] }
+    # Repo name to Trace from the given port; empty when an optional port is absent.
+    def traces(repos, errors, name)
+      source = @ports[name]
+      return {} unless source
+
+      repos.filter_map { |repo| attempt(errors) { source.trace(repo.name) } }.to_h { |trace| [trace.repo, trace] }
     end
 
     def ledgers(errors)

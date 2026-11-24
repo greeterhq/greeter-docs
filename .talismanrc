@@ -72,9 +72,9 @@ fileignoreconfig:
 - filename: lib/greeter_docs/domain/ledger_view.rb
   checksum: a165788ece9a83f5920cbd4dfbd0688654d8bf8fed0c94c046920b8791325360
 - filename: lib/greeter_docs/domain/coverage_rule.rb
-  checksum: e29b578547ba5e6a8a62c11986ee3d076bb617f409355e7d89e99e683b4abb39
+  checksum: 57292018fa377f16d54e957d562d591b6141c0d835e2fcfead6147f68629de8e
 - filename: openspec/changes/add-live-docs/tasks.md
-  checksum: b6db50be5056eaea4b89c4f0d6028e0f5b5a59bdbb56decae89f9782cf39a052
+  checksum: c82f366df80fb0faa1a6a403974fc20bf80ba47e7e9e094321344a7344c8f9ef
 - filename: openspec/changes/add-live-docs/design.md
   checksum: 48dc1375b07a439da47c95a9bebdc12bb5bd924827a0cfbd297800d4dffa8f19
 - filename: openspec/config.yaml
@@ -154,7 +154,7 @@ fileignoreconfig:
 - filename: spec/workflows/docs_workflow_spec.rb
   checksum: bdeab2711969189a59d8a7b0e33b993fa4469f718607f7a8fd72b2490943dfcf
 - filename: templates/repo.erb
-  checksum: bf78eb652e78fd22a85aae3c7ec26185c680decb63332f3a3c7e4b66b9d82ca3
+  checksum: 7b4ed803bffd72a19930dc3d9759ccd15661a55615d0fad4574dd9bae4b5e568
 - filename: templates/traceability.erb
   checksum: 297ea76463d2b4aaa73c27eaa60e6057bb8178b6be0c88b81476d49fb76bcc5e  
 version: ""

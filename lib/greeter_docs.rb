@@ -26,3 +26,4 @@ end
 
 require_relative 'greeter_docs/build'
 require_relative 'greeter_docs/fetch_sources'
+require_relative 'greeter_docs/deployed_trace_fetch'

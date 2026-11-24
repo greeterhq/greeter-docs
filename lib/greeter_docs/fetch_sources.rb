@@ -14,6 +14,14 @@ module GreeterDocs
     PRODUCERS = %w[greeter-core greeter-cli greeter-http greeter-acceptance].freeze
     EVENTS = %w[push schedule].freeze
 
+    # Prod smoke traces, fetched after the CI traces (design D12): the producer
+    # workflow, the artifact and its single file, and the trace's directory
+    # under tmp/traces/<repo>/.
+    DEPLOYED_TRACES = {
+      'greeter-http' => { workflow: 'smoke-prod.yml', path: '.github/workflows/smoke-prod.yml',
+                          artifact: 'repo-trace-smoke-prod', file: 'repo-trace-smoke-prod.json', dir: 'prod-smoke' }
+    }.freeze
+
     class Failed < StandardError; end
 
     # runner: a callable taking an argv and returning [stdout, stderr, success].
@@ -27,6 +35,9 @@ module GreeterDocs
 
     def call
       PRODUCERS.each { |repo| fetch(repo) }
+      DEPLOYED_TRACES.each do |repo, config|
+        DeployedTraceFetch.new(runner: @runner, say: method(:say), root: @root, repo: repo, config: config).call
+      end
       0
     rescue Failed => e
       @err.puts(LogSafe.line(redact(e.message)))
@@ -34,6 +45,18 @@ module GreeterDocs
     end
 
     private
+
+    # Runs one command; raises Failed with its stderr when it fails.
+    def run!(*argv)
+      stdout, stderr, success = @runner.call(*argv)
+      raise Failed, "#{argv.join(' ')} failed: #{stderr}" unless success
+
+      stdout
+    end
+
+    def say(message)
+      @out.puts(LogSafe.line(redact(message)))
+    end
 
     def fetch(repo)
       clean(repo)
@@ -70,20 +93,9 @@ module GreeterDocs
       raise Failed, "gh run list for greeterhq/#{repo} returned invalid JSON"
     end
 
-    def run!(*argv)
-      stdout, stderr, success = @runner.call(*argv)
-      raise Failed, "#{argv.join(' ')} failed: #{stderr}" unless success
-
-      stdout
-    end
-
     def capture(*argv)
       stdout, stderr, status = Open3.capture3(*argv, chdir: @root)
       [stdout, stderr, status.success?]
-    end
-
-    def say(message)
-      @out.puts(LogSafe.line(redact(message)))
     end
 
     def redact(text)
